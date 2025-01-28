@@ -4,6 +4,13 @@
 </a>
 Enable users to understand complex code by generating simulations and visual explanations. Support multiple programming languages (start with one, e.g., Python). Create an interactive system that illustrates code logic step-by-step.
 
+Here's the Demo:
+
+
+https://github.com/user-attachments/assets/1d22ff9b-ccf1-413e-9530-4aadf04cf3df
+
+
+
 ## Project Organization
 ```txt
 ├── LICENSE            <- Open-source license if one is chosen
