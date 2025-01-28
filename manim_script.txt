@@ -1,0 +1,76 @@
+```python
+from manim import *
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+class SelectionSortVisualization(Scene):
+    def construct(self):
+        # Input array
+        arr = [5, 1, 4, 2, 8]
+        n = len(arr)
+
+        # Create rectangles to represent array elements
+        rects = []
+        for i in range(n):
+            rect = Rectangle(height=arr[i], width=1, color=BLUE)
+            rect.next_to(rects[-1], RIGHT, buff=0.2) if rects else rect.move_to(ORIGIN)
+            rect.add(Text(str(arr[i]), font_size=24).move_to(rect.get_center()))
+            rects.append(rect)
+        
+        arr_group = Group(*rects)
+        self.play(Create(arr_group))
+        self.wait(1)
+
+
+        # Selection Sort Animation
+        for i in range(n - 1):
+            min_idx = i
+            # Highlight the current minimum element
+            rects[min_idx].set_color(YELLOW)
+            self.wait(0.5)
+
+            # Iterate through the remaining unsorted part
+            for j in range(i + 1, n):
+                #Highlight the element being compared
+                rects[j].set_color(RED)
+                if arr[j] < arr[min_idx]:
+                    #Change Color if smaller element is found
+                    rects[min_idx].set_color(BLUE)  #Reset previous min
+                    min_idx = j
+                    rects[min_idx].set_color(YELLOW) #Set new min
+                self.wait(0.5)
+                rects[j].set_color(BLUE) #Reset compared element's color
+
+
+            # Swap elements if necessary
+            if min_idx != i:
+                #Show Swap using Arrows
+                arrow1 = Arrow(rects[i].get_center(), rects[min_idx].get_center(), buff=0.2, color=GREEN)
+                arrow2 = Arrow(rects[min_idx].get_center(), rects[i].get_center(), buff=0.2, color=GREEN)
+                self.play(Create(arrow1), Create(arrow2))
+                self.wait(0.5)
+                self.play(Transform(rects[i],rects[min_idx].copy()),Transform(rects[min_idx],rects[i].copy())) #Efficient Swap using Transform
+                self.play(FadeOut(arrow1),FadeOut(arrow2))
+                arr[i], arr[min_idx] = arr[min_idx], arr[i]  #update the array values for accuracy
+                self.wait(0.5)
+                
+
+            rects[min_idx].set_color(BLUE) #reset color after swap or no swap
+            self.wait(0.5)
+
+        #Final Sorted Array
+        self.wait(2)
+        title = Text("Sorted Array!", font_size=36, color=GREEN)
+        title.to_edge(UP)
+        self.play(Write(title))
+        self.wait(2)
+
+```

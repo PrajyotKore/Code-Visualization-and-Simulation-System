@@ -1,0 +1,1244 @@
+table
+Mobjects representing tables.
+
+Examples
+
+Example: TableExamples 
+
+../_images/TableExamples-1.png
+from manim import *
+
+class TableExamples(Scene):
+    def construct(self):
+        t0 = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")],
+            top_left_entry=Text("TOP"))
+        t0.add_highlighted_cell((2,2), color=GREEN)
+        x_vals = np.linspace(-2,2,5)
+        y_vals = np.exp(x_vals)
+        t1 = DecimalTable(
+            [x_vals, y_vals],
+            row_labels=[MathTex("x"), MathTex("f(x)")],
+            include_outer_lines=True)
+        t1.add(t1.get_cell((2,2), color=RED))
+        t2 = MathTable(
+            [["+", 0, 5, 10],
+            [0, 0, 5, 10],
+            [2, 2, 7, 12],
+            [4, 4, 9, 14]],
+            include_outer_lines=True)
+        t2.get_horizontal_lines()[:3].set_color(BLUE)
+        t2.get_vertical_lines()[:3].set_color(BLUE)
+        t2.get_horizontal_lines()[:3].set_z_index(1)
+        cross = VGroup(
+            Line(UP + LEFT, DOWN + RIGHT),
+            Line(UP + RIGHT, DOWN + LEFT))
+        a = Circle().set_color(RED).scale(0.5)
+        b = cross.set_color(BLUE).scale(0.5)
+        t3 = MobjectTable(
+            [[a.copy(),b.copy(),a.copy()],
+            [b.copy(),a.copy(),a.copy()],
+            [a.copy(),b.copy(),b.copy()]])
+        t3.add(Line(
+            t3.get_corner(DL), t3.get_corner(UR)
+        ).set_color(RED))
+        vals = np.arange(1,21).reshape(5,4)
+        t4 = IntegerTable(
+            vals,
+            include_outer_lines=True
+        )
+        g1 = Group(t0, t1).scale(0.5).arrange(buff=1).to_edge(UP, buff=1)
+        g2 = Group(t2, t3, t4).scale(0.5).arrange(buff=1).to_edge(DOWN, buff=1)
+        self.add(g1, g2)
+Make interactive
+Classes
+
+DecimalTable
+
+A specialized Table mobject for use with DecimalNumber to display decimal entries.
+
+IntegerTable
+
+A specialized Table mobject for use with Integer.
+
+MathTable
+
+A specialized Table mobject for use with LaTeX.
+
+MobjectTable
+
+A specialized Table mobject for use with Mobject.
+
+Table
+
+A mobject that displays a table on the screen.
+
+
+
+
+
+
+DecimalTable
+Qualified name: manim.mobject.table.DecimalTable
+
+class DecimalTable(table, element_to_mobject=<class 'manim.mobject.text.numbers.DecimalNumber'>, element_to_mobject_config={'num_decimal_places': 1}, **kwargs)[source]
+Bases: Table
+
+A specialized Table mobject for use with DecimalNumber to display decimal entries.
+
+Examples
+
+Example: DecimalTableExample 
+
+../_images/DecimalTableExample-1.png
+from manim import *
+
+class DecimalTableExample(Scene):
+    def construct(self):
+        x_vals = [-2,-1,0,1,2]
+        y_vals = np.exp(x_vals)
+        t0 = DecimalTable(
+            [x_vals, y_vals],
+            row_labels=[MathTex("x"), MathTex("f(x)=e^{x}")],
+            h_buff=1,
+            element_to_mobject_config={"num_decimal_places": 2})
+        self.add(t0)
+Make interactive
+Special case of Table with element_to_mobject set to DecimalNumber. By default, num_decimal_places is set to 1. Will round/truncate the decimal places based on the provided element_to_mobject_config.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2D array, or a list of lists. Content of the table must be valid input for DecimalNumber.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as DecimalNumber.
+
+element_to_mobject_config (dict) – Element to mobject config, here set as {“num_decimal_places”: 1}.
+
+kwargs – Additional arguments to be passed to Table.
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(table, element_to_mobject=<class 'manim.mobject.text.numbers.DecimalNumber'>, element_to_mobject_config={'num_decimal_places': 1}, **kwargs)
+Special case of Table with element_to_mobject set to DecimalNumber. By default, num_decimal_places is set to 1. Will round/truncate the decimal places based on the provided element_to_mobject_config.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2D array, or a list of lists. Content of the table must be valid input for DecimalNumber.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as DecimalNumber.
+
+element_to_mobject_config (dict) – Element to mobject config, here set as {“num_decimal_places”: 1}.
+
+kwargs – Additional arguments to be passed to Table.
+
+
+
+
+
+
+
+
+
+IntegerTable
+Qualified name: manim.mobject.table.IntegerTable
+
+class IntegerTable(table, element_to_mobject=<class 'manim.mobject.text.numbers.Integer'>, **kwargs)[source]
+Bases: Table
+
+A specialized Table mobject for use with Integer.
+
+Examples
+
+Example: IntegerTableExample 
+
+../_images/IntegerTableExample-1.png
+from manim import *
+
+class IntegerTableExample(Scene):
+    def construct(self):
+        t0 = IntegerTable(
+            [[0,30,45,60,90],
+            [90,60,45,30,0]],
+            col_labels=[
+                MathTex(r"\frac{\sqrt{0}}{2}"),
+                MathTex(r"\frac{\sqrt{1}}{2}"),
+                MathTex(r"\frac{\sqrt{2}}{2}"),
+                MathTex(r"\frac{\sqrt{3}}{2}"),
+                MathTex(r"\frac{\sqrt{4}}{2}")],
+            row_labels=[MathTex(r"\sin"), MathTex(r"\cos")],
+            h_buff=1,
+            element_to_mobject_config={"unit": r"^{\circ}"})
+        self.add(t0)
+Make interactive
+Special case of Table with element_to_mobject set to Integer. Will round if there are decimal entries in the table.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2d array or list of lists. Content of the table has to be valid input for Integer.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as Integer.
+
+kwargs – Additional arguments to be passed to Table.
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(table, element_to_mobject=<class 'manim.mobject.text.numbers.Integer'>, **kwargs)
+Special case of Table with element_to_mobject set to Integer. Will round if there are decimal entries in the table.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2d array or list of lists. Content of the table has to be valid input for Integer.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as Integer.
+
+kwargs – Additional arguments to be passed to Table
+
+
+
+
+
+MathTable
+Qualified name: manim.mobject.table.MathTable
+
+class MathTable(table, element_to_mobject=<class 'manim.mobject.text.tex_mobject.MathTex'>, **kwargs)[source]
+Bases: Table
+
+A specialized Table mobject for use with LaTeX.
+
+Examples
+
+Example: MathTableExample 
+
+../_images/MathTableExample-1.png
+from manim import *
+
+class MathTableExample(Scene):
+    def construct(self):
+        t0 = MathTable(
+            [["+", 0, 5, 10],
+            [0, 0, 5, 10],
+            [2, 2, 7, 12],
+            [4, 4, 9, 14]],
+            include_outer_lines=True)
+        self.add(t0)
+Make interactive
+Special case of Table with element_to_mobject set to MathTex. Every entry in table is set in a Latex align environment.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2d array or list of lists. Content of the table have to be valid input for MathTex.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as MathTex.
+
+kwargs – Additional arguments to be passed to Table.
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(table, element_to_mobject=<class 'manim.mobject.text.tex_mobject.MathTex'>, **kwargs)
+Special case of Table with element_to_mobject set to MathTex. Every entry in table is set in a Latex align environment.
+
+Parameters:
+table (Iterable[Iterable[float | str]]) – A 2d array or list of lists. Content of the table have to be valid input for MathTex.
+
+element_to_mobject (Callable[[float | str], VMobject]) – The Mobject class applied to the table entries. Set as MathTex.
+
+kwargs – Additional arguments to be passed to Table.
+
+
+
+
+
+
+
+MobjectTable
+Qualified name: manim.mobject.table.MobjectTable
+
+class MobjectTable(table, element_to_mobject=<function MobjectTable.<lambda>>, **kwargs)[source]
+Bases: Table
+
+A specialized Table mobject for use with Mobject.
+
+Examples
+
+Example: MobjectTableExample 
+
+../_images/MobjectTableExample-1.png
+from manim import *
+
+class MobjectTableExample(Scene):
+    def construct(self):
+        cross = VGroup(
+            Line(UP + LEFT, DOWN + RIGHT),
+            Line(UP + RIGHT, DOWN + LEFT),
+        )
+        a = Circle().set_color(RED).scale(0.5)
+        b = cross.set_color(BLUE).scale(0.5)
+        t0 = MobjectTable(
+            [[a.copy(),b.copy(),a.copy()],
+            [b.copy(),a.copy(),a.copy()],
+            [a.copy(),b.copy(),b.copy()]]
+        )
+        line = Line(
+            t0.get_corner(DL), t0.get_corner(UR)
+        ).set_color(RED)
+        self.add(t0, line)
+Make interactive
+Special case of Table with element_to_mobject set to an identity function. Here, every item in table must already be of type Mobject.
+
+Parameters:
+table (Iterable[Iterable[VMobject]]) – A 2D array or list of lists. Content of the table must be of type Mobject.
+
+element_to_mobject (Callable[[VMobject], VMobject]) – The Mobject class applied to the table entries. Set as lambda m : m to return itself.
+
+kwargs – Additional arguments to be passed to Table.
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(table, element_to_mobject=<function MobjectTable.<lambda>>, **kwargs)
+Special case of Table with element_to_mobject set to an identity function. Here, every item in table must already be of type Mobject.
+
+Parameters:
+table (Iterable[Iterable[VMobject]]) – A 2D array or list of lists. Content of the table must be of type Mobject.
+
+element_to_mobject (Callable[[VMobject], VMobject]) – The Mobject class applied to the table entries. Set as lambda m : m to return itself.
+
+kwargs – Additional arguments to be passed to Table.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Table
+Qualified name: manim.mobject.table.Table
+
+class Table(table, row_labels=None, col_labels=None, top_left_entry=None, v_buff=0.8, h_buff=1.3, include_outer_lines=False, add_background_rectangles_to_entries=False, entries_background_color=ManimColor('#000000'), include_background_rectangle=False, background_rectangle_color=ManimColor('#000000'), element_to_mobject=<class 'manim.mobject.text.text_mobject.Paragraph'>, element_to_mobject_config={}, arrange_in_grid_config={}, line_config={}, **kwargs)[source]
+Bases: VGroup
+
+A mobject that displays a table on the screen.
+
+Parameters:
+table (Iterable[Iterable[float | str | VMobject]]) – A 2D array or list of lists. Content of the table has to be a valid input for the callable set in element_to_mobject.
+
+row_labels (Iterable[VMobject] | None) – List of VMobject representing the labels of each row.
+
+col_labels (Iterable[VMobject] | None) – List of VMobject representing the labels of each column.
+
+top_left_entry (VMobject | None) – The top-left entry of the table, can only be specified if row and column labels are given.
+
+v_buff (float) – Vertical buffer passed to arrange_in_grid(), by default 0.8.
+
+h_buff (float) – Horizontal buffer passed to arrange_in_grid(), by default 1.3.
+
+include_outer_lines (bool) – True if the table should include outer lines, by default False.
+
+add_background_rectangles_to_entries (bool) – True if background rectangles should be added to entries, by default False.
+
+entries_background_color (ParsableManimColor) – Background color of entries if add_background_rectangles_to_entries is True.
+
+include_background_rectangle (bool) – True if the table should have a background rectangle, by default False.
+
+background_rectangle_color (ParsableManimColor) – Background color of table if include_background_rectangle is True.
+
+element_to_mobject (Callable[[float | str | VMobject], VMobject]) – The Mobject class applied to the table entries. by default Paragraph. For common choices, see text_mobject/tex_mobject.
+
+element_to_mobject_config (dict) – Custom configuration passed to element_to_mobject, by default {}.
+
+arrange_in_grid_config (dict) – Dict passed to arrange_in_grid(), customizes the arrangement of the table.
+
+line_config (dict) – Dict passed to Line, customizes the lines of the table.
+
+kwargs – Additional arguments to be passed to VGroup.
+
+Examples
+
+Example: TableExamples 
+
+../_images/TableExamples-2.png
+from manim import *
+
+class TableExamples(Scene):
+    def construct(self):
+        t0 = Table(
+            [["This", "is a"],
+            ["simple", "Table in \\n Manim."]])
+        t1 = Table(
+            [["This", "is a"],
+            ["simple", "Table."]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        t1.add_highlighted_cell((2,2), color=YELLOW)
+        t2 = Table(
+            [["This", "is a"],
+            ["simple", "Table."]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")],
+            top_left_entry=Star().scale(0.3),
+            include_outer_lines=True,
+            arrange_in_grid_config={"cell_alignment": RIGHT})
+        t2.add(t2.get_cell((2,2), color=RED))
+        t3 = Table(
+            [["This", "is a"],
+            ["simple", "Table."]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")],
+            top_left_entry=Star().scale(0.3),
+            include_outer_lines=True,
+            line_config={"stroke_width": 1, "color": YELLOW})
+        t3.remove(*t3.get_vertical_lines())
+        g = Group(
+            t0,t1,t2,t3
+        ).scale(0.7).arrange_in_grid(buff=1)
+        self.add(g)
+Make interactive
+Example: BackgroundRectanglesExample 
+
+../_images/BackgroundRectanglesExample-2.png
+from manim import *
+
+class BackgroundRectanglesExample(Scene):
+    def construct(self):
+        background = Rectangle(height=6.5, width=13)
+        background.set_fill(opacity=.5)
+        background.set_color([TEAL, RED, YELLOW])
+        self.add(background)
+        t0 = Table(
+            [["This", "is a"],
+            ["simple", "Table."]],
+            add_background_rectangles_to_entries=True)
+        t1 = Table(
+            [["This", "is a"],
+            ["simple", "Table."]],
+            include_background_rectangle=True)
+        g = Group(t0, t1).scale(0.7).arrange(buff=0.5)
+        self.add(g)
+Make interactive
+Methods
+
+add_background_to_entries
+
+Adds a black BackgroundRectangle to each entry of the table.
+
+add_highlighted_cell
+
+Highlights one cell at a specific position on the table by adding a BackgroundRectangle.
+
+create
+
+Customized create-type function for tables.
+
+get_cell
+
+Returns one specific cell as a rectangular Polygon without the entry.
+
+get_col_labels
+
+Return the column labels of the table.
+
+get_columns
+
+Return columns of the table as a VGroup of VGroup.
+
+get_entries
+
+Return the individual entries of the table (including labels) or one specific entry if the parameter, pos, is set.
+
+get_entries_without_labels
+
+Return the individual entries of the table (without labels) or one specific entry if the parameter, pos, is set.
+
+get_highlighted_cell
+
+Returns a BackgroundRectangle of the cell at the given position.
+
+get_horizontal_lines
+
+Return the horizontal lines of the table.
+
+get_labels
+
+Returns the labels of the table.
+
+get_row_labels
+
+Return the row labels of the table.
+
+get_rows
+
+Return the rows of the table as a VGroup of VGroup.
+
+get_vertical_lines
+
+Return the vertical lines of the table.
+
+scale
+
+Scale the size by a factor.
+
+set_column_colors
+
+Set individual colors for each column of the table.
+
+set_row_colors
+
+Set individual colors for each row of the table.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_add_horizontal_lines()[source]
+Adds the horizontal lines to the table.
+
+Return type:
+Table
+
+_add_labels(mob_table)[source]
+Adds labels to an in a grid arranged VGroup.
+
+Parameters:
+mob_table (VGroup) – An in a grid organized class:~.VGroup.
+
+Returns:
+Returns the mob_table with added labels.
+
+Return type:
+VGroup
+
+_add_vertical_lines()[source]
+Adds the vertical lines to the table
+
+Return type:
+Table
+
+_organize_mob_table(table)[source]
+Arranges the VMobject of table in a grid.
+
+Parameters:
+table (Iterable[Iterable[VMobject]]) – A 2D iterable object with VMobject entries.
+
+Returns:
+The VMobject of the table in a VGroup already arranged in a table-like grid.
+
+Return type:
+VGroup
+
+_original__init__(table, row_labels=None, col_labels=None, top_left_entry=None, v_buff=0.8, h_buff=1.3, include_outer_lines=False, add_background_rectangles_to_entries=False, entries_background_color=ManimColor('#000000'), include_background_rectangle=False, background_rectangle_color=ManimColor('#000000'), element_to_mobject=<class 'manim.mobject.text.text_mobject.Paragraph'>, element_to_mobject_config={}, arrange_in_grid_config={}, line_config={}, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+table (Iterable[Iterable[float | str | VMobject]])
+
+row_labels (Iterable[VMobject] | None)
+
+col_labels (Iterable[VMobject] | None)
+
+top_left_entry (VMobject | None)
+
+v_buff (float)
+
+h_buff (float)
+
+include_outer_lines (bool)
+
+add_background_rectangles_to_entries (bool)
+
+entries_background_color (ParsableManimColor)
+
+include_background_rectangle (bool)
+
+background_rectangle_color (ParsableManimColor)
+
+element_to_mobject (Callable[[float | str | VMobject], VMobject])
+
+element_to_mobject_config (dict)
+
+arrange_in_grid_config (dict)
+
+line_config (dict)
+
+_table_to_mob_table(table)[source]
+Initilaizes the entries of table as VMobject.
+
+Parameters:
+table (Iterable[Iterable[float | str | VMobject]]) – A 2D array or list of lists. Content of the table has to be a valid input for the callable set in element_to_mobject.
+
+Returns:
+List of VMobject from the entries of table.
+
+Return type:
+List
+
+add_background_to_entries(color=ManimColor('#000000'))[source]
+Adds a black BackgroundRectangle to each entry of the table.
+
+Parameters:
+color (ParsableManimColor)
+
+Return type:
+Table
+
+add_highlighted_cell(pos=(1, 1), color=ManimColor('#FFFF00'), **kwargs)[source]
+Highlights one cell at a specific position on the table by adding a BackgroundRectangle.
+
+Parameters:
+pos (Sequence[int]) – The position of a specific entry on the table. (1,1) being the top left entry of the table.
+
+color (ParsableManimColor) – The color used to highlight the cell.
+
+kwargs – Additional arguments to be passed to BackgroundRectangle.
+
+Return type:
+Table
+
+Examples
+
+Example: AddHighlightedCellExample 
+
+../_images/AddHighlightedCellExample-1.png
+from manim import *
+
+class AddHighlightedCellExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        table.add_highlighted_cell((2,2), color=GREEN)
+        self.add(table)
+Make interactive
+create(lag_ratio=1, line_animation=<class 'manim.animation.creation.Create'>, label_animation=<class 'manim.animation.creation.Write'>, element_animation=<class 'manim.animation.creation.Create'>, entry_animation=<class 'manim.animation.fading.FadeIn'>, **kwargs)[source]
+Customized create-type function for tables.
+
+Parameters:
+lag_ratio (float) – The lag ratio of the animation.
+
+line_animation (Callable[[VMobject | VGroup], Animation]) – The animation style of the table lines, see creation for examples.
+
+label_animation (Callable[[VMobject | VGroup], Animation]) – The animation style of the table labels, see creation for examples.
+
+element_animation (Callable[[VMobject | VGroup], Animation]) – The animation style of the table elements, see creation for examples.
+
+entry_animation (Callable[[VMobject | VGroup], Animation]) – The entry animation of the table background, see creation for examples.
+
+kwargs – Further arguments passed to the creation animations.
+
+Returns:
+AnimationGroup containing creation of the lines and of the elements.
+
+Return type:
+AnimationGroup
+
+Examples
+
+Example: CreateTableExample 
+
+from manim import *
+
+class CreateTableExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")],
+            include_outer_lines=True)
+        self.play(table.create())
+        self.wait()
+Make interactive
+get_cell(pos=(1, 1), **kwargs)[source]
+Returns one specific cell as a rectangular Polygon without the entry.
+
+Parameters:
+pos (Sequence[int]) – The position of a specific entry on the table. (1,1) being the top left entry of the table.
+
+kwargs – Additional arguments to be passed to Polygon.
+
+Returns:
+Polygon mimicking one specific cell of the Table.
+
+Return type:
+Polygon
+
+Examples
+
+Example: GetCellExample 
+
+../_images/GetCellExample-1.png
+from manim import *
+
+class GetCellExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        cell = table.get_cell((2,2), color=RED)
+        self.add(table, cell)
+Make interactive
+get_col_labels()[source]
+Return the column labels of the table.
+
+Returns:
+VGroup containing the column labels of the table.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetColLabelsExample 
+
+../_images/GetColLabelsExample-1.png
+from manim import *
+
+class GetColLabelsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        lab = table.get_col_labels()
+        for item in lab:
+            item.set_color(random_bright_color())
+        self.add(table)
+Make interactive
+get_columns()[source]
+Return columns of the table as a VGroup of VGroup.
+
+Returns:
+VGroup containing each column in a VGroup.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetColumnsExample 
+
+../_images/GetColumnsExample-2.png
+from manim import *
+
+class GetColumnsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        table.add(SurroundingRectangle(table.get_columns()[1]))
+        self.add(table)
+Make interactive
+get_entries(pos=None)[source]
+Return the individual entries of the table (including labels) or one specific entry if the parameter, pos, is set.
+
+Parameters:
+pos (Sequence[int] | None) – The position of a specific entry on the table. (1,1) being the top left entry of the table.
+
+Returns:
+VGroup containing all entries of the table (including labels) or the VMobject at the given position if pos is set.
+
+Return type:
+Union[VMobject, VGroup]
+
+Examples
+
+Example: GetEntriesExample 
+
+../_images/GetEntriesExample-2.png
+from manim import *
+
+class GetEntriesExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        ent = table.get_entries()
+        for item in ent:
+            item.set_color(random_bright_color())
+        table.get_entries((2,2)).rotate(PI)
+        self.add(table)
+Make interactive
+get_entries_without_labels(pos=None)[source]
+Return the individual entries of the table (without labels) or one specific entry if the parameter, pos, is set.
+
+Parameters:
+pos (Sequence[int] | None) – The position of a specific entry on the table. (1,1) being the top left entry of the table (without labels).
+
+Returns:
+VGroup containing all entries of the table (without labels) or the VMobject at the given position if pos is set.
+
+Return type:
+Union[VMobject, VGroup]
+
+Examples
+
+Example: GetEntriesWithoutLabelsExample 
+
+../_images/GetEntriesWithoutLabelsExample-1.png
+from manim import *
+
+class GetEntriesWithoutLabelsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        ent = table.get_entries_without_labels()
+        colors = [BLUE, GREEN, YELLOW, RED]
+        for k in range(len(colors)):
+            ent[k].set_color(colors[k])
+        table.get_entries_without_labels((2,2)).rotate(PI)
+        self.add(table)
+Make interactive
+get_highlighted_cell(pos=(1, 1), color=ManimColor('#FFFF00'), **kwargs)[source]
+Returns a BackgroundRectangle of the cell at the given position.
+
+Parameters:
+pos (Sequence[int]) – The position of a specific entry on the table. (1,1) being the top left entry of the table.
+
+color (ParsableManimColor) – The color used to highlight the cell.
+
+kwargs – Additional arguments to be passed to BackgroundRectangle.
+
+Return type:
+BackgroundRectangle
+
+Examples
+
+Example: GetHighlightedCellExample 
+
+../_images/GetHighlightedCellExample-1.png
+from manim import *
+
+class GetHighlightedCellExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        highlight = table.get_highlighted_cell((2,2), color=GREEN)
+        table.add_to_back(highlight)
+        self.add(table)
+Make interactive
+get_horizontal_lines()[source]
+Return the horizontal lines of the table.
+
+Returns:
+VGroup containing all the horizontal lines of the table.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetHorizontalLinesExample 
+
+../_images/GetHorizontalLinesExample-1.png
+from manim import *
+
+class GetHorizontalLinesExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        table.get_horizontal_lines().set_color(RED)
+        self.add(table)
+Make interactive
+get_labels()[source]
+Returns the labels of the table.
+
+Returns:
+VGroup containing all the labels of the table.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetLabelsExample 
+
+../_images/GetLabelsExample-1.png
+from manim import *
+
+class GetLabelsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        lab = table.get_labels()
+        colors = [BLUE, GREEN, YELLOW, RED]
+        for k in range(len(colors)):
+            lab[k].set_color(colors[k])
+        self.add(table)
+Make interactive
+get_row_labels()[source]
+Return the row labels of the table.
+
+Returns:
+VGroup containing the row labels of the table.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetRowLabelsExample 
+
+../_images/GetRowLabelsExample-1.png
+from manim import *
+
+class GetRowLabelsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        lab = table.get_row_labels()
+        for item in lab:
+            item.set_color(random_bright_color())
+        self.add(table)
+Make interactive
+get_rows()[source]
+Return the rows of the table as a VGroup of VGroup.
+
+Returns:
+VGroup containing each row in a VGroup.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetRowsExample 
+
+../_images/GetRowsExample-2.png
+from manim import *
+
+class GetRowsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        table.add(SurroundingRectangle(table.get_rows()[1]))
+        self.add(table)
+Make interactive
+get_vertical_lines()[source]
+Return the vertical lines of the table.
+
+Returns:
+VGroup containing all the vertical lines of the table.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetVerticalLinesExample 
+
+../_images/GetVerticalLinesExample-1.png
+from manim import *
+
+class GetVerticalLinesExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")])
+        table.get_vertical_lines()[0].set_color(RED)
+        self.add(table)
+Make interactive
+scale(scale_factor, **kwargs)[source]
+Scale the size by a factor.
+
+Default behavior is to scale about the center of the vmobject.
+
+Parameters:
+scale_factor (float) – The scaling factor 
+. If 
+, the mobject will shrink, and for 
+ it will grow. Furthermore, if 
+, the mobject is also flipped.
+
+scale_stroke – Boolean determining if the object’s outline is scaled when the object is scaled. If enabled, and object with 2px outline is scaled by a factor of .5, it will have an outline of 1px.
+
+kwargs – Additional keyword arguments passed to scale().
+
+Returns:
+self
+
+Return type:
+VMobject
+
+Examples
+
+Example: MobjectScaleExample 
+
+../_images/MobjectScaleExample-2.png
+from manim import *
+
+class MobjectScaleExample(Scene):
+    def construct(self):
+        c1 = Circle(1, RED).set_x(-1)
+        c2 = Circle(1, GREEN).set_x(1)
+
+        vg = VGroup(c1, c2)
+        vg.set_stroke(width=50)
+        self.add(vg)
+
+        self.play(
+            c1.animate.scale(.25),
+            c2.animate.scale(.25,
+                scale_stroke=True)
+        )
+Make interactive
+See also
+
+move_to()
+
+set_column_colors(*colors)[source]
+Set individual colors for each column of the table.
+
+Parameters:
+colors (Iterable[ParsableManimColor]) – An iterable of colors; each color corresponds to a column.
+
+Return type:
+Table
+
+Examples
+
+Example: SetColumnColorsExample 
+
+../_images/SetColumnColorsExample-2.png
+from manim import *
+
+class SetColumnColorsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")]
+        ).set_column_colors([RED,BLUE], GREEN)
+        self.add(table)
+Make interactive
+set_row_colors(*colors)[source]
+Set individual colors for each row of the table.
+
+Parameters:
+colors (Iterable[ParsableManimColor]) – An iterable of colors; each color corresponds to a row.
+
+Return type:
+Table
+
+Examples
+
+Example: SetRowColorsExample 
+
+../_images/SetRowColorsExample-2.png
+from manim import *
+
+class SetRowColorsExample(Scene):
+    def construct(self):
+        table = Table(
+            [["First", "Second"],
+            ["Third","Fourth"]],
+            row_labels=[Text("R1"), Text("R2")],
+            col_labels=[Text("C1"), Text("C2")]
+        ).set_row_colors([RED,BLUE], GREEN)
+        self.add(table)
+Make interactive
+
+
+
+
+
+
+
+
+
+
+

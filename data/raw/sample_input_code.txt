@@ -1,0 +1,69 @@
+import numpy as np
+
+def convolve2d(image, kernel, stride=1, padding=0):
+    """
+    Perform a 2D convolution operation on an image using a given kernel.
+
+    Args:
+        image (numpy.ndarray): The input 2D image (H x W).
+        kernel (numpy.ndarray): The 2D filter/kernel to apply (kH x kW).
+        stride (int): The stride length (default is 1).
+        padding (int): The amount of zero padding to add around the image (default is 0).
+
+    Returns:
+        numpy.ndarray: The convolved output.
+    """
+    # Step 1: Add zero padding to the image
+    if padding > 0:
+        image = np.pad(image, pad_width=padding, mode='constant', constant_values=0)
+
+    # Step 2: Extract dimensions
+    img_h, img_w = image.shape
+    kernel_h, kernel_w = kernel.shape
+
+    # Calculate output dimensions
+    out_h = (img_h - kernel_h) // stride + 1
+    out_w = (img_w - kernel_w) // stride + 1
+
+    # Initialize the output matrix
+    output = np.zeros((out_h, out_w))
+
+    # Step 3: Perform convolution
+    for y in range(0, out_h):
+        for x in range(0, out_w):
+            # Extract the region of interest
+            region = image[y * stride:y * stride + kernel_h, x * stride:x * stride + kernel_w]
+            
+            # Perform element-wise multiplication and sum
+            output[y, x] = np.sum(region * kernel)
+
+    return output
+
+
+# Example Usage
+if __name__ == "__main__":
+    # Input image (5x5)
+    image = np.array([
+        [1, 2, 3, 0, 1],
+        [0, 1, 2, 3, 4],
+        [1, 2, 0, 1, 2],
+        [3, 0, 1, 2, 3],
+        [1, 2, 3, 4, 0]
+    ])
+
+    # Kernel (3x3)
+    kernel = np.array([
+        [1, 0, -1],
+        [1, 0, -1],
+        [1, 0, -1]
+    ])
+
+    # Apply convolution
+    output = convolve2d(image, kernel, stride=1, padding=1)
+    
+    print("Input Image:")
+    print(image)
+    print("\nKernel:")
+    print(kernel)
+    print("\nConvolved Output:")
+    print(output)

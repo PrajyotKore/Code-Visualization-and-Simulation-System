@@ -1,0 +1,118 @@
+scale
+Classes
+
+LinearBase
+
+The default scaling class.
+
+LogBase
+
+Scale for logarithmic graphs/functions.
+
+LinearBase
+Qualified name: manim.mobject.graphing.scale.LinearBase
+
+class LinearBase(scale_factor=1.0)[source]
+Bases: _ScaleBase
+
+The default scaling class.
+
+Parameters:
+scale_factor (float) – The slope of the linear function, by default 1.0
+
+Methods
+
+function
+
+Multiplies the value by the scale factor.
+
+inverse_function
+
+Inverse of function.
+
+function(value)[source]
+Multiplies the value by the scale factor.
+
+Parameters:
+value (float) – Value to be multiplied by the scale factor.
+
+Return type:
+float
+
+inverse_function(value)[source]
+Inverse of function. Divides the value by the scale factor.
+
+Parameters:
+value (float) – value to be divided by the scale factor.
+
+Return type:
+float
+
+
+
+
+
+
+LogBase
+Qualified name: manim.mobject.graphing.scale.LogBase
+
+class LogBase(base=10, custom_labels=True)[source]
+Bases: _ScaleBase
+
+Scale for logarithmic graphs/functions.
+
+Parameters:
+base (float) – The base of the log, by default 10.
+
+custom_labels (bool) – For use with Axes: Whether or not to include LaTeX axis labels, by default True.
+
+Examples
+
+func = ParametricFunction(lambda x: x, scaling=LogBase(base=2))
+Methods
+
+function
+
+Scales the value to fit it to a logarithmic scale.``self.function(5)==10**5``
+
+get_custom_labels
+
+Produces custom Integer labels in the form of 10^2.
+
+inverse_function
+
+Inverse of function.
+
+function(value)[source]
+Scales the value to fit it to a logarithmic scale.``self.function(5)==10**5``
+
+Parameters:
+value (float)
+
+Return type:
+float
+
+get_custom_labels(val_range, unit_decimal_places=0, **base_config)[source]
+Produces custom Integer labels in the form of 10^2.
+
+Parameters:
+val_range (Iterable[float]) – The iterable of values used to create the labels. Determines the exponent.
+
+unit_decimal_places (int) – The number of decimal places to include in the exponent
+
+base_config (dict[str, Any]) – Additional arguments to be passed to Integer.
+
+Return type:
+list[Mobject]
+
+inverse_function(value)[source]
+Inverse of function. The value must be greater than 0
+
+Parameters:
+value (float)
+
+Return type:
+float
+
+
+

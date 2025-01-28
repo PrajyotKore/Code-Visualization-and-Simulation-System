@@ -1,0 +1,1215 @@
+graph
+Mobjects used to represent mathematical graphs (think graph theory, not plotting).
+
+Type Aliases
+
+class NxGraph
+nx.classes.graph.Graph | nx.classes.digraph.DiGraph
+Classes
+
+DiGraph
+
+A directed graph.
+
+GenericGraph
+
+Abstract base class for graphs (that is, a collection of vertices connected with edges).
+
+Graph
+
+An undirected graph (vertices connected with edges).
+
+LayoutFunction
+
+A protocol for automatic layout functions that compute a layout for a graph to be used in change_layout().
+
+
+
+
+
+
+DiGraph
+Qualified name: manim.mobject.graph.DiGraph
+
+class DiGraph(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)[source]
+Bases: GenericGraph
+
+A directed graph.
+
+Note
+
+In contrast to undirected graphs, the order in which vertices in a given edge are specified is relevant here.
+
+See also
+
+GenericGraph
+
+Parameters:
+vertices (Sequence[Hashable]) – A list of vertices. Must be hashable elements.
+
+edges (Sequence[tuple[Hashable, Hashable]]) – A list of edges, specified as tuples (u, v) where both u and v are vertices. The edge is directed from u to v.
+
+labels (bool | dict) – Controls whether or not vertices are labeled. If False (the default), the vertices are not labeled; if True they are labeled using their names (as specified in vertices) via MathTex. Alternatively, custom labels can be specified by passing a dictionary whose keys are the vertices, and whose values are the corresponding vertex labels (rendered via, e.g., Text or Tex).
+
+label_fill_color (str) – Sets the fill color of the default labels generated when labels is set to True. Has no effect for other values of labels.
+
+layout (LayoutName | dict[Hashable, Point3DLike] | LayoutFunction) – Either one of "spring" (the default), "circular", "kamada_kawai", "planar", "random", "shell", "spectral", "spiral", "tree", and "partite" for automatic vertex positioning using networkx (see their documentation for more details), or a dictionary specifying a coordinate (value) for each vertex (key) for manual positioning.
+
+layout_config (dict | None) – Only for automatically generated layouts. A dictionary whose entries are passed as keyword arguments to the automatic layout algorithm specified via layout of networkx. The tree layout also accepts a special parameter vertex_spacing passed as a keyword argument inside the layout_config dictionary. Passing a tuple (space_x, space_y) as this argument overrides the value of layout_scale and ensures that vertices are arranged in a way such that the centers of siblings in the same layer are at least space_x units apart horizontally, and neighboring layers are spaced space_y units vertically.
+
+layout_scale (float | tuple[float, float, float]) – The scale of automatically generated layouts: the vertices will be arranged such that the coordinates are located within the interval [-scale, scale]. Some layouts accept a tuple (scale_x, scale_y) causing the first coordinate to be in the interval [-scale_x, scale_x], and the second in [-scale_y, scale_y]. Default: 2.
+
+vertex_type (type[Mobject]) – The mobject class used for displaying vertices in the scene.
+
+vertex_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via vertex_type, or a dictionary whose keys are the vertices, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding vertex.
+
+vertex_mobjects (dict | None) – A dictionary whose keys are the vertices, and whose values are mobjects to be used as vertices. Passing vertices here overrides all other configuration options for a vertex.
+
+edge_type (type[Mobject]) – The mobject class used for displaying edges in the scene.
+
+edge_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via edge_type, or a dictionary whose keys are the edges, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding edge. You can further customize the tip by adding a tip_config dictionary for global styling, or by adding the dict to a specific edge_config.
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+Examples
+
+Example: MovingDiGraph 
+
+from manim import *
+
+class MovingDiGraph(Scene):
+    def construct(self):
+        vertices = [1, 2, 3, 4]
+        edges = [(1, 2), (2, 3), (3, 4), (1, 3), (1, 4)]
+
+        g = DiGraph(vertices, edges)
+
+        self.add(g)
+        self.play(
+            g[1].animate.move_to([1, 1, 1]),
+            g[2].animate.move_to([-1, 1, 2]),
+            g[3].animate.move_to([1, -1, -1]),
+            g[4].animate.move_to([-1, -1, 0]),
+        )
+        self.wait()
+Make interactive
+You can customize the edges and arrow tips globally or locally.
+
+Example: CustomDiGraph 
+
+from manim import *
+
+class CustomDiGraph(Scene):
+    def construct(self):
+        vertices = [i for i in range(5)]
+        edges = [
+            (0, 1),
+            (1, 2),
+            (3, 2),
+            (3, 4),
+        ]
+
+        edge_config = {
+            "stroke_width": 2,
+            "tip_config": {
+                "tip_shape": ArrowSquareTip,
+                "tip_length": 0.15,
+            },
+            (3, 4): {
+                "color": RED,
+                "tip_config": {"tip_length": 0.25, "tip_width": 0.25}
+            },
+        }
+
+        g = DiGraph(
+            vertices,
+            edges,
+            labels=True,
+            layout="circular",
+            edge_config=edge_config,
+        ).scale(1.4)
+
+        self.play(Create(g))
+        self.wait()
+Make interactive
+Since this implementation respects the labels boundary you can also use it for an undirected moving graph with labels.
+
+Example: UndirectedMovingDiGraph 
+
+from manim import *
+
+class UndirectedMovingDiGraph(Scene):
+    def construct(self):
+        vertices = [i for i in range(5)]
+        edges = [
+            (0, 1),
+            (1, 2),
+            (3, 2),
+            (3, 4),
+        ]
+
+        edge_config = {
+            "stroke_width": 2,
+            "tip_config": {"tip_length": 0, "tip_width": 0},
+            (3, 4): {"color": RED},
+        }
+
+        g = DiGraph(
+            vertices,
+            edges,
+            labels=True,
+            layout="circular",
+            edge_config=edge_config,
+        ).scale(1.4)
+
+        self.play(Create(g))
+        self.wait()
+
+        self.play(
+            g[1].animate.move_to([1, 1, 1]),
+            g[2].animate.move_to([-1, 1, 2]),
+            g[3].animate.move_to([-1.5, -1.5, -1]),
+            g[4].animate.move_to([1, -2, -1]),
+        )
+        self.wait()
+Make interactive
+Methods
+
+update_edges
+
+Updates the edges to stick at their corresponding vertices.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+static _empty_networkx_graph()[source]
+Return an empty networkx graph for the given graph type.
+
+Return type:
+DiGraph
+
+_original__init__(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertices (Sequence[Hashable])
+
+edges (Sequence[tuple[Hashable, Hashable]])
+
+labels (bool | dict)
+
+label_fill_color (str)
+
+layout (Literal['circular', 'kamada_kawai', 'partite', 'planar', 'random', 'shell', 'spectral', 'spiral', 'spring', 'tree'] | dict[~collections.abc.Hashable, ~manim.typing.Point3DLike] | ~manim.mobject.graph.LayoutFunction)
+
+layout_scale (float | tuple[float, float, float])
+
+layout_config (dict | None)
+
+vertex_type (type[Mobject])
+
+vertex_config (dict | None)
+
+vertex_mobjects (dict | None)
+
+edge_type (type[Mobject])
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+edge_config (dict | None)
+
+Return type:
+None
+
+_populate_edge_dict(edges, edge_type)[source]
+Helper method for populating the edges of the graph.
+
+Parameters:
+edges (list[tuple[Hashable, Hashable]])
+
+edge_type (type[Mobject])
+
+update_edges(graph)[source]
+Updates the edges to stick at their corresponding vertices.
+
+Arrow tips need to be repositioned since otherwise they can be deformed.
+
+
+
+
+
+GenericGraph
+Qualified name: manim.mobject.graph.GenericGraph
+
+class GenericGraph(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)[source]
+Bases: VMobject
+
+Abstract base class for graphs (that is, a collection of vertices connected with edges).
+
+Graphs can be instantiated by passing both a list of (distinct, hashable) vertex names, together with list of edges (as tuples of vertex names). See the examples for concrete implementations of this class for details.
+
+Note
+
+This implementation uses updaters to make the edges move with the vertices.
+
+See also
+
+Graph, DiGraph
+
+Parameters:
+vertices (Sequence[Hashable]) – A list of vertices. Must be hashable elements.
+
+edges (Sequence[tuple[Hashable, Hashable]]) – A list of edges, specified as tuples (u, v) where both u and v are vertices.
+
+labels (bool | dict) – Controls whether or not vertices are labeled. If False (the default), the vertices are not labeled; if True they are labeled using their names (as specified in vertices) via MathTex. Alternatively, custom labels can be specified by passing a dictionary whose keys are the vertices, and whose values are the corresponding vertex labels (rendered via, e.g., Text or Tex).
+
+label_fill_color (str) – Sets the fill color of the default labels generated when labels is set to True. Has no effect for other values of labels.
+
+layout (LayoutName | dict[Hashable, Point3DLike] | LayoutFunction) – Either one of "spring" (the default), "circular", "kamada_kawai", "planar", "random", "shell", "spectral", "spiral", "tree", and "partite" for automatic vertex positioning primarily using networkx (see their documentation for more details), a dictionary specifying a coordinate (value) for each vertex (key) for manual positioning, or a .:class:~.LayoutFunction with a user-defined automatic layout.
+
+layout_config (dict | None) – Only for automatic layouts. A dictionary whose entries are passed as keyword arguments to the named layout or automatic layout function specified via layout. The tree layout also accepts a special parameter vertex_spacing passed as a keyword argument inside the layout_config dictionary. Passing a tuple (space_x, space_y) as this argument overrides the value of layout_scale and ensures that vertices are arranged in a way such that the centers of siblings in the same layer are at least space_x units apart horizontally, and neighboring layers are spaced space_y units vertically.
+
+layout_scale (float | tuple[float, float, float]) – The scale of automatically generated layouts: the vertices will be arranged such that the coordinates are located within the interval [-scale, scale]. Some layouts accept a tuple (scale_x, scale_y) causing the first coordinate to be in the interval [-scale_x, scale_x], and the second in [-scale_y, scale_y]. Default: 2.
+
+vertex_type (type[Mobject]) – The mobject class used for displaying vertices in the scene.
+
+vertex_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via vertex_type, or a dictionary whose keys are the vertices, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding vertex.
+
+vertex_mobjects (dict | None) – A dictionary whose keys are the vertices, and whose values are mobjects to be used as vertices. Passing vertices here overrides all other configuration options for a vertex.
+
+edge_type (type[Mobject]) – The mobject class used for displaying edges in the scene. Must be a subclass of Line for default updaters to work.
+
+edge_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via edge_type, or a dictionary whose keys are the edges, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding edge.
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+Methods
+
+add_edges
+
+Add new edges to the graph.
+
+add_vertices
+
+Add a list of vertices to the graph.
+
+change_layout
+
+Change the layout of this graph.
+
+from_networkx
+
+Build a Graph or DiGraph from a given networkx graph.
+
+remove_edges
+
+Remove several edges from the graph.
+
+remove_vertices
+
+Remove several vertices from the graph.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_add_edge(edge, edge_type=<class 'manim.mobject.geometry.line.Line'>, edge_config=None)[source]
+Add a new edge to the graph.
+
+Parameters:
+edge (tuple[Hashable, Hashable]) – The edge (as a tuple of vertex identifiers) to be added. If a non-existing vertex is passed, a new vertex with default settings will be created. Create new vertices yourself beforehand to customize them.
+
+edge_type (type[Mobject]) – The mobject class used for displaying edges in the scene.
+
+edge_config (dict | None) – A dictionary containing keyword arguments to be passed to the class specified via edge_type.
+
+Returns:
+A group containing all newly added vertices and edges.
+
+Return type:
+Group
+
+_add_vertex(vertex, position=None, label=False, label_fill_color=ManimColor('#000000'), vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobject=None)[source]
+Add a vertex to the graph.
+
+Parameters:
+vertex (Hashable) – A hashable vertex identifier.
+
+position (Point3DLike | None) – The coordinates where the new vertex should be added. If None, the center of the graph is used.
+
+label (bool) – Controls whether or not the vertex is labeled. If False (the default), the vertex is not labeled; if True it is labeled using its names (as specified in vertex) via MathTex. Alternatively, any Mobject can be passed to be used as the label.
+
+label_fill_color (str) – Sets the fill color of the default labels generated when labels is set to True. Has no effect for other values of label.
+
+vertex_type (type[Mobject]) – The mobject class used for displaying vertices in the scene.
+
+vertex_config (dict | None) – A dictionary containing keyword arguments to be passed to the class specified via vertex_type.
+
+vertex_mobject (dict | None) – The mobject to be used as the vertex. Overrides all other vertex customization options.
+
+Return type:
+Mobject
+
+static _empty_networkx_graph()[source]
+Return an empty networkx graph for the given graph type.
+
+Return type:
+Graph
+
+_original__init__(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertices (Sequence[Hashable])
+
+edges (Sequence[tuple[Hashable, Hashable]])
+
+labels (bool | dict)
+
+label_fill_color (str)
+
+layout (Literal['circular', 'kamada_kawai', 'partite', 'planar', 'random', 'shell', 'spectral', 'spiral', 'spring', 'tree'] | dict[~collections.abc.Hashable, ~manim.typing.Point3DLike] | ~manim.mobject.graph.LayoutFunction)
+
+layout_scale (float | tuple[float, float, float])
+
+layout_config (dict | None)
+
+vertex_type (type[Mobject])
+
+vertex_config (dict | None)
+
+vertex_mobjects (dict | None)
+
+edge_type (type[Mobject])
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+edge_config (dict | None)
+
+Return type:
+None
+
+_populate_edge_dict(edges, edge_type)[source]
+Helper method for populating the edges of the graph.
+
+Parameters:
+edges (list[tuple[Hashable, Hashable]])
+
+edge_type (type[Mobject])
+
+_remove_edge(edge)[source]
+Remove an edge from the graph.
+
+Parameters:
+edge (tuple[Hashable]) – The edge (i.e., a tuple of vertex identifiers) to be removed from the graph.
+
+Returns:
+The removed edge.
+
+Return type:
+Mobject
+
+_remove_vertex(vertex)[source]
+Remove a vertex (as well as all incident edges) from the graph.
+
+Parameters:
+vertex – The identifier of a vertex to be removed.
+
+Returns:
+A mobject containing all removed objects.
+
+Return type:
+Group
+
+add_edges(*edges, edge_type=<class 'manim.mobject.geometry.line.Line'>, edge_config=None, **kwargs)[source]
+Add new edges to the graph.
+
+Parameters:
+edges (tuple[Hashable, Hashable]) – Edges (as tuples of vertex identifiers) to be added. If a non-existing vertex is passed, a new vertex with default settings will be created. Create new vertices yourself beforehand to customize them.
+
+edge_type (type[Mobject]) – The mobject class used for displaying edges in the scene.
+
+edge_config (dict | None) – A dictionary either containing keyword arguments to be passed to the class specified via edge_type, or a dictionary whose keys are the edge tuples, and whose values are dictionaries containing keyword arguments to be passed for the construction of the corresponding edge.
+
+kwargs – Any further keyword arguments are passed to add_vertices() which is used to create new vertices in the passed edges.
+
+Returns:
+A group containing all newly added vertices and edges.
+
+Return type:
+Group
+
+add_vertices(*vertices, positions=None, labels=False, label_fill_color=ManimColor('#000000'), vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None)[source]
+Add a list of vertices to the graph.
+
+Parameters:
+vertices (Hashable) – Hashable vertex identifiers.
+
+positions (dict | None) – A dictionary specifying the coordinates where the new vertices should be added. If None, all vertices are created at the center of the graph.
+
+labels (bool) – Controls whether or not the vertex is labeled. If False (the default), the vertex is not labeled; if True it is labeled using its names (as specified in vertex) via MathTex. Alternatively, any Mobject can be passed to be used as the label.
+
+label_fill_color (str) – Sets the fill color of the default labels generated when labels is set to True. Has no effect for other values of labels.
+
+vertex_type (type[Mobject]) – The mobject class used for displaying vertices in the scene.
+
+vertex_config (dict | None) – A dictionary containing keyword arguments to be passed to the class specified via vertex_type.
+
+vertex_mobjects (dict | None) – A dictionary whose keys are the vertex identifiers, and whose values are mobjects that should be used as vertices. Overrides all other vertex customization options.
+
+self (Graph)
+
+change_layout(layout='spring', layout_scale=2, layout_config=None, partitions=None, root_vertex=None)[source]
+Change the layout of this graph.
+
+See the documentation of Graph for details about the keyword arguments.
+
+Examples
+
+Example: ChangeGraphLayout 
+
+from manim import *
+
+class ChangeGraphLayout(Scene):
+    def construct(self):
+        G = Graph([1, 2, 3, 4, 5], [(1, 2), (2, 3), (3, 4), (4, 5)],
+                  layout={1: [-2, 0, 0], 2: [-1, 0, 0], 3: [0, 0, 0],
+                          4: [1, 0, 0], 5: [2, 0, 0]}
+                  )
+        self.play(Create(G))
+        self.play(G.animate.change_layout("circular"))
+        self.wait()
+Make interactive
+Parameters:
+layout (Literal['circular', 'kamada_kawai', 'partite', 'planar', 'random', 'shell', 'spectral', 'spiral', 'spring', 'tree'] | dict[~collections.abc.Hashable, ~manim.typing.Point3DLike] | ~manim.mobject.graph.LayoutFunction)
+
+layout_scale (float | tuple[float, float, float])
+
+layout_config (dict[str, Any] | None)
+
+partitions (list[list[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+Return type:
+Graph
+
+classmethod from_networkx(nxgraph, **kwargs)[source]
+Build a Graph or DiGraph from a given networkx graph.
+
+Parameters:
+nxgraph (Graph | DiGraph) – A networkx graph or digraph.
+
+**kwargs – Keywords to be passed to the constructor of Graph.
+
+Examples
+
+Example: ImportNetworkxGraph 
+
+from manim import *
+
+import networkx as nx
+
+nxgraph = nx.erdos_renyi_graph(14, 0.5)
+
+class ImportNetworkxGraph(Scene):
+    def construct(self):
+        G = Graph.from_networkx(nxgraph, layout="spring", layout_scale=3.5)
+        self.play(Create(G))
+        self.play(*[G[v].animate.move_to(5*RIGHT*np.cos(ind/7 * PI) +
+                                         3*UP*np.sin(ind/7 * PI))
+                    for ind, v in enumerate(G.vertices)])
+        self.play(Uncreate(G))
+Make interactive
+remove_edges(*edges)[source]
+Remove several edges from the graph.
+
+Parameters:
+edges (tuple[Hashable]) – Edges to be removed from the graph.
+
+Returns:
+A group containing all removed edges.
+
+Return type:
+Group
+
+remove_vertices(*vertices)[source]
+Remove several vertices from the graph.
+
+Parameters:
+vertices – Vertices to be removed from the graph.
+
+Examples
+
+G = Graph([1, 2, 3], [(1, 2), (2, 3)])
+removed = G.remove_vertices(2, 3); removed
+VGroup(Line, Line, Dot, Dot)
+G
+Undirected graph on 1 vertices and 0 edges
+
+
+
+
+
+Graph
+Qualified name: manim.mobject.graph.Graph
+
+class Graph(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)[source]
+Bases: GenericGraph
+
+An undirected graph (vertices connected with edges).
+
+The graph comes with an updater which makes the edges stick to the vertices when moved around. See DiGraph for a version with directed edges.
+
+See also
+
+GenericGraph
+
+Parameters:
+vertices (Sequence[Hashable]) – A list of vertices. Must be hashable elements.
+
+edges (Sequence[tuple[Hashable, Hashable]]) – A list of edges, specified as tuples (u, v) where both u and v are vertices. The vertex order is irrelevant.
+
+labels (bool | dict) – Controls whether or not vertices are labeled. If False (the default), the vertices are not labeled; if True they are labeled using their names (as specified in vertices) via MathTex. Alternatively, custom labels can be specified by passing a dictionary whose keys are the vertices, and whose values are the corresponding vertex labels (rendered via, e.g., Text or Tex).
+
+label_fill_color (str) – Sets the fill color of the default labels generated when labels is set to True. Has no effect for other values of labels.
+
+layout (LayoutName | dict[Hashable, Point3DLike] | LayoutFunction) – Either one of "spring" (the default), "circular", "kamada_kawai", "planar", "random", "shell", "spectral", "spiral", "tree", and "partite" for automatic vertex positioning using networkx (see their documentation for more details), or a dictionary specifying a coordinate (value) for each vertex (key) for manual positioning.
+
+layout_config (dict | None) – Only for automatically generated layouts. A dictionary whose entries are passed as keyword arguments to the automatic layout algorithm specified via layout of networkx. The tree layout also accepts a special parameter vertex_spacing passed as a keyword argument inside the layout_config dictionary. Passing a tuple (space_x, space_y) as this argument overrides the value of layout_scale and ensures that vertices are arranged in a way such that the centers of siblings in the same layer are at least space_x units apart horizontally, and neighboring layers are spaced space_y units vertically.
+
+layout_scale (float | tuple[float, float, float]) – The scale of automatically generated layouts: the vertices will be arranged such that the coordinates are located within the interval [-scale, scale]. Some layouts accept a tuple (scale_x, scale_y) causing the first coordinate to be in the interval [-scale_x, scale_x], and the second in [-scale_y, scale_y]. Default: 2.
+
+vertex_type (type[Mobject]) – The mobject class used for displaying vertices in the scene.
+
+vertex_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via vertex_type, or a dictionary whose keys are the vertices, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding vertex.
+
+vertex_mobjects (dict | None) – A dictionary whose keys are the vertices, and whose values are mobjects to be used as vertices. Passing vertices here overrides all other configuration options for a vertex.
+
+edge_type (type[Mobject]) – The mobject class used for displaying edges in the scene.
+
+edge_config (dict | None) – Either a dictionary containing keyword arguments to be passed to the class specified via edge_type, or a dictionary whose keys are the edges, and whose values are dictionaries containing keyword arguments for the mobject related to the corresponding edge.
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+Examples
+
+First, we create a small graph and demonstrate that the edges move together with the vertices.
+
+Example: MovingVertices 
+
+from manim import *
+
+class MovingVertices(Scene):
+    def construct(self):
+        vertices = [1, 2, 3, 4]
+        edges = [(1, 2), (2, 3), (3, 4), (1, 3), (1, 4)]
+        g = Graph(vertices, edges)
+        self.play(Create(g))
+        self.wait()
+        self.play(g[1].animate.move_to([1, 1, 0]),
+                  g[2].animate.move_to([-1, 1, 0]),
+                  g[3].animate.move_to([1, -1, 0]),
+                  g[4].animate.move_to([-1, -1, 0]))
+        self.wait()
+Make interactive
+There are several automatic positioning algorithms to choose from:
+
+Example: GraphAutoPosition 
+
+../_images/GraphAutoPosition-1.png
+from manim import *
+
+class GraphAutoPosition(Scene):
+    def construct(self):
+        vertices = [1, 2, 3, 4, 5, 6, 7, 8]
+        edges = [(1, 7), (1, 8), (2, 3), (2, 4), (2, 5),
+                 (2, 8), (3, 4), (6, 1), (6, 2),
+                 (6, 3), (7, 2), (7, 4)]
+        autolayouts = ["spring", "circular", "kamada_kawai",
+                       "planar", "random", "shell",
+                       "spectral", "spiral"]
+        graphs = [Graph(vertices, edges, layout=lt).scale(0.5)
+                  for lt in autolayouts]
+        r1 = VGroup(*graphs[:3]).arrange()
+        r2 = VGroup(*graphs[3:6]).arrange()
+        r3 = VGroup(*graphs[6:]).arrange()
+        self.add(VGroup(r1, r2, r3).arrange(direction=DOWN))
+Make interactive
+Vertices can also be positioned manually:
+
+Example: GraphManualPosition 
+
+../_images/GraphManualPosition-1.png
+from manim import *
+
+class GraphManualPosition(Scene):
+    def construct(self):
+        vertices = [1, 2, 3, 4]
+        edges = [(1, 2), (2, 3), (3, 4), (4, 1)]
+        lt = {1: [0, 0, 0], 2: [1, 1, 0], 3: [1, -1, 0], 4: [-1, 0, 0]}
+        G = Graph(vertices, edges, layout=lt)
+        self.add(G)
+Make interactive
+The vertices in graphs can be labeled, and configurations for vertices and edges can be modified both by default and for specific vertices and edges.
+
+Note
+
+In edge_config, edges can be passed in both directions: if (u, v) is an edge in the graph, both (u, v) as well as (v, u) can be used as keys in the dictionary.
+
+Example: LabeledModifiedGraph 
+
+../_images/LabeledModifiedGraph-1.png
+from manim import *
+
+class LabeledModifiedGraph(Scene):
+    def construct(self):
+        vertices = [1, 2, 3, 4, 5, 6, 7, 8]
+        edges = [(1, 7), (1, 8), (2, 3), (2, 4), (2, 5),
+                 (2, 8), (3, 4), (6, 1), (6, 2),
+                 (6, 3), (7, 2), (7, 4)]
+        g = Graph(vertices, edges, layout="circular", layout_scale=3,
+                  labels=True, vertex_config={7: {"fill_color": RED}},
+                  edge_config={(1, 7): {"stroke_color": RED},
+                               (2, 7): {"stroke_color": RED},
+                               (4, 7): {"stroke_color": RED}})
+        self.add(g)
+Make interactive
+You can also lay out a partite graph on columns by specifying a list of the vertices on each side and choosing the partite layout.
+
+Note
+
+All vertices in your graph which are not listed in any of the partitions are collected in their own partition and rendered in the rightmost column.
+
+Example: PartiteGraph 
+
+../_images/PartiteGraph-1.png
+from manim import *
+
+import networkx as nx
+
+class PartiteGraph(Scene):
+    def construct(self):
+        G = nx.Graph()
+        G.add_nodes_from([0, 1, 2, 3])
+        G.add_edges_from([(0, 2), (0,3), (1, 2)])
+        graph = Graph(list(G.nodes), list(G.edges), layout="partite", partitions=[[0, 1]])
+        self.play(Create(graph))
+Make interactive
+The representation of a linear artificial neural network is facilitated by the use of the partite layout and defining partitions for each layer.
+
+Example: LinearNN 
+
+../_images/LinearNN-1.png
+from manim import *
+
+class LinearNN(Scene):
+    def construct(self):
+        edges = []
+        partitions = []
+        c = 0
+        layers = [2, 3, 3, 2]  # the number of neurons in each layer
+
+        for i in layers:
+            partitions.append(list(range(c + 1, c + i + 1)))
+            c += i
+        for i, v in enumerate(layers[1:]):
+                last = sum(layers[:i+1])
+                for j in range(v):
+                    for k in range(last - layers[i], last):
+                        edges.append((k + 1, j + last + 1))
+
+        vertices = np.arange(1, sum(layers) + 1)
+
+        graph = Graph(
+            vertices,
+            edges,
+            layout='partite',
+            partitions=partitions,
+            layout_scale=3,
+            vertex_config={'radius': 0.20},
+        )
+        self.add(graph)
+Make interactive
+The custom tree layout can be used to show the graph by distance from the root vertex. You must pass the root vertex of the tree.
+
+Example: Tree 
+
+from manim import *
+
+import networkx as nx
+
+class Tree(Scene):
+    def construct(self):
+        G = nx.Graph()
+
+        G.add_node("ROOT")
+
+        for i in range(5):
+            G.add_node("Child_%i" % i)
+            G.add_node("Grandchild_%i" % i)
+            G.add_node("Greatgrandchild_%i" % i)
+
+            G.add_edge("ROOT", "Child_%i" % i)
+            G.add_edge("Child_%i" % i, "Grandchild_%i" % i)
+            G.add_edge("Grandchild_%i" % i, "Greatgrandchild_%i" % i)
+
+        self.play(Create(
+            Graph(list(G.nodes), list(G.edges), layout="tree", root_vertex="ROOT")))
+Make interactive
+The following code sample illustrates the use of the vertex_spacing layout parameter specific to the "tree" layout. As mentioned above, setting vertex_spacing overrides the specified value for layout_scale, and as such it is harder to control the size of the mobject. However, we can adjust the captured frame and zoom out by using a MovingCameraScene:
+
+class LargeTreeGeneration(MovingCameraScene):
+    DEPTH = 4
+    CHILDREN_PER_VERTEX = 3
+    LAYOUT_CONFIG = {"vertex_spacing": (0.5, 1)}
+    VERTEX_CONF = {"radius": 0.25, "color": BLUE_B, "fill_opacity": 1}
+
+    def expand_vertex(self, g, vertex_id: str, depth: int):
+        new_vertices = [
+            f"{vertex_id}/{i}" for i in range(self.CHILDREN_PER_VERTEX)
+        ]
+        new_edges = [(vertex_id, child_id) for child_id in new_vertices]
+        g.add_edges(
+            *new_edges,
+            vertex_config=self.VERTEX_CONF,
+            positions={
+                k: g.vertices[vertex_id].get_center() + 0.1 * DOWN
+                for k in new_vertices
+            },
+        )
+        if depth < self.DEPTH:
+            for child_id in new_vertices:
+                self.expand_vertex(g, child_id, depth + 1)
+
+        return g
+
+    def construct(self):
+        g = Graph(["ROOT"], [], vertex_config=self.VERTEX_CONF)
+        g = self.expand_vertex(g, "ROOT", 1)
+        self.add(g)
+
+        self.play(
+            g.animate.change_layout(
+                "tree",
+                root_vertex="ROOT",
+                layout_config=self.LAYOUT_CONFIG,
+            )
+        )
+        self.play(self.camera.auto_zoom(g, margin=1), run_time=0.5)
+Methods
+
+update_edges
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+static _empty_networkx_graph()[source]
+Return an empty networkx graph for the given graph type.
+
+Return type:
+Graph
+
+_original__init__(vertices, edges, labels=False, label_fill_color=ManimColor('#000000'), layout='spring', layout_scale=2, layout_config=None, vertex_type=<class 'manim.mobject.geometry.arc.Dot'>, vertex_config=None, vertex_mobjects=None, edge_type=<class 'manim.mobject.geometry.line.Line'>, partitions=None, root_vertex=None, edge_config=None)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertices (Sequence[Hashable])
+
+edges (Sequence[tuple[Hashable, Hashable]])
+
+labels (bool | dict)
+
+label_fill_color (str)
+
+layout (Literal['circular', 'kamada_kawai', 'partite', 'planar', 'random', 'shell', 'spectral', 'spiral', 'spring', 'tree'] | dict[~collections.abc.Hashable, ~manim.typing.Point3DLike] | ~manim.mobject.graph.LayoutFunction)
+
+layout_scale (float | tuple[float, float, float])
+
+layout_config (dict | None)
+
+vertex_type (type[Mobject])
+
+vertex_config (dict | None)
+
+vertex_mobjects (dict | None)
+
+edge_type (type[Mobject])
+
+partitions (Sequence[Sequence[Hashable]] | None)
+
+root_vertex (Hashable | None)
+
+edge_config (dict | None)
+
+Return type:
+None
+
+_populate_edge_dict(edges, edge_type)[source]
+Helper method for populating the edges of the graph.
+
+Parameters:
+edges (list[tuple[Hashable, Hashable]])
+
+edge_type (type[Mobject])
+
+
+
+
+
+
+
+
+LayoutFunction
+Qualified name: manim.mobject.graph.LayoutFunction
+
+class LayoutFunction(*args, **kwargs)[source]
+Bases: Protocol
+
+A protocol for automatic layout functions that compute a layout for a graph to be used in change_layout().
+
+Note
+
+The layout function must be a pure function, i.e., it must not modify the graph passed to it.
+
+Examples
+
+Here is an example that arranges nodes in an n x m grid in sorted order.
+
+Example: CustomLayoutExample 
+
+../_images/CustomLayoutExample-1.png
+from manim import *
+
+class CustomLayoutExample(Scene):
+    def construct(self):
+        import numpy as np
+        import networkx as nx
+
+        # create custom layout
+        def custom_layout(
+            graph: nx.Graph,
+            scale: float | tuple[float, float, float] = 2,
+            n: int | None = None,
+            *args: Any,
+            **kwargs: Any,
+        ):
+            nodes = sorted(list(graph))
+            height = len(nodes) // n
+            return {
+                node: (scale * np.array([
+                    (i % n) - (n-1)/2,
+                    -(i // n) + height/2,
+                    0
+                ])) for i, node in enumerate(graph)
+            }
+
+        # draw graph
+        n = 4
+        graph = Graph(
+            [i for i in range(4 * 2 - 1)],
+            [(0, 1), (0, 4), (1, 2), (1, 5), (2, 3), (2, 6), (4, 5), (5, 6)],
+            labels=True,
+            layout=custom_layout,
+            layout_config={'n': n}
+        )
+        self.add(graph)
+Make interactive
+Several automatic layouts are provided by manim, and can be used by passing their name as the layout parameter to change_layout(). Alternatively, a custom layout function can be passed to change_layout() as the layout parameter. Such a function must adhere to the LayoutFunction protocol.
+
+The LayoutFunction s provided by manim are illustrated below:
+
+Circular Layout: places the vertices on a circle
+
+Example: CircularLayout 
+
+../_images/CircularLayout-1.png
+from manim import *
+
+class CircularLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="circular",
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Kamada Kawai Layout: tries to place the vertices such that the given distances between them are respected
+
+Example: KamadaKawaiLayout 
+
+../_images/KamadaKawaiLayout-1.png
+from manim import *
+
+class KamadaKawaiLayout(Scene):
+    def construct(self):
+        from collections import defaultdict
+        distances: dict[int, dict[int, float]] = defaultdict(dict)
+
+        # set desired distances
+        distances[1][2] = 1  # distance between vertices 1 and 2 is 1
+        distances[2][3] = 1  # distance between vertices 2 and 3 is 1
+        distances[3][4] = 2  # etc
+        distances[4][5] = 3
+        distances[5][6] = 5
+        distances[6][1] = 8
+
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1)],
+            layout="kamada_kawai",
+            layout_config={"dist": distances},
+            layout_scale=4,
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Partite Layout: places vertices into distinct partitions
+
+Example: PartiteLayout 
+
+../_images/PartiteLayout-1.png
+from manim import *
+
+class PartiteLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="partite",
+            layout_config={"partitions": [[1,2],[3,4],[5,6]]},
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Planar Layout: places vertices such that edges do not cross
+
+Example: PlanarLayout 
+
+../_images/PlanarLayout-1.png
+from manim import *
+
+class PlanarLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="planar",
+            layout_scale=4,
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Random Layout: randomly places vertices
+
+Example: RandomLayout 
+
+../_images/RandomLayout-1.png
+from manim import *
+
+class RandomLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="random",
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Shell Layout: places vertices in concentric circles
+
+Example: ShellLayout 
+
+../_images/ShellLayout-1.png
+from manim import *
+
+class ShellLayout(Scene):
+    def construct(self):
+        nlist = [[1, 2, 3], [4, 5, 6, 7, 8, 9]]
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [(1, 2), (2, 3), (3, 1), (4, 1), (4, 2), (5, 2), (6, 2), (6, 3), (7, 3), (8, 3), (8, 1), (9, 1)],
+            layout="shell",
+            layout_config={"nlist": nlist},
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Spectral Layout: places vertices using the eigenvectors of the graph Laplacian (clusters nodes which are an approximation of the ratio cut)
+
+Example: SpectralLayout 
+
+../_images/SpectralLayout-1.png
+from manim import *
+
+class SpectralLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="spectral",
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Sprial Layout: places vertices in a spiraling pattern
+
+Example: SpiralLayout 
+
+../_images/SpiralLayout-1.png
+from manim import *
+
+class SpiralLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="spiral",
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Spring Layout: places nodes according to the Fruchterman-Reingold force-directed algorithm (attempts to minimize edge length while maximizing node separation)
+
+Example: SpringLayout 
+
+../_images/SpringLayout-1.png
+from manim import *
+
+class SpringLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6],
+            [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 1), (5, 1), (1, 3), (3, 5)],
+            layout="spring",
+            labels=True
+        )
+        self.add(graph)
+Make interactive
+Tree Layout: places vertices into a tree with a root node and branches (can only be used with legal trees)
+
+Example: TreeLayout 
+
+../_images/TreeLayout-1.png
+from manim import *
+
+class TreeLayout(Scene):
+    def construct(self):
+        graph = Graph(
+            [1, 2, 3, 4, 5, 6, 7],
+            [(1, 2), (1, 3), (2, 4), (2, 5), (3, 6), (3, 7)],
+            layout="tree",
+            layout_config={"root_vertex": 1},
+            labels=True
+        )
+        self.add(graph)
+
+
+
+
+
+
+
+
+
+
+

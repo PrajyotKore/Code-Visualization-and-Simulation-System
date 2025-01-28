@@ -1,0 +1,1172 @@
+polygram
+Mobjects that are simple geometric shapes.
+
+Classes
+
+ConvexHull
+
+Constructs a convex hull for a set of points in no particular order.
+
+Cutout
+
+A shape with smaller cutouts.
+
+Polygon
+
+A shape consisting of one closed loop of vertices.
+
+Polygram
+
+A generalized Polygon, allowing for disconnected sets of edges.
+
+Rectangle
+
+A quadrilateral with two sets of parallel sides.
+
+RegularPolygon
+
+An n-sided regular Polygon.
+
+RegularPolygram
+
+A Polygram with regularly spaced vertices.
+
+RoundedRectangle
+
+A rectangle with rounded corners.
+
+Square
+
+A rectangle with equal side lengths.
+
+Star
+
+A regular polygram without the intersecting lines.
+
+Triangle
+
+An equilateral triangle.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ConvexHull
+Qualified name: manim.mobject.geometry.polygram.ConvexHull
+
+class ConvexHull(*points, tolerance=1e-05, **kwargs)[source]
+Bases: Polygram
+
+Constructs a convex hull for a set of points in no particular order.
+
+Parameters:
+points (Point3DLike) – The points to consider.
+
+tolerance (float) – The tolerance used by quickhull.
+
+kwargs (Any) – Forwarded to the parent constructor.
+
+Examples
+
+Example: ConvexHullExample 
+
+../_images/ConvexHullExample-1.png
+from manim import *
+
+class ConvexHullExample(Scene):
+    def construct(self):
+        points = [
+            [-2.35, -2.25, 0],
+            [1.65, -2.25, 0],
+            [2.65, -0.25, 0],
+            [1.65, 1.75, 0],
+            [-0.35, 2.75, 0],
+            [-2.35, 0.75, 0],
+            [-0.35, -1.25, 0],
+            [0.65, -0.25, 0],
+            [-1.35, 0.25, 0],
+            [0.15, 0.75, 0]
+        ]
+        hull = ConvexHull(*points, color=BLUE)
+        dots = VGroup(*[Dot(point) for point in points])
+        self.add(hull)
+        self.add(dots)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(*points, tolerance=1e-05, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+points (Point3DLike)
+
+tolerance (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+Cutout
+Qualified name: manim.mobject.geometry.polygram.Cutout
+
+class Cutout(main_shape, *mobjects, **kwargs)[source]
+Bases: VMobject
+
+A shape with smaller cutouts.
+
+Parameters:
+main_shape (VMobject) – The primary shape from which cutouts are made.
+
+mobjects (VMobject) – The smaller shapes which are to be cut out of the main_shape.
+
+kwargs (Any) – Further keyword arguments that are passed to the constructor of VMobject.
+
+Warning
+
+Technically, this class behaves similar to a symmetric difference: if parts of the mobjects are not located within the main_shape, these parts will be added to the resulting VMobject.
+
+Examples
+
+Example: CutoutExample 
+
+from manim import *
+
+class CutoutExample(Scene):
+    def construct(self):
+        s1 = Square().scale(2.5)
+        s2 = Triangle().shift(DOWN + RIGHT).scale(0.5)
+        s3 = Square().shift(UP + RIGHT).scale(0.5)
+        s4 = RegularPolygon(5).shift(DOWN + LEFT).scale(0.5)
+        s5 = RegularPolygon(6).shift(UP + LEFT).scale(0.5)
+        c = Cutout(s1, s2, s3, s4, s5, fill_opacity=1, color=BLUE, stroke_color=RED)
+        self.play(Write(c), run_time=4)
+        self.wait()
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(main_shape, *mobjects, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+main_shape (VMobject)
+
+mobjects (VMobject)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Polygon
+Qualified name: manim.mobject.geometry.polygram.Polygon
+
+class Polygon(*vertices, **kwargs)[source]
+Bases: Polygram
+
+A shape consisting of one closed loop of vertices.
+
+Parameters:
+vertices (Point3DLike) – The vertices of the Polygon.
+
+kwargs (Any) – Forwarded to the parent constructor.
+
+Examples
+
+Example: PolygonExample 
+
+../_images/PolygonExample-1.png
+from manim import *
+
+class PolygonExample(Scene):
+    def construct(self):
+        isosceles = Polygon([-5, 1.5, 0], [-2, 1.5, 0], [-3.5, -2, 0])
+        position_list = [
+            [4, 1, 0],  # middle right
+            [4, -2.5, 0],  # bottom right
+            [0, -2.5, 0],  # bottom left
+            [0, 3, 0],  # top left
+            [2, 1, 0],  # middle
+            [4, 3, 0],  # top right
+        ]
+        square_and_triangles = Polygon(*position_list, color=PURPLE_B)
+        self.add(isosceles, square_and_triangles)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(*vertices, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertices (Point3DLike)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+Polygram
+Qualified name: manim.mobject.geometry.polygram.Polygram
+
+class Polygram(*vertex_groups, color=ManimColor('#58C4DD'), **kwargs)[source]
+Bases: VMobject
+
+A generalized Polygon, allowing for disconnected sets of edges.
+
+Parameters:
+vertex_groups (Point3DLike_Array) –
+
+The groups of vertices making up the Polygram.
+
+The first vertex in each group is repeated to close the shape. Each point must be 3-dimensional: [x,y,z]
+
+color (ParsableManimColor) – The color of the Polygram.
+
+kwargs (Any) – Forwarded to the parent constructor.
+
+Examples
+
+Example: PolygramExample 
+
+from manim import *
+
+import numpy as np
+
+class PolygramExample(Scene):
+    def construct(self):
+        hexagram = Polygram(
+            [[0, 2, 0], [-np.sqrt(3), -1, 0], [np.sqrt(3), -1, 0]],
+            [[-np.sqrt(3), 1, 0], [0, -2, 0], [np.sqrt(3), 1, 0]],
+        )
+        self.add(hexagram)
+
+        dot = Dot()
+        self.play(MoveAlongPath(dot, hexagram), run_time=5, rate_func=linear)
+        self.remove(dot)
+        self.wait()
+Make interactive
+Methods
+
+get_vertex_groups
+
+Gets the vertex groups of the Polygram.
+
+get_vertices
+
+Gets the vertices of the Polygram.
+
+round_corners
+
+Rounds off the corners of the Polygram.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(*vertex_groups, color=ManimColor('#58C4DD'), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertex_groups (Point3DLike_Array)
+
+color (ParsableManimColor)
+
+kwargs (Any)
+
+get_vertex_groups()[source]
+Gets the vertex groups of the Polygram.
+
+Returns:
+The vertex groups of the Polygram.
+
+Return type:
+numpy.ndarray
+
+Examples
+
+poly = Polygram([ORIGIN, RIGHT, UP], [LEFT, LEFT + UP, 2 * LEFT])
+poly.get_vertex_groups()
+array([[[ 0.,  0.,  0.],
+        [ 1.,  0.,  0.],
+        [ 0.,  1.,  0.]],
+
+       [[-1.,  0.,  0.],
+        [-1.,  1.,  0.],
+        [-2.,  0.,  0.]]])
+get_vertices()[source]
+Gets the vertices of the Polygram.
+
+Returns:
+The vertices of the Polygram.
+
+Return type:
+numpy.ndarray
+
+Examples
+
+sq = Square()
+sq.get_vertices()
+array([[ 1.,  1.,  0.],
+       [-1.,  1.,  0.],
+       [-1., -1.,  0.],
+       [ 1., -1.,  0.]])
+round_corners(radius=0.5, evenly_distribute_anchors=False, components_per_rounded_corner=2)[source]
+Rounds off the corners of the Polygram.
+
+Parameters:
+radius (float | list[float]) – The curvature of the corners of the Polygram.
+
+evenly_distribute_anchors (bool) – Break long line segments into proportionally-sized segments.
+
+components_per_rounded_corner (int) – The number of points used to represent the rounded corner curve.
+
+Return type:
+Self
+
+See also
+
+RoundedRectangle
+
+Note
+
+If radius is supplied as a single value, then the same radius will be applied to all corners. If radius is a list, then the individual values will be applied sequentially, with the first corner receiving radius[0], the second corner receiving radius[1], etc. The radius list will be repeated as necessary.
+
+The components_per_rounded_corner value is provided so that the fidelity of the rounded corner may be fine-tuned as needed. 2 is an appropriate value for most shapes, however a larger value may be need if the rounded corner is particularly large. 2 is the minimum number allowed, representing the start and end of the curve. 3 will result in a start, middle, and end point, meaning 2 curves will be generated.
+
+The option to evenly_distribute_anchors is provided so that the line segments (the part part of each line remaining after rounding off the corners) can be subdivided to a density similar to that of the average density of the rounded corners. This may be desirable in situations in which an even distribution of curves is desired for use in later transformation animations. Be aware, though, that enabling this option can result in an an object containing significantly more points than the original, especially when the rounded corner curves are small.
+
+Examples
+
+Example: PolygramRoundCorners 
+
+../_images/PolygramRoundCorners-1.png
+from manim import *
+
+class PolygramRoundCorners(Scene):
+    def construct(self):
+        star = Star(outer_radius=2)
+
+        shapes = VGroup(star)
+        shapes.add(star.copy().round_corners(radius=0.1))
+        shapes.add(star.copy().round_corners(radius=0.25))
+
+        shapes.arrange(RIGHT)
+        self.add(shapes)
+
+
+
+
+
+
+
+
+
+
+
+
+Rectangle
+Qualified name: manim.mobject.geometry.polygram.Rectangle
+
+class Rectangle(color=ManimColor('#FFFFFF'), height=2.0, width=4.0, grid_xstep=None, grid_ystep=None, mark_paths_closed=True, close_new_points=True, **kwargs)[source]
+Bases: Polygon
+
+A quadrilateral with two sets of parallel sides.
+
+Parameters:
+color (ParsableManimColor) – The color of the rectangle.
+
+height (float) – The vertical height of the rectangle.
+
+width (float) – The horizontal width of the rectangle.
+
+grid_xstep (float | None) – Space between vertical grid lines.
+
+grid_ystep (float | None) – Space between horizontal grid lines.
+
+mark_paths_closed (bool) – No purpose.
+
+close_new_points (bool) – No purpose.
+
+kwargs (Any) – Additional arguments to be passed to Polygon
+
+Examples
+
+Example: RectangleExample 
+
+../_images/RectangleExample-1.png
+from manim import *
+
+class RectangleExample(Scene):
+    def construct(self):
+        rect1 = Rectangle(width=4.0, height=2.0, grid_xstep=1.0, grid_ystep=0.5)
+        rect2 = Rectangle(width=1.0, height=4.0)
+        rect3 = Rectangle(width=2.0, height=2.0, grid_xstep=1.0, grid_ystep=1.0)
+        rect3.grid_lines.set_stroke(width=1)
+
+        rects = Group(rect1, rect2, rect3).arrange(buff=1)
+        self.add(rects)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(color=ManimColor('#FFFFFF'), height=2.0, width=4.0, grid_xstep=None, grid_ystep=None, mark_paths_closed=True, close_new_points=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+color (ParsableManimColor)
+
+height (float)
+
+width (float)
+
+grid_xstep (float | None)
+
+grid_ystep (float | None)
+
+mark_paths_closed (bool)
+
+close_new_points (bool)
+
+kwargs (Any)
+
+
+
+
+
+
+
+
+
+
+
+RegularPolygon
+Qualified name: manim.mobject.geometry.polygram.RegularPolygon
+
+class RegularPolygon(n=6, **kwargs)[source]
+Bases: RegularPolygram
+
+An n-sided regular Polygon.
+
+Parameters:
+n (int) – The number of sides of the RegularPolygon.
+
+kwargs (Any) – Forwarded to the parent constructor.
+
+Examples
+
+Example: RegularPolygonExample 
+
+../_images/RegularPolygonExample-1.png
+from manim import *
+
+class RegularPolygonExample(Scene):
+    def construct(self):
+        poly_1 = RegularPolygon(n=6)
+        poly_2 = RegularPolygon(n=6, start_angle=30*DEGREES, color=GREEN)
+        poly_3 = RegularPolygon(n=10, color=RED)
+
+        poly_group = Group(poly_1, poly_2, poly_3).scale(1.5).arrange(buff=1)
+        self.add(poly_group)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(n=6, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+n (int)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+RegularPolygram
+Qualified name: manim.mobject.geometry.polygram.RegularPolygram
+
+class RegularPolygram(num_vertices, *, density=2, radius=1, start_angle=None, **kwargs)[source]
+Bases: Polygram
+
+A Polygram with regularly spaced vertices.
+
+Parameters:
+num_vertices (int) – The number of vertices.
+
+density (int) –
+
+The density of the RegularPolygram.
+
+Can be thought of as how many vertices to hop to draw a line between them. Every density-th vertex is connected.
+
+radius (float) – The radius of the circle that the vertices are placed on.
+
+start_angle (float | None) – The angle the vertices start at; the rotation of the RegularPolygram.
+
+kwargs (Any) – Forwarded to the parent constructor.
+
+Examples
+
+Example: RegularPolygramExample 
+
+../_images/RegularPolygramExample-1.png
+from manim import *
+
+class RegularPolygramExample(Scene):
+    def construct(self):
+        pentagram = RegularPolygram(5, radius=2)
+        self.add(pentagram)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(num_vertices, *, density=2, radius=1, start_angle=None, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+num_vertices (int)
+
+density (int)
+
+radius (float)
+
+start_angle (float | None)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RoundedRectangle
+Qualified name: manim.mobject.geometry.polygram.RoundedRectangle
+
+class RoundedRectangle(corner_radius=0.5, **kwargs)[source]
+Bases: Rectangle
+
+A rectangle with rounded corners.
+
+Parameters:
+corner_radius (float | list[float]) – The curvature of the corners of the rectangle.
+
+kwargs (Any) – Additional arguments to be passed to Rectangle
+
+Examples
+
+Example: RoundedRectangleExample 
+
+../_images/RoundedRectangleExample-1.png
+from manim import *
+
+class RoundedRectangleExample(Scene):
+    def construct(self):
+        rect_1 = RoundedRectangle(corner_radius=0.5)
+        rect_2 = RoundedRectangle(corner_radius=1.5, height=4.0, width=4.0)
+
+        rect_group = Group(rect_1, rect_2).arrange(buff=1)
+        self.add(rect_group)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(corner_radius=0.5, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+corner_radius (float | list[float])
+
+kwargs (Any)
+
+
+
+
+
+
+
+
+
+Square
+Qualified name: manim.mobject.geometry.polygram.Square
+
+class Square(side_length=2.0, **kwargs)[source]
+Bases: Rectangle
+
+A rectangle with equal side lengths.
+
+Parameters:
+side_length (float) – The length of the sides of the square.
+
+kwargs (Any) – Additional arguments to be passed to Rectangle.
+
+Examples
+
+Example: SquareExample 
+
+../_images/SquareExample-1.png
+from manim import *
+
+class SquareExample(Scene):
+    def construct(self):
+        square_1 = Square(side_length=2.0).shift(DOWN)
+        square_2 = Square(side_length=1.0).next_to(square_1, direction=UP)
+        square_3 = Square(side_length=0.5).next_to(square_2, direction=UP)
+        self.add(square_1, square_2, square_3)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+side_length
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(side_length=2.0, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+side_length (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+Star
+Qualified name: manim.mobject.geometry.polygram.Star
+
+class Star(n=5, *, outer_radius=1, inner_radius=None, density=2, start_angle=1.5707963267948966, **kwargs)[source]
+Bases: Polygon
+
+A regular polygram without the intersecting lines.
+
+Parameters:
+n (int) – How many points on the Star.
+
+outer_radius (float) – The radius of the circle that the outer vertices are placed on.
+
+inner_radius (float | None) –
+
+The radius of the circle that the inner vertices are placed on.
+
+If unspecified, the inner radius will be calculated such that the edges of the Star perfectly follow the edges of its RegularPolygram counterpart.
+
+density (int) –
+
+The density of the Star. Only used if inner_radius is unspecified.
+
+See RegularPolygram for more information.
+
+start_angle (float | None) – The angle the vertices start at; the rotation of the Star.
+
+kwargs (Any) – Forwardeds to the parent constructor.
+
+Raises:
+ValueError – If inner_radius is unspecified and density is not in the range [1, n/2).
+
+Examples
+
+Example: StarExample 
+
+from manim import *
+
+class StarExample(Scene):
+    def construct(self):
+        pentagram = RegularPolygram(5, radius=2)
+        star = Star(outer_radius=2, color=RED)
+
+        self.add(pentagram)
+        self.play(Create(star), run_time=3)
+        self.play(FadeOut(star), run_time=2)
+Make interactive
+Example: DifferentDensitiesExample 
+
+../_images/DifferentDensitiesExample-1.png
+from manim import *
+
+class DifferentDensitiesExample(Scene):
+    def construct(self):
+        density_2 = Star(7, outer_radius=2, density=2, color=RED)
+        density_3 = Star(7, outer_radius=2, density=3, color=PURPLE)
+
+        self.add(VGroup(density_2, density_3).arrange(RIGHT))
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(n=5, *, outer_radius=1, inner_radius=None, density=2, start_angle=1.5707963267948966, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+n (int)
+
+outer_radius (float)
+
+inner_radius (float | None)
+
+density (int)
+
+start_angle (float | None)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Triangle
+Qualified name: manim.mobject.geometry.polygram.Triangle
+
+class Triangle(**kwargs)[source]
+Bases: RegularPolygon
+
+An equilateral triangle.
+
+Parameters:
+kwargs (Any) – Additional arguments to be passed to RegularPolygon
+
+Examples
+
+Example: TriangleExample 
+
+../_images/TriangleExample-1.png
+from manim import *
+
+class TriangleExample(Scene):
+    def construct(self):
+        triangle_1 = Triangle()
+        triangle_2 = Triangle().scale(2).rotate(60*DEGREES)
+        tri_group = Group(triangle_1, triangle_2).arrange(buff=1)
+        self.add(tri_group)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(**kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,2195 @@
+three_d
+Three-dimensional mobjects.
+
+Modules
+polyhedra
+
+General polyhedral class and platonic solids.
+
+three_d_utils
+
+Utility functions for three-dimensional mobjects.
+
+three_dimensions
+
+Three-dimensional mobjects.
+
+
+
+
+
+polyhedra
+General polyhedral class and platonic solids.
+
+Classes
+
+ConvexHull3D
+
+A convex hull for a set of points
+
+Dodecahedron
+
+A dodecahedron, one of the five platonic solids.
+
+Icosahedron
+
+An icosahedron, one of the five platonic solids.
+
+Octahedron
+
+An octahedron, one of the five platonic solids.
+
+Polyhedron
+
+An abstract polyhedra class.
+
+Tetrahedron
+
+A tetrahedron, one of the five platonic solids.
+
+
+
+
+
+
+
+ConvexHull3D
+Qualified name: manim.mobject.three\_d.polyhedra.ConvexHull3D
+
+class ConvexHull3D(*points, tolerance=1e-05, **kwargs)[source]
+Bases: Polyhedron
+
+A convex hull for a set of points
+
+Parameters:
+points (Point3D) – The points to consider.
+
+tolerance (float) – The tolerance used for quickhull.
+
+kwargs – Forwarded to the parent constructor.
+
+Examples
+
+Example: ConvexHull3DExample 
+
+../_images/ConvexHull3DExample-1.png
+from manim import *
+
+class ConvexHull3DExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        points = [
+            [ 1.93192757,  0.44134585, -1.52407061],
+            [-0.93302521,  1.23206983,  0.64117067],
+            [-0.44350918, -0.61043677,  0.21723705],
+            [-0.42640268, -1.05260843,  1.61266094],
+            [-1.84449637,  0.91238739, -1.85172623],
+            [ 1.72068132, -0.11880457,  0.51881751],
+            [ 0.41904805,  0.44938012, -1.86440686],
+            [ 0.83864666,  1.66653337,  1.88960123],
+            [ 0.22240514, -0.80986286,  1.34249326],
+            [-1.29585759,  1.01516189,  0.46187522],
+            [ 1.7776499,  -1.59550796, -1.70240747],
+            [ 0.80065226, -0.12530398,  1.70063977],
+            [ 1.28960948, -1.44158255,  1.39938582],
+            [-0.93538943,  1.33617705, -0.24852643],
+            [-1.54868271,  1.7444399,  -0.46170734]
+        ]
+        hull = ConvexHull3D(
+            *points,
+            faces_config = {"stroke_opacity": 0},
+            graph_config = {
+                "vertex_type": Dot3D,
+                "edge_config": {
+                    "stroke_color": BLUE,
+                    "stroke_width": 2,
+                    "stroke_opacity": 0.05,
+                }
+            }
+        )
+        dots = VGroup(*[Dot3D(point) for point in points])
+        self.add(hull)
+        self.add(dots)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+
+Icosahedron
+Qualified name: manim.mobject.three\_d.polyhedra.Icosahedron
+
+class Icosahedron(edge_length=1, **kwargs)[source]
+Bases: Polyhedron
+
+An icosahedron, one of the five platonic solids. It has 20 faces, 30 edges and 12 vertices.
+
+Parameters:
+edge_length (float) – The length of an edge between any two vertices.
+
+Examples
+
+Example: IcosahedronScene 
+
+../_images/IcosahedronScene-1.png
+from manim import *
+
+class IcosahedronScene(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        obj = Icosahedron()
+        self.add(obj)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(edge_length=1, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+edge_length (float)
+
+
+
+Dodecahedron
+Qualified name: manim.mobject.three\_d.polyhedra.Dodecahedron
+
+class Dodecahedron(edge_length=1, **kwargs)[source]
+Bases: Polyhedron
+
+A dodecahedron, one of the five platonic solids. It has 12 faces, 30 edges and 20 vertices.
+
+Parameters:
+edge_length (float) – The length of an edge between any two vertices.
+
+Examples
+
+Example: DodecahedronScene 
+
+../_images/DodecahedronScene-1.png
+from manim import *
+
+class DodecahedronScene(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        obj = Dodecahedron()
+        self.add(obj)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(edge_length=1, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+edge_length (float)
+
+
+
+
+
+Octahedron
+Qualified name: manim.mobject.three\_d.polyhedra.Octahedron
+
+class Octahedron(edge_length=1, **kwargs)[source]
+Bases: Polyhedron
+
+An octahedron, one of the five platonic solids. It has 8 faces, 12 edges and 6 vertices.
+
+Parameters:
+edge_length (float) – The length of an edge between any two vertices.
+
+Examples
+
+Example: OctahedronScene 
+
+../_images/OctahedronScene-1.png
+from manim import *
+
+class OctahedronScene(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        obj = Octahedron()
+        self.add(obj)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(edge_length=1, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+edge_length (float)
+
+
+
+
+
+
+Polyhedron
+Qualified name: manim.mobject.three\_d.polyhedra.Polyhedron
+
+class Polyhedron(vertex_coords, faces_list, faces_config={}, graph_config={})[source]
+Bases: VGroup
+
+An abstract polyhedra class.
+
+In this implementation, polyhedra are defined with a list of vertex coordinates in space, and a list of faces. This implementation mirrors that of a standard polyhedral data format (OFF, object file format).
+
+Parameters:
+vertex_coords (list[list[float] | np.ndarray]) – A list of coordinates of the corresponding vertices in the polyhedron. Each coordinate will correspond to a vertex. The vertices are indexed with the usual indexing of Python.
+
+faces_list (list[list[int]]) – A list of faces. Each face is a sublist containing the indices of the vertices that form the corners of that face.
+
+faces_config (dict[str, str | int | float | bool]) – Configuration for the polygons representing the faces of the polyhedron.
+
+graph_config (dict[str, str | int | float | bool]) – Configuration for the graph containing the vertices and edges of the polyhedron.
+
+Examples
+
+To understand how to create a custom polyhedra, let’s use the example of a rather simple one - a square pyramid.
+
+Example: SquarePyramidScene 
+
+../_images/SquarePyramidScene-1.png
+from manim import *
+
+class SquarePyramidScene(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        vertex_coords = [
+            [1, 1, 0],
+            [1, -1, 0],
+            [-1, -1, 0],
+            [-1, 1, 0],
+            [0, 0, 2]
+        ]
+        faces_list = [
+            [0, 1, 4],
+            [1, 2, 4],
+            [2, 3, 4],
+            [3, 0, 4],
+            [0, 1, 2, 3]
+        ]
+        pyramid = Polyhedron(vertex_coords, faces_list)
+        self.add(pyramid)
+Make interactive
+In defining the polyhedron above, we first defined the coordinates of the vertices. These are the corners of the square base, given as the first four coordinates in the vertex list, and the apex, the last coordinate in the list.
+
+Next, we define the faces of the polyhedron. The triangular surfaces of the pyramid are polygons with two adjacent vertices in the base and the vertex at the apex as corners. We thus define these surfaces in the first four elements of our face list. The last element defines the base of the pyramid.
+
+The graph and faces of polyhedra can also be accessed and modified directly, after instantiation. They are stored in the graph and faces attributes respectively.
+
+Example: PolyhedronSubMobjects 
+
+../_images/PolyhedronSubMobjects-1.png
+from manim import *
+
+class PolyhedronSubMobjects(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        octahedron = Octahedron(edge_length = 3)
+        octahedron.graph[0].set_color(RED)
+        octahedron.faces[2].set_color(YELLOW)
+        self.add(octahedron)
+Make interactive
+Methods
+
+create_faces
+
+Creates VGroup of faces from a list of face coordinates.
+
+extract_face_coords
+
+Extracts the coordinates of the vertices in the graph.
+
+get_edges
+
+Creates list of cyclic pairwise tuples.
+
+update_faces
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(vertex_coords, faces_list, faces_config={}, graph_config={})
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vertex_coords (list[list[float] | ndarray])
+
+faces_list (list[list[int]])
+
+faces_config (dict[str, str | int | float | bool])
+
+graph_config (dict[str, str | int | float | bool])
+
+create_faces(face_coords)[source]
+Creates VGroup of faces from a list of face coordinates.
+
+Parameters:
+face_coords (list[list[list | ndarray]])
+
+Return type:
+VGroup
+
+extract_face_coords()[source]
+Extracts the coordinates of the vertices in the graph. Used for updating faces.
+
+Return type:
+list[list[ndarray]]
+
+get_edges(faces_list)[source]
+Creates list of cyclic pairwise tuples.
+
+Parameters:
+faces_list (list[list[int]])
+
+Return type:
+list[tuple[int, int]]
+
+
+
+
+
+
+
+
+
+Tetrahedron
+Qualified name: manim.mobject.three\_d.polyhedra.Tetrahedron
+
+class Tetrahedron(edge_length=1, **kwargs)[source]
+Bases: Polyhedron
+
+A tetrahedron, one of the five platonic solids. It has 4 faces, 6 edges, and 4 vertices.
+
+Parameters:
+edge_length (float) – The length of an edge between any two vertices.
+
+Examples
+
+Example: TetrahedronScene 
+
+../_images/TetrahedronScene-1.png
+from manim import *
+
+class TetrahedronScene(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        obj = Tetrahedron()
+        self.add(obj)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(edge_length=1, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+edge_length (float)
+
+
+
+
+
+
+three_d_utils
+Utility functions for three-dimensional mobjects.
+
+Functions
+
+get_3d_vmob_end_corner(vmob)[source]
+Return type:
+Point3D
+
+get_3d_vmob_end_corner_index(vmob)[source]
+Return type:
+int
+
+get_3d_vmob_end_corner_unit_normal(vmob)[source]
+Return type:
+Vector3D
+
+get_3d_vmob_gradient_start_and_end_points(vmob)[source]
+Return type:
+tuple[Point3D, Point3D]
+
+get_3d_vmob_start_corner(vmob)[source]
+Return type:
+Point3D
+
+get_3d_vmob_start_corner_index(vmob)[source]
+Return type:
+Literal[0]
+
+get_3d_vmob_start_corner_unit_normal(vmob)[source]
+Return type:
+Vector3D
+
+get_3d_vmob_unit_normal(vmob, point_index)[source]
+Parameters:
+point_index (int)
+
+Return type:
+Vector3D
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+three_dimensions
+Three-dimensional mobjects.
+
+Classes
+
+Arrow3D
+
+An arrow made out of a cylindrical line and a conical tip.
+
+Cone
+
+A circular cone.
+
+Cube
+
+A three-dimensional cube.
+
+Cylinder
+
+A cylinder, defined by its height, radius and direction,
+
+Dot3D
+
+A spherical dot.
+
+Line3D
+
+A cylindrical line, for use in ThreeDScene.
+
+Prism
+
+A right rectangular prism (or rectangular cuboid).
+
+Sphere
+
+A three-dimensional sphere.
+
+Surface
+
+Creates a Parametric Surface using a checkerboard pattern.
+
+ThreeDVMobject
+
+Torus
+
+A torus.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Arrow3D
+Qualified name: manim.mobject.three\_d.three\_dimensions.Arrow3D
+
+class Arrow3D(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), thickness=0.02, height=0.3, base_radius=0.08, color=ManimColor('#FFFFFF'), resolution=24, **kwargs)[source]
+Bases: Line3D
+
+An arrow made out of a cylindrical line and a conical tip.
+
+Parameters:
+start (np.ndarray) – The start position of the arrow.
+
+end (np.ndarray) – The end position of the arrow.
+
+thickness (float) – The thickness of the arrow.
+
+height (float) – The height of the conical tip.
+
+base_radius (float) – The base radius of the conical tip.
+
+color (ParsableManimColor) – The color of the arrow.
+
+resolution (int | Sequence[int]) – The resolution of the arrow line.
+
+Examples
+
+Example: ExampleArrow3D 
+
+../_images/ExampleArrow3D-1.png
+from manim import *
+
+class ExampleArrow3D(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        arrow = Arrow3D(
+            start=np.array([0, 0, 0]),
+            end=np.array([2, 2, 2]),
+            resolution=8
+        )
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        self.add(axes, arrow)
+Make interactive
+Methods
+
+get_end
+
+Returns the ending point of the Line3D.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), thickness=0.02, height=0.3, base_radius=0.08, color=ManimColor('#FFFFFF'), resolution=24, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+start (ndarray)
+
+end (ndarray)
+
+thickness (float)
+
+height (float)
+
+base_radius (float)
+
+color (ParsableManimColor)
+
+resolution (int | Sequence[int])
+
+Return type:
+None
+
+get_end()[source]
+Returns the ending point of the Line3D.
+
+Returns:
+end – Ending point of the Line3D.
+
+Return type:
+numpy.array
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cube
+Qualified name: manim.mobject.three\_d.three\_dimensions.Cube
+
+class Cube(side_length=2, fill_opacity=0.75, fill_color=ManimColor('#58C4DD'), stroke_width=0, **kwargs)[source]
+Bases: VGroup
+
+A three-dimensional cube.
+
+Parameters:
+side_length (float) – Length of each side of the Cube.
+
+fill_opacity (float) – The opacity of the Cube, from 0 being fully transparent to 1 being fully opaque. Defaults to 0.75.
+
+fill_color (ParsableManimColor) – The color of the Cube.
+
+stroke_width (float) – The width of the stroke surrounding each face of the Cube.
+
+Examples
+
+Example: CubeExample 
+
+../_images/CubeExample-1.png
+from manim import *
+
+class CubeExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75*DEGREES, theta=-45*DEGREES)
+
+        axes = ThreeDAxes()
+        cube = Cube(side_length=3, fill_opacity=0.7, fill_color=BLUE)
+        self.add(cube)
+Make interactive
+Methods
+
+generate_points
+
+Creates the sides of the Cube.
+
+init_points
+
+Creates the sides of the Cube.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(side_length=2, fill_opacity=0.75, fill_color=ManimColor('#58C4DD'), stroke_width=0, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+side_length (float)
+
+fill_opacity (float)
+
+fill_color (ParsableManimColor)
+
+stroke_width (float)
+
+Return type:
+None
+
+generate_points()[source]
+Creates the sides of the Cube.
+
+Return type:
+None
+
+init_points()
+Creates the sides of the Cube.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+Cone
+Qualified name: manim.mobject.three\_d.three\_dimensions.Cone
+
+class Cone(base_radius=1, height=1, direction=array([0., 0., 1.]), show_base=False, v_range=[0, 6.283185307179586], u_min=0, checkerboard_colors=False, **kwargs)[source]
+Bases: Surface
+
+A circular cone. Can be defined using 2 parameters: its height, and its base radius. The polar angle, theta, can be calculated using arctan(base_radius / height) The spherical radius, r, is calculated using the pythagorean theorem.
+
+Parameters:
+base_radius (float) – The base radius from which the cone tapers.
+
+height (float) – The height measured from the plane formed by the base_radius to the apex of the cone.
+
+direction (np.ndarray) – The direction of the apex.
+
+show_base (bool) – Whether to show the base plane or not.
+
+v_range (Sequence[float]) – The azimuthal angle to start and end at.
+
+u_min (float) – The radius at the apex.
+
+checkerboard_colors (bool) – Show checkerboard grid texture on the cone.
+
+kwargs (Any)
+
+Examples
+
+Example: ExampleCone 
+
+../_images/ExampleCone-1.png
+from manim import *
+
+class ExampleCone(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        cone = Cone(direction=X_AXIS+Y_AXIS+2*Z_AXIS, resolution=8)
+        self.set_camera_orientation(phi=5*PI/11, theta=PI/9)
+        self.add(axes, cone)
+Make interactive
+Methods
+
+func
+
+Converts from spherical coordinates to cartesian.
+
+get_direction
+
+Returns the current direction of the apex of the Cone.
+
+get_end
+
+Returns the point, where the stroke that surrounds the Mobject ends.
+
+get_start
+
+Returns the point, where the stroke that surrounds the Mobject starts.
+
+set_direction
+
+Changes the direction of the apex of the Cone.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(base_radius=1, height=1, direction=array([0., 0., 1.]), show_base=False, v_range=[0, 6.283185307179586], u_min=0, checkerboard_colors=False, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+base_radius (float)
+
+height (float)
+
+direction (ndarray)
+
+show_base (bool)
+
+v_range (Sequence[float])
+
+u_min (float)
+
+checkerboard_colors (bool)
+
+kwargs (Any)
+
+Return type:
+None
+
+func(u, v)[source]
+Converts from spherical coordinates to cartesian.
+
+Parameters:
+u (float) – The radius.
+
+v (float) – The azimuthal angle.
+
+Returns:
+Points defining the Cone.
+
+Return type:
+numpy.array
+
+get_direction()[source]
+Returns the current direction of the apex of the Cone.
+
+Returns:
+direction – The direction of the apex.
+
+Return type:
+numpy.array
+
+get_end()[source]
+Returns the point, where the stroke that surrounds the Mobject ends.
+
+Return type:
+ndarray
+
+get_start()[source]
+Returns the point, where the stroke that surrounds the Mobject starts.
+
+Return type:
+ndarray
+
+set_direction(direction)[source]
+Changes the direction of the apex of the Cone.
+
+Parameters:
+direction (ndarray) – The direction of the apex.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cylinder
+Qualified name: manim.mobject.three\_d.three\_dimensions.Cylinder
+
+class Cylinder(radius=1, height=2, direction=array([0., 0., 1.]), v_range=[0, 6.283185307179586], show_ends=True, resolution=(24, 24), **kwargs)[source]
+Bases: Surface
+
+A cylinder, defined by its height, radius and direction,
+
+Parameters:
+radius (float) – The radius of the cylinder.
+
+height (float) – The height of the cylinder.
+
+direction (np.ndarray) – The direction of the central axis of the cylinder.
+
+v_range (Sequence[float]) – The height along the height axis (given by direction) to start and end on.
+
+show_ends (bool) – Whether to show the end caps or not.
+
+resolution (Sequence[int]) – The number of samples taken of the Cylinder. A tuple can be used to define different resolutions for u and v respectively.
+
+Examples
+
+Example: ExampleCylinder 
+
+../_images/ExampleCylinder-1.png
+from manim import *
+
+class ExampleCylinder(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        cylinder = Cylinder(radius=2, height=3)
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        self.add(axes, cylinder)
+Make interactive
+Methods
+
+add_bases
+
+Adds the end caps of the cylinder.
+
+func
+
+Converts from cylindrical coordinates to cartesian.
+
+get_direction
+
+Returns the direction of the central axis of the Cylinder.
+
+set_direction
+
+Sets the direction of the central axis of the Cylinder.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(radius=1, height=2, direction=array([0., 0., 1.]), v_range=[0, 6.283185307179586], show_ends=True, resolution=(24, 24), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+radius (float)
+
+height (float)
+
+direction (ndarray)
+
+v_range (Sequence[float])
+
+show_ends (bool)
+
+resolution (Sequence[int])
+
+Return type:
+None
+
+add_bases()[source]
+Adds the end caps of the cylinder.
+
+Return type:
+None
+
+func(u, v)[source]
+Converts from cylindrical coordinates to cartesian.
+
+Parameters:
+u (float) – The height.
+
+v (float) – The azimuthal angle.
+
+Returns:
+Points defining the Cylinder.
+
+Return type:
+numpy.ndarray
+
+get_direction()[source]
+Returns the direction of the central axis of the Cylinder.
+
+Returns:
+direction – The direction of the central axis of the Cylinder.
+
+Return type:
+numpy.array
+
+set_direction(direction)[source]
+Sets the direction of the central axis of the Cylinder.
+
+Parameters:
+direction (numpy.array) – The direction of the central axis of the Cylinder.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+Dot3D
+Qualified name: manim.mobject.three\_d.three\_dimensions.Dot3D
+
+class Dot3D(point=array([0., 0., 0.]), radius=0.08, color=ManimColor('#FFFFFF'), resolution=(8, 8), **kwargs)[source]
+Bases: Sphere
+
+A spherical dot.
+
+Parameters:
+point (list | np.ndarray) – The location of the dot.
+
+radius (float) – The radius of the dot.
+
+color (ParsableManimColor) – The color of the Dot3D.
+
+resolution (tuple[int, int]) – The number of samples taken of the Dot3D. A tuple can be used to define different resolutions for u and v respectively.
+
+Examples
+
+Example: Dot3DExample 
+
+../_images/Dot3DExample-1.png
+from manim import *
+
+class Dot3DExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=75*DEGREES, theta=-45*DEGREES)
+
+        axes = ThreeDAxes()
+        dot_1 = Dot3D(point=axes.coords_to_point(0, 0, 1), color=RED)
+        dot_2 = Dot3D(point=axes.coords_to_point(2, 0, 0), radius=0.1, color=BLUE)
+        dot_3 = Dot3D(point=[0, 0, 0], radius=0.1, color=ORANGE)
+        self.add(axes, dot_1, dot_2,dot_3)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(point=array([0., 0., 0.]), radius=0.08, color=ManimColor('#FFFFFF'), resolution=(8, 8), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+point (list | ndarray)
+
+radius (float)
+
+color (ParsableManimColor)
+
+resolution (tuple[int, int])
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Line3D
+Qualified name: manim.mobject.three\_d.three\_dimensions.Line3D
+
+class Line3D(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), thickness=0.02, color=None, resolution=24, **kwargs)[source]
+Bases: Cylinder
+
+A cylindrical line, for use in ThreeDScene.
+
+Parameters:
+start (np.ndarray) – The start point of the line.
+
+end (np.ndarray) – The end point of the line.
+
+thickness (float) – The thickness of the line.
+
+color (ParsableManimColor | None) – The color of the line.
+
+resolution (int | Sequence[int]) – The resolution of the line. By default this value is the number of points the line will sampled at. If you want the line to also come out checkered, use a tuple. For example, for a line made of 24 points with 4 checker points on each cylinder, pass the tuple (4, 24).
+
+Examples
+
+Example: ExampleLine3D 
+
+../_images/ExampleLine3D-1.png
+from manim import *
+
+class ExampleLine3D(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        line = Line3D(start=np.array([0, 0, 0]), end=np.array([2, 2, 2]))
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        self.add(axes, line)
+Make interactive
+Methods
+
+get_end
+
+Returns the ending point of the Line3D.
+
+get_start
+
+Returns the starting point of the Line3D.
+
+parallel_to
+
+Returns a line parallel to another line going through a given point.
+
+perpendicular_to
+
+Returns a line perpendicular to another line going through a given point.
+
+pointify
+
+Gets a point representing the center of the Mobjects.
+
+set_start_and_end_attrs
+
+Sets the start and end points of the line.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), thickness=0.02, color=None, resolution=24, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+start (np.ndarray)
+
+end (np.ndarray)
+
+thickness (float)
+
+color (ParsableManimColor | None)
+
+resolution (int | Sequence[int])
+
+get_end()[source]
+Returns the ending point of the Line3D.
+
+Returns:
+end – Ending point of the Line3D.
+
+Return type:
+numpy.array
+
+get_start()[source]
+Returns the starting point of the Line3D.
+
+Returns:
+start – Starting point of the Line3D.
+
+Return type:
+numpy.array
+
+classmethod parallel_to(line, point=array([0., 0., 0.]), length=5, **kwargs)[source]
+Returns a line parallel to another line going through a given point.
+
+Parameters:
+line (Line3D) – The line to be parallel to.
+
+point (Vector3D) – The point to pass through.
+
+length (float) – Length of the parallel line.
+
+kwargs – Additional parameters to be passed to the class.
+
+Returns:
+Line parallel to line.
+
+Return type:
+Line3D
+
+Examples
+
+Example: ParallelLineExample 
+
+../_images/ParallelLineExample-1.png
+from manim import *
+
+class ParallelLineExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(PI / 3, -PI / 4)
+        ax = ThreeDAxes((-5, 5), (-5, 5), (-5, 5), 10, 10, 10)
+        line1 = Line3D(RIGHT * 2, UP + OUT, color=RED)
+        line2 = Line3D.parallel_to(line1, color=YELLOW)
+        self.add(ax, line1, line2)
+Make interactive
+classmethod perpendicular_to(line, point=array([0., 0., 0.]), length=5, **kwargs)[source]
+Returns a line perpendicular to another line going through a given point.
+
+Parameters:
+line (Line3D) – The line to be perpendicular to.
+
+point (Vector3D) – The point to pass through.
+
+length (float) – Length of the perpendicular line.
+
+kwargs – Additional parameters to be passed to the class.
+
+Returns:
+Line perpendicular to line.
+
+Return type:
+Line3D
+
+Examples
+
+Example: PerpLineExample 
+
+../_images/PerpLineExample-1.png
+from manim import *
+
+class PerpLineExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(PI / 3, -PI / 4)
+        ax = ThreeDAxes((-5, 5), (-5, 5), (-5, 5), 10, 10, 10)
+        line1 = Line3D(RIGHT * 2, UP + OUT, color=RED)
+        line2 = Line3D.perpendicular_to(line1, color=BLUE)
+        self.add(ax, line1, line2)
+Make interactive
+pointify(mob_or_point, direction=None)[source]
+Gets a point representing the center of the Mobjects.
+
+Parameters:
+mob_or_point (Mobject | Point3DLike) – Mobjects or point whose center should be returned.
+
+direction (Vector3D) – If an edge of a Mobjects should be returned, the direction of the edge.
+
+Returns:
+Center of the Mobjects or point, or edge if direction is given.
+
+Return type:
+numpy.array
+
+set_start_and_end_attrs(start, end, **kwargs)[source]
+Sets the start and end points of the line.
+
+If either start or end are Mobjects, this gives their centers.
+
+Parameters:
+start (ndarray) – Starting point or Mobject.
+
+end (ndarray) – Ending point or Mobject.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+Prism
+Qualified name: manim.mobject.three\_d.three\_dimensions.Prism
+
+class Prism(dimensions=[3, 2, 1], **kwargs)[source]
+Bases: Cube
+
+A right rectangular prism (or rectangular cuboid). Defined by the length of each side in [x, y, z] format.
+
+Parameters:
+dimensions (tuple[float, float, float] | np.ndarray) – Dimensions of the Prism in [x, y, z] format.
+
+Examples
+
+Example: ExamplePrism 
+
+../_images/ExamplePrism-1.png
+from manim import *
+
+class ExamplePrism(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=60 * DEGREES, theta=150 * DEGREES)
+        prismSmall = Prism(dimensions=[1, 2, 3]).rotate(PI / 2)
+        prismLarge = Prism(dimensions=[1.5, 3, 4.5]).move_to([2, 0, 0])
+        self.add(prismSmall, prismLarge)
+Make interactive
+Methods
+
+generate_points
+
+Creates the sides of the Prism.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(dimensions=[3, 2, 1], **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+dimensions (tuple[float, float, float] | ndarray)
+
+Return type:
+None
+
+generate_points()[source]
+Creates the sides of the Prism.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sphere
+Qualified name: manim.mobject.three\_d.three\_dimensions.Sphere
+
+class Sphere(center=array([0., 0., 0.]), radius=1, resolution=None, u_range=(0, 6.283185307179586), v_range=(0, 3.141592653589793), **kwargs)[source]
+Bases: Surface
+
+A three-dimensional sphere.
+
+Parameters:
+center (Point3DLike) – Center of the Sphere.
+
+radius (float) – The radius of the Sphere.
+
+resolution (Sequence[int] | None) – The number of samples taken of the Sphere. A tuple can be used to define different resolutions for u and v respectively.
+
+u_range (Sequence[float]) – The range of the u variable: (u_min, u_max).
+
+v_range (Sequence[float]) – The range of the v variable: (v_min, v_max).
+
+Examples
+
+Example: ExampleSphere 
+
+../_images/ExampleSphere-1.png
+from manim import *
+
+class ExampleSphere(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=PI / 6, theta=PI / 6)
+        sphere1 = Sphere(
+            center=(3, 0, 0),
+            radius=1,
+            resolution=(20, 20),
+            u_range=[0.001, PI - 0.001],
+            v_range=[0, TAU]
+        )
+        sphere1.set_color(RED)
+        self.add(sphere1)
+        sphere2 = Sphere(center=(-1, -3, 0), radius=2, resolution=(18, 18))
+        sphere2.set_color(GREEN)
+        self.add(sphere2)
+        sphere3 = Sphere(center=(-1, 2, 0), radius=2, resolution=(16, 16))
+        sphere3.set_color(BLUE)
+        self.add(sphere3)
+Make interactive
+Methods
+
+func
+
+The z values defining the Sphere being plotted.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(center=array([0., 0., 0.]), radius=1, resolution=None, u_range=(0, 6.283185307179586), v_range=(0, 3.141592653589793), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+center (Point3DLike)
+
+radius (float)
+
+resolution (Sequence[int] | None)
+
+u_range (Sequence[float])
+
+v_range (Sequence[float])
+
+Return type:
+None
+
+func(u, v)[source]
+The z values defining the Sphere being plotted.
+
+Returns:
+The z values defining the Sphere.
+
+Return type:
+numpy.array
+
+Parameters:
+u (float)
+
+v (float)
+
+
+
+
+
+
+
+
+
+
+
+Surface
+Qualified name: manim.mobject.three\_d.three\_dimensions.Surface
+
+class Surface(func, u_range=[0, 1], v_range=[0, 1], resolution=32, surface_piece_config={}, fill_color=ManimColor('#29ABCA'), fill_opacity=1.0, checkerboard_colors=[ManimColor('#29ABCA'), ManimColor('#236B8E')], stroke_color=ManimColor('#BBBBBB'), stroke_width=0.5, should_make_jagged=False, pre_function_handle_to_anchor_scale_factor=1e-05, **kwargs)[source]
+Bases: VGroup
+
+Creates a Parametric Surface using a checkerboard pattern.
+
+Parameters:
+func (Callable[[float, float], np.ndarray]) – The function defining the Surface.
+
+u_range (Sequence[float]) – The range of the u variable: (u_min, u_max).
+
+v_range (Sequence[float]) – The range of the v variable: (v_min, v_max).
+
+resolution (Sequence[int]) – The number of samples taken of the Surface. A tuple can be used to define different resolutions for u and v respectively.
+
+fill_color (ParsableManimColor) – The color of the Surface. Ignored if checkerboard_colors is set.
+
+fill_opacity (float) – The opacity of the Surface, from 0 being fully transparent to 1 being fully opaque. Defaults to 1.
+
+checkerboard_colors (Sequence[ParsableManimColor] | bool) – ng individual faces alternating colors. Overrides fill_color.
+
+stroke_color (ParsableManimColor) – Color of the stroke surrounding each face of Surface.
+
+stroke_width (float) – Width of the stroke surrounding each face of Surface. Defaults to 0.5.
+
+should_make_jagged (bool) – Changes the anchor mode of the Bézier curves from smooth to jagged. Defaults to False.
+
+surface_piece_config (dict)
+
+pre_function_handle_to_anchor_scale_factor (float)
+
+kwargs (Any)
+
+Examples
+
+Example: ParaSurface 
+
+../_images/ParaSurface-1.png
+from manim import *
+
+class ParaSurface(ThreeDScene):
+    def func(self, u, v):
+        return np.array([np.cos(u) * np.cos(v), np.cos(u) * np.sin(v), u])
+
+    def construct(self):
+        axes = ThreeDAxes(x_range=[-4,4], x_length=8)
+        surface = Surface(
+            lambda u, v: axes.c2p(*self.func(u, v)),
+            u_range=[-PI, PI],
+            v_range=[0, TAU],
+            resolution=8,
+        )
+        self.set_camera_orientation(theta=70 * DEGREES, phi=75 * DEGREES)
+        self.add(axes, surface)
+Make interactive
+Methods
+
+func
+
+set_fill_by_checkerboard
+
+Sets the fill_color of each face of Surface in an alternating pattern.
+
+set_fill_by_value
+
+Sets the color of each mobject of a parametric surface to a color relative to its axis-value.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(func, u_range=[0, 1], v_range=[0, 1], resolution=32, surface_piece_config={}, fill_color=ManimColor('#29ABCA'), fill_opacity=1.0, checkerboard_colors=[ManimColor('#29ABCA'), ManimColor('#236B8E')], stroke_color=ManimColor('#BBBBBB'), stroke_width=0.5, should_make_jagged=False, pre_function_handle_to_anchor_scale_factor=1e-05, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+func (Callable[[float, float], ndarray])
+
+u_range (Sequence[float])
+
+v_range (Sequence[float])
+
+resolution (Sequence[int])
+
+surface_piece_config (dict)
+
+fill_color (ParsableManimColor)
+
+fill_opacity (float)
+
+checkerboard_colors (Sequence[ParsableManimColor] | bool)
+
+stroke_color (ParsableManimColor)
+
+stroke_width (float)
+
+should_make_jagged (bool)
+
+pre_function_handle_to_anchor_scale_factor (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+set_fill_by_checkerboard(*colors, opacity=None)[source]
+Sets the fill_color of each face of Surface in an alternating pattern.
+
+Parameters:
+colors (Iterable[ParsableManimColor]) – List of colors for alternating pattern.
+
+opacity (float | None) – The fill_opacity of Surface, from 0 being fully transparent to 1 being fully opaque.
+
+Returns:
+The parametric surface with an alternating pattern.
+
+Return type:
+Surface
+
+set_fill_by_value(axes, colorscale=None, axis=2, **kwargs)[source]
+Sets the color of each mobject of a parametric surface to a color relative to its axis-value.
+
+Parameters:
+axes (Mobject) – The axes for the parametric surface, which will be used to map axis-values to colors.
+
+colorscale (list[ParsableManimColor] | ParsableManimColor | None) – A list of colors, ordered from lower axis-values to higher axis-values. If a list of tuples is passed containing colors paired with numbers, then those numbers will be used as the pivots.
+
+axis (int) – The chosen axis to use for the color mapping. (0 = x, 1 = y, 2 = z)
+
+Returns:
+The parametric surface with a gradient applied by value. For chaining.
+
+Return type:
+Surface
+
+Examples
+
+Example: FillByValueExample 
+
+../_images/FillByValueExample-1.png
+from manim import *
+
+class FillByValueExample(ThreeDScene):
+    def construct(self):
+        resolution_fa = 8
+        self.set_camera_orientation(phi=75 * DEGREES, theta=-160 * DEGREES)
+        axes = ThreeDAxes(x_range=(0, 5, 1), y_range=(0, 5, 1), z_range=(-1, 1, 0.5))
+        def param_surface(u, v):
+            x = u
+            y = v
+            z = np.sin(x) * np.cos(y)
+            return z
+        surface_plane = Surface(
+            lambda u, v: axes.c2p(u, v, param_surface(u, v)),
+            resolution=(resolution_fa, resolution_fa),
+            v_range=[0, 5],
+            u_range=[0, 5],
+            )
+        surface_plane.set_style(fill_opacity=1)
+        surface_plane.set_fill_by_value(axes=axes, colorscale=[(RED, -0.5), (YELLOW, 0), (GREEN, 0.5)], axis=2)
+        self.add(axes, surface_plane)
+Make interactive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ThreeDVMobject
+Qualified name: manim.mobject.three\_d.three\_dimensions.ThreeDVMobject
+
+class ThreeDVMobject(shade_in_3d=True, **kwargs)[source]
+Bases: VMobject
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+Parameters:
+shade_in_3d (bool)
+
+_original__init__(shade_in_3d=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+shade_in_3d (bool)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Torus
+Qualified name: manim.mobject.three\_d.three\_dimensions.Torus
+
+class Torus(major_radius=3, minor_radius=1, u_range=(0, 6.283185307179586), v_range=(0, 6.283185307179586), resolution=None, **kwargs)[source]
+Bases: Surface
+
+A torus.
+
+Parameters:
+major_radius (float) – Distance from the center of the tube to the center of the torus.
+
+minor_radius (float) – Radius of the tube.
+
+u_range (Sequence[float]) – The range of the u variable: (u_min, u_max).
+
+v_range (Sequence[float]) – The range of the v variable: (v_min, v_max).
+
+resolution (tuple[int, int] | None) – The number of samples taken of the Torus. A tuple can be used to define different resolutions for u and v respectively.
+
+Examples
+
+Example: ExampleTorus 
+
+../_images/ExampleTorus-1.png
+from manim import *
+
+class ExampleTorus(ThreeDScene):
+    def construct(self):
+        axes = ThreeDAxes()
+        torus = Torus()
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+        self.add(axes, torus)
+Make interactive
+Methods
+
+func
+
+The z values defining the Torus being plotted.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(major_radius=3, minor_radius=1, u_range=(0, 6.283185307179586), v_range=(0, 6.283185307179586), resolution=None, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+major_radius (float)
+
+minor_radius (float)
+
+u_range (Sequence[float])
+
+v_range (Sequence[float])
+
+resolution (tuple[int, int] | None)
+
+Return type:
+None
+
+func(u, v)[source]
+The z values defining the Torus being plotted.
+
+Returns:
+The z values defining the Torus.
+
+Return type:
+numpy.ndarray
+
+Parameters:
+u (float)
+
+v (float)
+
+
+
+
+
+
+
+
+_original__init__(*points, tolerance=1e-05, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+points (Point3D)
+
+tolerance (float)

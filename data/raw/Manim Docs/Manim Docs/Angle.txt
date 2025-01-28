@@ -1,0 +1,1351 @@
+Line
+
+
+Angle
+Qualified name: manim.mobject.geometry.line.Angle
+
+class Angle(line1, line2, radius=None, quadrant=(1, 1), other_angle=False, dot=False, dot_radius=None, dot_distance=0.55, dot_color=ManimColor('#FFFFFF'), elbow=False, **kwargs)[source]
+Bases: VMobject
+
+A circular arc or elbow-type mobject representing an angle of two lines.
+
+Parameters:
+line1 (Line) – The first line.
+
+line2 (Line) – The second line.
+
+radius (float | None) – The radius of the Arc.
+
+quadrant (AngleQuadrant) – A sequence of two int numbers determining which of the 4 quadrants should be used. The first value indicates whether to anchor the arc on the first line closer to the end point (1) or start point (-1), and the second value functions similarly for the end (1) or start (-1) of the second line. Possibilities: (1,1), (-1,1), (1,-1), (-1,-1).
+
+other_angle (bool) – Toggles between the two possible angles defined by two points and an arc center. If set to False (default), the arc will always go counterclockwise from the point on line1 until the point on line2 is reached. If set to True, the angle will go clockwise from line1 to line2.
+
+dot (bool) – Allows for a Dot in the arc. Mainly used as an convention to indicate a right angle. The dot can be customized in the next three parameters.
+
+dot_radius (float | None) – The radius of the Dot. If not specified otherwise, this radius will be 1/10 of the arc radius.
+
+dot_distance (float) – Relative distance from the center to the arc: 0 puts the dot in the center and 1 on the arc itself.
+
+dot_color (ParsableManimColor) – The color of the Dot.
+
+elbow (bool) – Produces an elbow-type mobject indicating a right angle, see RightAngle for more information and a shorthand.
+
+**kwargs (Any) – Further keyword arguments that are passed to the constructor of Arc or Elbow.
+
+Examples
+
+The first example shows some right angles with a dot in the middle while the second example shows all 8 possible angles defined by two lines.
+
+Example: RightArcAngleExample 
+
+../_images/RightArcAngleExample-1.png
+from manim import *
+
+class RightArcAngleExample(Scene):
+    def construct(self):
+        line1 = Line( LEFT, RIGHT )
+        line2 = Line( DOWN, UP )
+        rightarcangles = [
+            Angle(line1, line2, dot=True),
+            Angle(line1, line2, radius=0.4, quadrant=(1,-1), dot=True, other_angle=True),
+            Angle(line1, line2, radius=0.5, quadrant=(-1,1), stroke_width=8, dot=True, dot_color=YELLOW, dot_radius=0.04, other_angle=True),
+            Angle(line1, line2, radius=0.7, quadrant=(-1,-1), color=RED, dot=True, dot_color=GREEN, dot_radius=0.08),
+        ]
+        plots = VGroup()
+        for angle in rightarcangles:
+            plot=VGroup(line1.copy(),line2.copy(), angle)
+            plots.add(plot)
+        plots.arrange(buff=1.5)
+        self.add(plots)
+Make interactive
+Example: AngleExample 
+
+../_images/AngleExample-1.png
+from manim import *
+
+class AngleExample(Scene):
+    def construct(self):
+        line1 = Line( LEFT + (1/3) * UP, RIGHT + (1/3) * DOWN )
+        line2 = Line( DOWN + (1/3) * RIGHT, UP + (1/3) * LEFT )
+        angles = [
+            Angle(line1, line2),
+            Angle(line1, line2, radius=0.4, quadrant=(1,-1), other_angle=True),
+            Angle(line1, line2, radius=0.5, quadrant=(-1,1), stroke_width=8, other_angle=True),
+            Angle(line1, line2, radius=0.7, quadrant=(-1,-1), color=RED),
+            Angle(line1, line2, other_angle=True),
+            Angle(line1, line2, radius=0.4, quadrant=(1,-1)),
+            Angle(line1, line2, radius=0.5, quadrant=(-1,1), stroke_width=8),
+            Angle(line1, line2, radius=0.7, quadrant=(-1,-1), color=RED, other_angle=True),
+        ]
+        plots = VGroup()
+        for angle in angles:
+            plot=VGroup(line1.copy(),line2.copy(), angle)
+            plots.add(VGroup(plot,SurroundingRectangle(plot, buff=0.3)))
+        plots.arrange_in_grid(rows=2,buff=1)
+        self.add(plots)
+Make interactive
+Example: FilledAngle 
+
+../_images/FilledAngle-1.png
+from manim import *
+
+class FilledAngle(Scene):
+    def construct(self):
+        l1 = Line(ORIGIN, 2 * UP + RIGHT).set_color(GREEN)
+        l2 = (
+            Line(ORIGIN, 2 * UP + RIGHT)
+            .set_color(GREEN)
+            .rotate(-20 * DEGREES, about_point=ORIGIN)
+        )
+        norm = l1.get_length()
+        a1 = Angle(l1, l2, other_angle=True, radius=norm - 0.5).set_color(GREEN)
+        a2 = Angle(l1, l2, other_angle=True, radius=norm).set_color(GREEN)
+        q1 = a1.points #  save all coordinates of points of angle a1
+        q2 = a2.reverse_direction().points  #  save all coordinates of points of angle a1 (in reversed direction)
+        pnts = np.concatenate([q1, q2, q1[0].reshape(1, 3)])  # adds points and ensures that path starts and ends at same point
+        mfill = VMobject().set_color(ORANGE)
+        mfill.set_points_as_corners(pnts).set_fill(GREEN, opacity=1)
+        self.add(l1, l2)
+        self.add(mfill)
+Make interactive
+Methods
+
+from_three_points
+
+The angle between the lines AB and BC.
+
+get_lines
+
+Get the lines forming an angle of the Angle class.
+
+get_value
+
+Get the value of an angle of the Angle class.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(line1, line2, radius=None, quadrant=(1, 1), other_angle=False, dot=False, dot_radius=None, dot_distance=0.55, dot_color=ManimColor('#FFFFFF'), elbow=False, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+line1 (Line)
+
+line2 (Line)
+
+radius (float | None)
+
+quadrant (AngleQuadrant)
+
+other_angle (bool)
+
+dot (bool)
+
+dot_radius (float | None)
+
+dot_distance (float)
+
+dot_color (ParsableManimColor)
+
+elbow (bool)
+
+kwargs (Any)
+
+Return type:
+None
+
+static from_three_points(A, B, C, **kwargs)[source]
+The angle between the lines AB and BC.
+
+This constructs the angle 
+.
+
+Parameters:
+A (Point3DLike) – The endpoint of the first angle leg
+
+B (Point3DLike) – The vertex of the angle
+
+C (Point3DLike) – The endpoint of the second angle leg
+
+**kwargs (Any) – Further keyword arguments are passed to Angle
+
+Returns:
+Angle(line1, line2, radius=0.5, quadrant=(-1,1), stroke_width=8), Angle(line1, line2, radius=0.7, quadrant=(-1,-1), color=RED, other_angle=True),
+
+Return type:
+The Angle calculated from the three points
+
+Examples
+
+Example: AngleFromThreePointsExample 
+
+../_images/AngleFromThreePointsExample-1.png
+from manim import *
+
+class AngleFromThreePointsExample(Scene):
+    def construct(self):
+        sample_angle = Angle.from_three_points(UP, ORIGIN, LEFT)
+        red_angle = Angle.from_three_points(LEFT + UP, ORIGIN, RIGHT, radius=.8, quadrant=(-1,-1), color=RED, stroke_width=8, other_angle=True)
+        self.add(red_angle, sample_angle)
+Make interactive
+get_lines()[source]
+Get the lines forming an angle of the Angle class.
+
+Returns:
+A VGroup containing the lines that form the angle of the Angle class.
+
+Return type:
+VGroup
+
+Examples
+
+line_1, line_2 = Line(ORIGIN, RIGHT), Line(ORIGIN, UR)
+angle = Angle(line_1, line_2)
+angle.get_lines()
+VGroup(Line, Line)
+get_value(degrees=False)[source]
+Get the value of an angle of the Angle class.
+
+Parameters:
+degrees (bool) – A boolean to decide the unit (deg/rad) in which the value of the angle is returned.
+
+Returns:
+The value in degrees/radians of an angle of the Angle class.
+
+Return type:
+float
+
+Examples
+
+Example: GetValueExample 
+
+../_images/GetValueExample-1.png
+from manim import *
+
+class GetValueExample(Scene):
+    def construct(self):
+        line1 = Line(LEFT+(1/3)*UP, RIGHT+(1/3)*DOWN)
+        line2 = Line(DOWN+(1/3)*RIGHT, UP+(1/3)*LEFT)
+
+        angle = Angle(line1, line2, radius=0.4)
+
+        value = DecimalNumber(angle.get_value(degrees=True), unit=r"^{\circ}")
+        value.next_to(angle, UR)
+
+        self.add(line1, line2, angle, value)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Arrow
+Qualified name: manim.mobject.geometry.line.Arrow
+
+class Arrow(*args, stroke_width=6, buff=0.25, max_tip_length_to_length_ratio=0.25, max_stroke_width_to_length_ratio=5, **kwargs)[source]
+Bases: Line
+
+An arrow.
+
+Parameters:
+args (Any) – Arguments to be passed to Line.
+
+stroke_width (float) – The thickness of the arrow. Influenced by max_stroke_width_to_length_ratio.
+
+buff (float) – The distance of the arrow from its start and end points.
+
+max_tip_length_to_length_ratio (float) – tip_length scales with the length of the arrow. Increasing this ratio raises the max value of tip_length.
+
+max_stroke_width_to_length_ratio (float) – stroke_width scales with the length of the arrow. Increasing this ratio ratios the max value of stroke_width.
+
+kwargs (Any) – Additional arguments to be passed to Line.
+
+See also
+
+ArrowTip CurvedArrow
+
+Examples
+
+Example: ArrowExample 
+
+../_images/ArrowExample-1.png
+from manim import *
+
+from manim.mobject.geometry.tips import ArrowSquareTip
+class ArrowExample(Scene):
+    def construct(self):
+        arrow_1 = Arrow(start=RIGHT, end=LEFT, color=GOLD)
+        arrow_2 = Arrow(start=RIGHT, end=LEFT, color=GOLD, tip_shape=ArrowSquareTip).shift(DOWN)
+        g1 = Group(arrow_1, arrow_2)
+
+        # the effect of buff
+        square = Square(color=MAROON_A)
+        arrow_3 = Arrow(start=LEFT, end=RIGHT)
+        arrow_4 = Arrow(start=LEFT, end=RIGHT, buff=0).next_to(arrow_1, UP)
+        g2 = Group(arrow_3, arrow_4, square)
+
+        # a shorter arrow has a shorter tip and smaller stroke width
+        arrow_5 = Arrow(start=ORIGIN, end=config.top).shift(LEFT * 4)
+        arrow_6 = Arrow(start=config.top + DOWN, end=config.top).shift(LEFT * 3)
+        g3 = Group(arrow_5, arrow_6)
+
+        self.add(Group(g1, g2, g3).arrange(buff=2))
+Make interactive
+Example: ArrowExample 
+
+../_images/ArrowExample-2.png
+from manim import *
+
+class ArrowExample(Scene):
+    def construct(self):
+        left_group = VGroup()
+        # As buff increases, the size of the arrow decreases.
+        for buff in np.arange(0, 2.2, 0.45):
+            left_group += Arrow(buff=buff, start=2 * LEFT, end=2 * RIGHT)
+        # Required to arrange arrows.
+        left_group.arrange(DOWN)
+        left_group.move_to(4 * LEFT)
+
+        middle_group = VGroup()
+        # As max_stroke_width_to_length_ratio gets bigger,
+        # the width of stroke increases.
+        for i in np.arange(0, 5, 0.5):
+            middle_group += Arrow(max_stroke_width_to_length_ratio=i)
+        middle_group.arrange(DOWN)
+
+        UR_group = VGroup()
+        # As max_tip_length_to_length_ratio increases,
+        # the length of the tip increases.
+        for i in np.arange(0, 0.3, 0.1):
+            UR_group += Arrow(max_tip_length_to_length_ratio=i)
+        UR_group.arrange(DOWN)
+        UR_group.move_to(4 * RIGHT + 2 * UP)
+
+        DR_group = VGroup()
+        DR_group += Arrow(start=LEFT, end=RIGHT, color=BLUE, tip_shape=ArrowSquareTip)
+        DR_group += Arrow(start=LEFT, end=RIGHT, color=BLUE, tip_shape=ArrowSquareFilledTip)
+        DR_group += Arrow(start=LEFT, end=RIGHT, color=YELLOW, tip_shape=ArrowCircleTip)
+        DR_group += Arrow(start=LEFT, end=RIGHT, color=YELLOW, tip_shape=ArrowCircleFilledTip)
+        DR_group.arrange(DOWN)
+        DR_group.move_to(4 * RIGHT + 2 * DOWN)
+
+        self.add(left_group, middle_group, UR_group, DR_group)
+Make interactive
+Methods
+
+get_default_tip_length
+
+Returns the default tip_length of the arrow.
+
+get_normal_vector
+
+Returns the normal of a vector.
+
+reset_normal_vector
+
+Resets the normal of a vector
+
+scale
+
+Scale an arrow, but keep stroke width and arrow tip size fixed.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(*args, stroke_width=6, buff=0.25, max_tip_length_to_length_ratio=0.25, max_stroke_width_to_length_ratio=5, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+args (Any)
+
+stroke_width (float)
+
+buff (float)
+
+max_tip_length_to_length_ratio (float)
+
+max_stroke_width_to_length_ratio (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+_set_stroke_width_from_length()[source]
+Sets stroke width based on length.
+
+Return type:
+Self
+
+get_default_tip_length()[source]
+Returns the default tip_length of the arrow.
+
+Examples
+
+Arrow().get_default_tip_length()
+0.35
+Return type:
+float
+
+get_normal_vector()[source]
+Returns the normal of a vector.
+
+Examples
+
+np.round(Arrow().get_normal_vector()) + 0. # add 0. to avoid negative 0 in output
+array([ 0.,  0., -1.])
+Return type:
+Vector3D
+
+reset_normal_vector()[source]
+Resets the normal of a vector
+
+Return type:
+Self
+
+scale(factor, scale_tips=False, **kwargs)[source]
+Scale an arrow, but keep stroke width and arrow tip size fixed.
+
+See also
+
+scale()
+
+Examples
+
+arrow = Arrow(np.array([-1, -1, 0]), np.array([1, 1, 0]), buff=0)
+scaled_arrow = arrow.scale(2)
+np.round(scaled_arrow.get_start_and_end(), 8) + 0
+array([[-2., -2.,  0.],
+       [ 2.,  2.,  0.]])
+arrow.tip.length == scaled_arrow.tip.length
+True
+Manually scaling the object using the default method scale() does not have the same properties:
+
+new_arrow = Arrow(np.array([-1, -1, 0]), np.array([1, 1, 0]), buff=0)
+another_scaled_arrow = VMobject.scale(new_arrow, 2)
+another_scaled_arrow.tip.length == arrow.tip.length
+False
+Parameters:
+factor (float)
+
+scale_tips (bool)
+
+kwargs (Any)
+
+Return type:
+Self
+
+
+DashedLine
+Qualified name: manim.mobject.geometry.line.DashedLine
+
+class DashedLine(*args, dash_length=0.05, dashed_ratio=0.5, **kwargs)[source]
+Bases: Line
+
+A dashed Line.
+
+Parameters:
+args (Any) – Arguments to be passed to Line
+
+dash_length (float) – The length of each individual dash of the line.
+
+dashed_ratio (float) – The ratio of dash space to empty space. Range of 0-1.
+
+kwargs (Any) – Additional arguments to be passed to Line
+
+See also
+
+DashedVMobject
+
+Examples
+
+Example: DashedLineExample 
+
+../_images/DashedLineExample-1.png
+from manim import *
+
+class DashedLineExample(Scene):
+    def construct(self):
+        # dash_length increased
+        dashed_1 = DashedLine(config.left_side, config.right_side, dash_length=2.0).shift(UP*2)
+        # normal
+        dashed_2 = DashedLine(config.left_side, config.right_side)
+        # dashed_ratio decreased
+        dashed_3 = DashedLine(config.left_side, config.right_side, dashed_ratio=0.1).shift(DOWN*2)
+        self.add(dashed_1, dashed_2, dashed_3)
+Make interactive
+Methods
+
+get_end
+
+Returns the end point of the line.
+
+get_first_handle
+
+Returns the point of the first handle.
+
+get_last_handle
+
+Returns the point of the last handle.
+
+get_start
+
+Returns the start point of the line.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_calculate_num_dashes()[source]
+Returns the number of dashes in the dashed line.
+
+Examples
+
+DashedLine()._calculate_num_dashes()
+20
+Return type:
+int
+
+_original__init__(*args, dash_length=0.05, dashed_ratio=0.5, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+args (Any)
+
+dash_length (float)
+
+dashed_ratio (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+get_end()[source]
+Returns the end point of the line.
+
+Examples
+
+DashedLine().get_end()
+array([1., 0., 0.])
+Return type:
+Point3D
+
+get_first_handle()[source]
+Returns the point of the first handle.
+
+Examples
+
+DashedLine().get_first_handle()
+array([-0.98333333,  0.        ,  0.        ])
+Return type:
+Point3D
+
+get_last_handle()[source]
+Returns the point of the last handle.
+
+Examples
+
+DashedLine().get_last_handle()
+array([0.98333333, 0.        , 0.        ])
+Return type:
+Point3D
+
+get_start()[source]
+Returns the start point of the line.
+
+Examples
+
+DashedLine().get_start()
+array([-1.,  0.,  0.])
+Return type:
+Point3D
+
+
+
+DoubleArrow
+Qualified name: manim.mobject.geometry.line.DoubleArrow
+
+class DoubleArrow(*args, **kwargs)[source]
+Bases: Arrow
+
+An arrow with tips on both ends.
+
+Parameters:
+args (Any) – Arguments to be passed to Arrow
+
+kwargs (Any) – Additional arguments to be passed to Arrow
+
+See also
+
+ArrowTip CurvedDoubleArrow
+
+Examples
+
+Example: DoubleArrowExample 
+
+../_images/DoubleArrowExample-1.png
+from manim import *
+
+from manim.mobject.geometry.tips import ArrowCircleFilledTip
+class DoubleArrowExample(Scene):
+    def construct(self):
+        circle = Circle(radius=2.0)
+        d_arrow = DoubleArrow(start=circle.get_left(), end=circle.get_right())
+        d_arrow_2 = DoubleArrow(tip_shape_end=ArrowCircleFilledTip, tip_shape_start=ArrowCircleFilledTip)
+        group = Group(Group(circle, d_arrow), d_arrow_2).arrange(UP, buff=1)
+        self.add(group)
+Make interactive
+Example: DoubleArrowExample2 
+
+../_images/DoubleArrowExample2-1.png
+from manim import *
+
+class DoubleArrowExample2(Scene):
+    def construct(self):
+        box = Square()
+        p1 = box.get_left()
+        p2 = box.get_right()
+        d1 = DoubleArrow(p1, p2, buff=0)
+        d2 = DoubleArrow(p1, p2, buff=0, tip_length=0.2, color=YELLOW)
+        d3 = DoubleArrow(p1, p2, buff=0, tip_length=0.4, color=BLUE)
+        Group(d1, d2, d3).arrange(DOWN)
+        self.add(box, d1, d2, d3)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(*args, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+args (Any)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+Elbow
+Qualified name: manim.mobject.geometry.line.Elbow
+
+class Elbow(width=0.2, angle=0, **kwargs)[source]
+Bases: VMobject
+
+Two lines that create a right angle about each other: L-shape.
+
+Parameters:
+width (float) – The length of the elbow’s sides.
+
+angle (float) – The rotation of the elbow.
+
+kwargs (Any) – Additional arguments to be passed to VMobject
+
+seealso:: (..) – RightAngle
+
+Examples
+
+Example: ElbowExample 
+
+../_images/ElbowExample-1.png
+from manim import *
+
+class ElbowExample(Scene):
+    def construct(self):
+        elbow_1 = Elbow()
+        elbow_2 = Elbow(width=2.0)
+        elbow_3 = Elbow(width=2.0, angle=5*PI/4)
+
+        elbow_group = Group(elbow_1, elbow_2, elbow_3).arrange(buff=1)
+        self.add(elbow_group)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(width=0.2, angle=0, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+width (float)
+
+angle (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+Line
+Qualified name: manim.mobject.geometry.line.Line
+
+class Line(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), buff=0, path_arc=None, **kwargs)[source]
+Bases: TipableVMobject
+
+Methods
+
+generate_points
+
+Initializes points and therefore the shape.
+
+get_angle
+
+get_projection
+
+Returns the projection of a point onto a line.
+
+get_slope
+
+get_unit_vector
+
+get_vector
+
+init_points
+
+Initializes points and therefore the shape.
+
+put_start_and_end_on
+
+Sets starts and end coordinates of a line.
+
+set_angle
+
+set_length
+
+set_path_arc
+
+set_points_by_ends
+
+Sets the points of the line based on its start and end points.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+Parameters:
+start (Point3DLike | Mobject)
+
+end (Point3DLike | Mobject)
+
+buff (float)
+
+path_arc (float | None)
+
+kwargs (Any)
+
+_original__init__(start=array([-1., 0., 0.]), end=array([1., 0., 0.]), buff=0, path_arc=None, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+start (Point3DLike | Mobject)
+
+end (Point3DLike | Mobject)
+
+buff (float)
+
+path_arc (float | None)
+
+kwargs (Any)
+
+Return type:
+None
+
+_pointify(mob_or_point, direction=None)[source]
+Transforms a mobject into its corresponding point. Does nothing if a point is passed.
+
+direction determines the location of the point along its bounding box in that direction.
+
+Parameters:
+mob_or_point (Mobject | Point3DLike) – The mobject or point.
+
+direction (Vector3D | None) – The direction.
+
+Return type:
+Point3D
+
+generate_points()[source]
+Initializes points and therefore the shape.
+
+Gets called upon creation. This is an empty method that can be implemented by subclasses.
+
+Return type:
+None
+
+get_projection(point)[source]
+Returns the projection of a point onto a line.
+
+Parameters:
+point (Point3DLike) – The point to which the line is projected.
+
+Return type:
+Point3D
+
+init_points()
+Initializes points and therefore the shape.
+
+Gets called upon creation. This is an empty method that can be implemented by subclasses.
+
+Return type:
+None
+
+put_start_and_end_on(start, end)[source]
+Sets starts and end coordinates of a line.
+
+Examples
+
+Example: LineExample 
+
+from manim import *
+
+class LineExample(Scene):
+    def construct(self):
+        d = VGroup()
+        for i in range(0,10):
+            d.add(Dot())
+        d.arrange_in_grid(buff=1)
+        self.add(d)
+        l= Line(d[0], d[1])
+        self.add(l)
+        self.wait()
+        l.put_start_and_end_on(d[1].get_center(), d[2].get_center())
+        self.wait()
+        l.put_start_and_end_on(d[4].get_center(), d[7].get_center())
+        self.wait()
+Make interactive
+Parameters:
+start (Point3DLike)
+
+end (Point3DLike)
+
+Return type:
+Self
+
+set_points_by_ends(start, end, buff=0, path_arc=0)[source]
+Sets the points of the line based on its start and end points. Unlike put_start_and_end_on(), this method respects self.buff and Mobject bounding boxes.
+
+Parameters:
+start (Point3DLike | Mobject) – The start point or Mobject of the line.
+
+end (Point3DLike | Mobject) – The end point or Mobject of the line.
+
+buff (float) – The empty space between the start and end of the line, by default 0.
+
+path_arc (float) – The angle of a circle spanned by this arc, by default 0 which is a straight line.
+
+Return type:
+None
+
+
+
+
+
+RightAngle
+Qualified name: manim.mobject.geometry.line.RightAngle
+
+class RightAngle(line1, line2, length=None, **kwargs)[source]
+Bases: Angle
+
+An elbow-type mobject representing a right angle between two lines.
+
+Parameters:
+line1 (Line) – The first line.
+
+line2 (Line) – The second line.
+
+length (float | None) – The length of the arms.
+
+**kwargs (Any) – Further keyword arguments that are passed to the constructor of Angle.
+
+Examples
+
+Example: RightAngleExample 
+
+../_images/RightAngleExample-1.png
+from manim import *
+
+class RightAngleExample(Scene):
+    def construct(self):
+        line1 = Line( LEFT, RIGHT )
+        line2 = Line( DOWN, UP )
+        rightangles = [
+            RightAngle(line1, line2),
+            RightAngle(line1, line2, length=0.4, quadrant=(1,-1)),
+            RightAngle(line1, line2, length=0.5, quadrant=(-1,1), stroke_width=8),
+            RightAngle(line1, line2, length=0.7, quadrant=(-1,-1), color=RED),
+        ]
+        plots = VGroup()
+        for rightangle in rightangles:
+            plot=VGroup(line1.copy(),line2.copy(), rightangle)
+            plots.add(plot)
+        plots.arrange(buff=1.5)
+        self.add(plots)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(line1, line2, length=None, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+line1 (Line)
+
+line2 (Line)
+
+length (float | None)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+TangentLine
+Qualified name: manim.mobject.geometry.line.TangentLine
+
+class TangentLine(vmob, alpha, length=1, d_alpha=1e-06, **kwargs)[source]
+Bases: Line
+
+Constructs a line tangent to a VMobject at a specific point.
+
+Parameters:
+vmob (VMobject) – The VMobject on which the tangent line is drawn.
+
+alpha (float) – How far along the shape that the line will be constructed. range: 0-1.
+
+length (float) – Length of the tangent line.
+
+d_alpha (float) – The dx value
+
+kwargs (Any) – Additional arguments to be passed to Line
+
+See also
+
+point_from_proportion()
+
+Examples
+
+Example: TangentLineExample 
+
+../_images/TangentLineExample-1.png
+from manim import *
+
+class TangentLineExample(Scene):
+    def construct(self):
+        circle = Circle(radius=2)
+        line_1 = TangentLine(circle, alpha=0.0, length=4, color=BLUE_D) # right
+        line_2 = TangentLine(circle, alpha=0.4, length=4, color=GREEN) # top left
+        self.add(circle, line_1, line_2)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(vmob, alpha, length=1, d_alpha=1e-06, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+vmob (VMobject)
+
+alpha (float)
+
+length (float)
+
+d_alpha (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+Vector
+Qualified name: manim.mobject.geometry.line.Vector
+
+class Vector(direction=array([1., 0., 0.]), buff=0, **kwargs)[source]
+Bases: Arrow
+
+A vector specialized for use in graphs.
+
+Caution
+
+Do not confuse with the Vector2D, Vector3D or VectorND type aliases, which are not Mobjects!
+
+Parameters:
+direction (Point2DLike | Point3DLike) – The direction of the arrow.
+
+buff (float) – The distance of the vector from its endpoints.
+
+kwargs (Any) – Additional arguments to be passed to Arrow
+
+Examples
+
+Example: VectorExample 
+
+../_images/VectorExample-1.png
+from manim import *
+
+class VectorExample(Scene):
+    def construct(self):
+        plane = NumberPlane()
+        vector_1 = Vector([1,2])
+        vector_2 = Vector([-5,-2])
+        self.add(plane, vector_1, vector_2)
+Make interactive
+Methods
+
+coordinate_label
+
+Creates a label based on the coordinates of the vector.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(direction=array([1., 0., 0.]), buff=0, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+direction (Point2DLike | Point3DLike)
+
+buff (float)
+
+kwargs (Any)
+
+Return type:
+None
+
+coordinate_label(integer_labels=True, n_dim=2, color=None, **kwargs)[source]
+Creates a label based on the coordinates of the vector.
+
+Parameters:
+integer_labels (bool) – Whether or not to round the coordinates to integers.
+
+n_dim (int) – The number of dimensions of the vector.
+
+color (ParsableManimColor | None) – Sets the color of label, optional.
+
+kwargs (Any) – Additional arguments to be passed to Matrix.
+
+Returns:
+The label.
+
+Return type:
+Matrix
+
+Examples
+
+Example: VectorCoordinateLabel 
+
+../_images/VectorCoordinateLabel-1.png
+from manim import *
+
+class VectorCoordinateLabel(Scene):
+    def construct(self):
+        plane = NumberPlane()
+
+        vec_1 = Vector([1, 2])
+        vec_2 = Vector([-3, -2])
+        label_1 = vec_1.coordinate_label()
+        label_2 = vec_2.coordinate_label(color=YELLOW)
+
+        self.add(plane, vec_1, vec_2, label_1, label_2)
+Make interactive
+
+
+
+
+
+
+
+
+

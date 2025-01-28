@@ -1,0 +1,641 @@
+point_cloud_mobject
+Mobjects representing point clouds.
+
+Classes
+
+Mobject1D
+
+Mobject2D
+
+PGroup
+
+A group for several point mobjects.
+
+PMobject
+
+A disc made of a cloud of Dots
+
+Point
+
+A mobject representing a point.
+
+PointCloudDot
+
+A disc made of a cloud of dots.
+
+
+
+
+Mobject1D
+Qualified name: manim.mobject.types.point\_cloud\_mobject.Mobject1D
+
+class Mobject1D(density=10, **kwargs)[source]
+Bases: PMobject
+
+Methods
+
+add_line
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+density (int)
+
+kwargs (Any)
+
+_original__init__(density=10, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+density (int)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+Mobject2D
+Qualified name: manim.mobject.types.point\_cloud\_mobject.Mobject2D
+
+class Mobject2D(density=25, **kwargs)[source]
+Bases: PMobject
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+density (int)
+
+kwargs (Any)
+
+_original__init__(density=25, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+density (int)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+
+PGroup
+Qualified name: manim.mobject.types.point\_cloud\_mobject.PGroup
+
+class PGroup(*pmobs, **kwargs)[source]
+Bases: PMobject
+
+A group for several point mobjects.
+
+Examples
+
+Example: PgroupExample 
+
+../_images/PgroupExample-1.png
+from manim import *
+
+class PgroupExample(Scene):
+    def construct(self):
+
+        p1 = PointCloudDot(radius=1, density=20, color=BLUE)
+        p1.move_to(4.5 * LEFT)
+        p2 = PointCloudDot()
+        p3 = PointCloudDot(radius=1.5, stroke_width=2.5, color=PINK)
+        p3.move_to(4.5 * RIGHT)
+        pList = PGroup(p1, p2, p3)
+
+        self.add(pList)
+Make interactive
+Methods
+
+fade_to
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+pmobs (Any)
+
+kwargs (Any)
+
+_original__init__(*pmobs, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+pmobs (Any)
+
+kwargs (Any)
+
+Return type:
+None
+
+
+
+
+
+
+
+PMobject
+Qualified name: manim.mobject.types.point\_cloud\_mobject.PMobject
+
+class PMobject(stroke_width=4, **kwargs)[source]
+Bases: Mobject
+
+A disc made of a cloud of Dots
+
+Examples
+
+Example: PMobjectExample 
+
+../_images/PMobjectExample-1.png
+from manim import *
+
+class PMobjectExample(Scene):
+    def construct(self):
+
+        pG = PGroup()  # This is just a collection of PMobject's
+
+        # As the scale factor increases, the number of points
+        # removed increases.
+        for sf in range(1, 9 + 1):
+            p = PointCloudDot(density=20, radius=1).thin_out(sf)
+            # PointCloudDot is a type of PMobject
+            # and can therefore be added to a PGroup
+            pG.add(p)
+
+        # This organizes all the shapes in a grid.
+        pG.arrange_in_grid()
+
+        self.add(pG)
+Make interactive
+Methods
+
+add_points
+
+Add points.
+
+align_points_with_larger
+
+fade_to
+
+filter_out
+
+get_all_rgbas
+
+get_array_attrs
+
+get_color
+
+Returns the color of the Mobject
+
+get_mobject_type_class
+
+Return the base class of this mobject type.
+
+get_point_mobject
+
+The simplest Mobject to be transformed to or from self.
+
+get_stroke_width
+
+ingest_submobjects
+
+interpolate_color
+
+match_colors
+
+point_from_proportion
+
+pointwise_become_partial
+
+reset_points
+
+Sets points to be an empty array.
+
+set_color
+
+Condition is function which takes in one arguments, (x, y, z).
+
+set_color_by_gradient
+
+set_colors_by_radial_gradient
+
+set_stroke_width
+
+sort_points
+
+Function is any map from R^3 to R
+
+thin_out
+
+Removes all but every nth point for n = factor
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+stroke_width (int)
+
+kwargs (Any)
+
+_original__init__(stroke_width=4, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+stroke_width (int)
+
+kwargs (Any)
+
+Return type:
+None
+
+add_points(points, rgbas=None, color=None, alpha=1)[source]
+Add points.
+
+Points must be a Nx3 numpy array. Rgbas must be a Nx4 numpy array if it is not None.
+
+Parameters:
+points (npt.NDArray)
+
+rgbas (npt.NDArray | None)
+
+color (ParsableManimColor | None)
+
+alpha (float)
+
+Return type:
+Self
+
+get_color()[source]
+Returns the color of the Mobject
+
+Examples
+
+from manim import Square, RED
+Square(color=RED).get_color() == RED
+True
+Return type:
+ManimColor
+
+static get_mobject_type_class()[source]
+Return the base class of this mobject type.
+
+Return type:
+type[PMobject]
+
+get_point_mobject(center=None)[source]
+The simplest Mobject to be transformed to or from self. Should by a point of the appropriate type
+
+Parameters:
+center (Point3DLike | None)
+
+Return type:
+Point
+
+reset_points()[source]
+Sets points to be an empty array.
+
+Return type:
+Self
+
+set_color(color=ManimColor('#FFFF00'), family=True)[source]
+Condition is function which takes in one arguments, (x, y, z). Here it just recurses to submobjects, but in subclasses this should be further implemented based on the the inner workings of color
+
+Parameters:
+color (ParsableManimColor)
+
+family (bool)
+
+Return type:
+Self
+
+set_color_by_gradient(*colors)[source]
+Parameters:
+colors (ParsableManimColor) – The colors to use for the gradient. Use like set_color_by_gradient(RED, BLUE, GREEN).
+
+ManimColor.parse(color) (self.color =)
+
+self (return)
+
+Return type:
+Self
+
+sort_points(function=<function PMobject.<lambda>>)[source]
+Function is any map from R^3 to R
+
+Parameters:
+function (Callable[[npt.NDArray[ManimFloat]], float])
+
+Return type:
+Self
+
+thin_out(factor=5)[source]
+Removes all but every nth point for n = factor
+
+Parameters:
+factor (int)
+
+Return type:
+Self
+
+
+
+
+
+
+
+
+
+
+
+
+Point
+Qualified name: manim.mobject.types.point\_cloud\_mobject.Point
+
+class Point(location=array([0., 0., 0.]), color=ManimColor('#000000'), **kwargs)[source]
+Bases: PMobject
+
+A mobject representing a point.
+
+Examples
+
+Example: ExamplePoint 
+
+../_images/ExamplePoint-1.png
+from manim import *
+
+class ExamplePoint(Scene):
+    def construct(self):
+        colorList = [RED, GREEN, BLUE, YELLOW]
+        for i in range(200):
+            point = Point(location=[0.63 * np.random.randint(-4, 4), 0.37 * np.random.randint(-4, 4), 0], color=np.random.choice(colorList))
+            self.add(point)
+        for i in range(200):
+            point = Point(location=[0.37 * np.random.randint(-4, 4), 0.63 * np.random.randint(-4, 4), 0], color=np.random.choice(colorList))
+            self.add(point)
+        self.add(point)
+Make interactive
+Methods
+
+generate_points
+
+Initializes points and therefore the shape.
+
+init_points
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+location (Vector3D)
+
+color (ManimColor)
+
+kwargs (Any)
+
+_original__init__(location=array([0., 0., 0.]), color=ManimColor('#000000'), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+location (Vector3D)
+
+color (ManimColor)
+
+kwargs (Any)
+
+Return type:
+None
+
+generate_points()[source]
+Initializes points and therefore the shape.
+
+Gets called upon creation. This is an empty method that can be implemented by subclasses.
+
+Return type:
+None
+
+
+
+
+
+
+
+
+
+PointCloudDot
+Qualified name: manim.mobject.types.point\_cloud\_mobject.PointCloudDot
+
+class PointCloudDot(center=array([0., 0., 0.]), radius=2.0, stroke_width=2, density=10, color=ManimColor('#FFFF00'), **kwargs)[source]
+Bases: Mobject1D
+
+A disc made of a cloud of dots.
+
+Examples
+
+Example: PointCloudDotExample 
+
+../_images/PointCloudDotExample-1.png
+from manim import *
+
+class PointCloudDotExample(Scene):
+    def construct(self):
+        cloud_1 = PointCloudDot(color=RED)
+        cloud_2 = PointCloudDot(stroke_width=4, radius=1)
+        cloud_3 = PointCloudDot(density=15)
+
+        group = Group(cloud_1, cloud_2, cloud_3).arrange()
+        self.add(group)
+Make interactive
+Example: PointCloudDotExample2 
+
+from manim import *
+
+class PointCloudDotExample2(Scene):
+    def construct(self):
+        plane = ComplexPlane()
+        cloud = PointCloudDot(color=RED)
+        self.add(
+            plane, cloud
+        )
+        self.wait()
+        self.play(
+            cloud.animate.apply_complex_function(lambda z: np.exp(z))
+        )
+Make interactive
+Methods
+
+generate_points
+
+Initializes points and therefore the shape.
+
+init_points
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+depth
+
+The depth of the mobject.
+
+height
+
+The height of the mobject.
+
+width
+
+The width of the mobject.
+
+Parameters:
+center (Vector3D)
+
+radius (float)
+
+stroke_width (int)
+
+density (int)
+
+color (ManimColor)
+
+kwargs (Any)
+
+_original__init__(center=array([0., 0., 0.]), radius=2.0, stroke_width=2, density=10, color=ManimColor('#FFFF00'), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+center (Vector3D)
+
+radius (float)
+
+stroke_width (int)
+
+density (int)
+
+color (ManimColor)
+
+kwargs (Any)
+
+Return type:
+None
+
+generate_points()[source]
+Initializes points and therefore the shape.
+
+Gets called upon creation. This is an empty method that can be implemented by subclasses.
+
+Return type:
+None
+
+
+
+

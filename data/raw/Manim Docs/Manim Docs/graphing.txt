@@ -1,0 +1,2596 @@
+graphing
+Coordinate systems and function graphing related mobjects.
+
+Modules
+coordinate_systems
+
+Mobjects that represent coordinate systems.
+
+functions
+
+Mobjects representing function graphs.
+
+number_line
+
+Mobject representing a number line.
+
+probability
+
+Mobjects representing objects from probability theory and statistics.
+
+scale
+
+coordinate_systems
+Mobjects that represent coordinate systems.
+
+TypeVar’s
+
+class LineType
+TypeVar('LineType', bound=Line)
+Classes
+
+Axes
+
+Creates a set of axes.
+
+ComplexPlane
+
+A NumberPlane specialized for use with complex numbers.
+
+CoordinateSystem
+
+Abstract base class for Axes and NumberPlane.
+
+NumberPlane
+
+Creates a cartesian plane with background lines.
+
+PolarPlane
+
+Creates a polar plane with background lines.
+
+ThreeDAxes
+
+A 3-dimensional set of axes.
+
+
+
+
+
+Axes
+Qualified name: manim.mobject.graphing.coordinate\_systems.Axes
+
+class Axes(x_range=None, y_range=None, x_length=12, y_length=6, axis_config=None, x_axis_config=None, y_axis_config=None, tips=True, **kwargs)[source]
+Bases: VGroup, CoordinateSystem
+
+Creates a set of axes.
+
+Parameters:
+x_range (Sequence[float] | None) – The (x_min, x_max, x_step) values of the x-axis.
+
+y_range (Sequence[float] | None) – The (y_min, y_max, y_step) values of the y-axis.
+
+x_length (float | None) – The length of the x-axis.
+
+y_length (float | None) – The length of the y-axis.
+
+axis_config (dict | None) – Arguments to be passed to NumberLine that influences both axes.
+
+x_axis_config (dict | None) – Arguments to be passed to NumberLine that influence the x-axis.
+
+y_axis_config (dict | None) – Arguments to be passed to NumberLine that influence the y-axis.
+
+tips (bool) – Whether or not to include the tips on both axes.
+
+kwargs (Any) – Additional arguments to be passed to CoordinateSystem and VGroup.
+
+Examples
+
+Example: LogScalingExample 
+
+../_images/LogScalingExample-1.png
+from manim import *
+
+class LogScalingExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0, 10, 1],
+            y_range=[-2, 6, 1],
+            tips=False,
+            axis_config={"include_numbers": True},
+            y_axis_config={"scaling": LogBase(custom_labels=True)},
+        )
+
+        # x_min must be > 0 because log is undefined at 0.
+        graph = ax.plot(lambda x: x ** 2, x_range=[0.001, 10], use_smoothing=False)
+        self.add(ax, graph)
+Make interactive
+Styling arguments can be passed to the underlying NumberLine mobjects that represent the axes:
+
+Example: AxesWithDifferentTips 
+
+../_images/AxesWithDifferentTips-1.png
+from manim import *
+
+class AxesWithDifferentTips(Scene):
+    def construct(self):
+        ax = Axes(axis_config={'tip_shape': StealthTip})
+        self.add(ax)
+Make interactive
+Methods
+
+coords_to_point
+
+Accepts coordinates from the axes and returns a point with respect to the scene.
+
+get_axes
+
+Gets the axes.
+
+get_axis_labels
+
+Defines labels for the x-axis and y-axis of the graph.
+
+plot_line_graph
+
+Draws a line graph.
+
+point_to_coords
+
+Accepts a point from the scene and returns its coordinates with respect to the axes.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_create_axis(range_terms, axis_config, length)[source]
+Creates an axis and dynamically adjusts its position depending on where 0 is located on the line.
+
+Parameters:
+range_terms (Sequence[float]) – The range of the the axis : (x_min, x_max, x_step).
+
+axis_config (dict[str, Any]) – Additional parameters that are passed to NumberLine.
+
+length (float) – The length of the axis.
+
+Returns:
+Returns a number line based on range_terms.
+
+Return type:
+NumberLine
+
+static _origin_shift(axis_range)[source]
+Determines how to shift graph mobjects to compensate when 0 is not on the axis.
+
+Parameters:
+axis_range (Sequence[float]) – The range of the axis : (x_min, x_max, x_step).
+
+Return type:
+float
+
+_original__init__(x_range=None, y_range=None, x_length=12, y_length=6, axis_config=None, x_axis_config=None, y_axis_config=None, tips=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+x_range (Sequence[float] | None)
+
+y_range (Sequence[float] | None)
+
+x_length (float | None)
+
+y_length (float | None)
+
+axis_config (dict | None)
+
+x_axis_config (dict | None)
+
+y_axis_config (dict | None)
+
+tips (bool)
+
+kwargs (Any)
+
+Return type:
+None
+
+static _update_default_configs(default_configs, passed_configs)[source]
+Takes in two tuples of dicts and return modifies the first such that values from passed_configs overwrite values in default_configs. If a key does not exist in default_configs, it is added to the dict.
+
+This method is useful for having defaults in a class and being able to overwrite them with user-defined input.
+
+Parameters:
+default_configs (tuple[dict[Any, Any]]) – The dict that will be updated.
+
+passed_configs (tuple[dict[Any, Any]]) – The dict that will be used to update.
+
+Return type:
+None
+
+Examples
+
+To create a tuple with one dictionary, add a comma after the element:
+
+self._update_default_configs(
+    (dict_1,)(
+        dict_2,
+    )
+)
+coords_to_point(*coords)[source]
+Accepts coordinates from the axes and returns a point with respect to the scene. Equivalent to ax @ (coord1)
+
+Parameters:
+coords (float | Sequence[float] | Sequence[Sequence[float]] | ndarray) –
+
+The coordinates. Each coord is passed as a separate argument: ax.coords_to_point(1, 2, 3).
+
+Also accepts a list of coordinates
+
+ax.coords_to_point( [x_0, x_1, ...], [y_0, y_1, ...], ... )
+
+ax.coords_to_point( [[x_0, y_0, z_0], [x_1, y_1, z_1]] )
+
+Returns:
+A point with respect to the scene’s coordinate system. The shape of the array will be similar to the shape of the input.
+
+Return type:
+np.ndarray
+
+Examples
+
+from manim import Axes
+import numpy as np
+ax = Axes()
+np.around(ax.coords_to_point(1, 0, 0), 2)
+array([0.86, 0.  , 0.  ])
+np.around(ax @ (1, 0, 0), 2)
+array([0.86, 0.  , 0.  ])
+np.around(ax.coords_to_point([[0, 1], [1, 1], [1, 0]]), 2)
+array([[0.  , 0.75, 0.  ],
+       [0.86, 0.75, 0.  ],
+       [0.86, 0.  , 0.  ]])
+np.around(
+    ax.coords_to_point([0, 1, 1], [1, 1, 0]), 2
+)  # Transposed version of the above
+array([[0.  , 0.86, 0.86],
+       [0.75, 0.75, 0.  ],
+       [0.  , 0.  , 0.  ]])
+Example: CoordsToPointExample 
+
+../_images/CoordsToPointExample-1.png
+from manim import *
+
+class CoordsToPointExample(Scene):
+    def construct(self):
+        ax = Axes().add_coordinates()
+
+        # a dot with respect to the axes
+        dot_axes = Dot(ax.coords_to_point(2, 2), color=GREEN)
+        lines = ax.get_lines_to_point(ax.c2p(2,2))
+
+        # a dot with respect to the scene
+        # the default plane corresponds to the coordinates of the scene.
+        plane = NumberPlane()
+        dot_scene = Dot((2,2,0), color=RED)
+
+        self.add(plane, dot_scene, ax, dot_axes, lines)
+Make interactive
+get_axes()[source]
+Gets the axes.
+
+Returns:
+A pair of axes.
+
+Return type:
+VGroup
+
+get_axis_labels(x_label='x', y_label='y')[source]
+Defines labels for the x-axis and y-axis of the graph.
+
+For increased control over the position of the labels, use get_x_axis_label() and get_y_axis_label().
+
+Parameters:
+x_label (float | str | Mobject) – The label for the x_axis. Defaults to MathTex for str and float inputs.
+
+y_label (float | str | Mobject) – The label for the y_axis. Defaults to MathTex for str and float inputs.
+
+Returns:
+A VGroup of the labels for the x_axis and y_axis.
+
+Return type:
+VGroup
+
+See also
+
+get_x_axis_label() get_y_axis_label()
+
+Examples
+
+Example: GetAxisLabelsExample 
+
+../_images/GetAxisLabelsExample-1.png
+from manim import *
+
+class GetAxisLabelsExample(Scene):
+    def construct(self):
+        ax = Axes()
+        labels = ax.get_axis_labels(
+            Tex("x-axis").scale(0.7), Text("y-axis").scale(0.45)
+        )
+        self.add(ax, labels)
+Make interactive
+plot_line_graph(x_values, y_values, z_values=None, line_color=ManimColor('#FFFF00'), add_vertex_dots=True, vertex_dot_radius=0.08, vertex_dot_style=None, **kwargs)[source]
+Draws a line graph.
+
+The graph connects the vertices formed from zipping x_values, y_values and z_values. Also adds Dots at the vertices if add_vertex_dots is set to True.
+
+Parameters:
+x_values (Iterable[float]) – Iterable of values along the x-axis.
+
+y_values (Iterable[float]) – Iterable of values along the y-axis.
+
+z_values (Iterable[float] | None) – Iterable of values (zeros if z_values is None) along the z-axis.
+
+line_color (ParsableManimColor) – Color for the line graph.
+
+add_vertex_dots (bool) – Whether or not to add Dot at each vertex.
+
+vertex_dot_radius (float) – Radius for the Dot at each vertex.
+
+vertex_dot_style (dict[str, Any] | None) – Style arguments to be passed into Dot at each vertex.
+
+kwargs (Any) – Additional arguments to be passed into VMobject.
+
+Returns:
+A VDict containing both the line and dots (if specified). The line can be accessed with: line_graph["line_graph"]. The dots can be accessed with: line_graph["vertex_dots"].
+
+Return type:
+VDict
+
+Examples
+
+Example: LineGraphExample 
+
+../_images/LineGraphExample-1.png
+from manim import *
+
+class LineGraphExample(Scene):
+    def construct(self):
+        plane = NumberPlane(
+            x_range = (0, 7),
+            y_range = (0, 5),
+            x_length = 7,
+            axis_config={"include_numbers": True},
+        )
+        plane.center()
+        line_graph = plane.plot_line_graph(
+            x_values = [0, 1.5, 2, 2.8, 4, 6.25],
+            y_values = [1, 3, 2.25, 4, 2.5, 1.75],
+            line_color=GOLD_E,
+            vertex_dot_style=dict(stroke_width=3,  fill_color=PURPLE),
+            stroke_width = 4,
+        )
+        self.add(plane, line_graph)
+Make interactive
+point_to_coords(point)[source]
+Accepts a point from the scene and returns its coordinates with respect to the axes.
+
+Parameters:
+point (Sequence[float]) – The point, i.e. RIGHT or [0, 1, 0]. Also accepts a list of points as [RIGHT, [0, 1, 0]].
+
+Returns:
+The coordinates on the axes, i.e. [4.0, 7.0]. Or a list of coordinates if point is a list of points.
+
+Return type:
+np.ndarray[float]
+
+Examples
+
+from manim import Axes, RIGHT
+import numpy as np
+ax = Axes(x_range=[0, 10, 2])
+np.around(ax.point_to_coords(RIGHT), 2)
+array([5.83, 0.  ])
+np.around(ax.point_to_coords([[0, 0, 1], [1, 0, 0]]), 2)
+array([[5.  , 0.  ],
+       [5.83, 0.  ]])
+Example: PointToCoordsExample 
+
+../_images/PointToCoordsExample-1.png
+from manim import *
+
+class PointToCoordsExample(Scene):
+    def construct(self):
+        ax = Axes(x_range=[0, 10, 2]).add_coordinates()
+        circ = Circle(radius=0.5).shift(UR * 2)
+
+        # get the coordinates of the circle with respect to the axes
+        coords = np.around(ax.point_to_coords(circ.get_right()), decimals=2)
+
+        label = (
+            Matrix([[coords[0]], [coords[1]]]).scale(0.75).next_to(circ, RIGHT)
+        )
+
+        self.add(ax, circ, label, Dot(circ.get_right()))
+
+
+
+
+
+
+
+
+
+ComplexPlane
+Qualified name: manim.mobject.graphing.coordinate\_systems.ComplexPlane
+
+class ComplexPlane(**kwargs)[source]
+Bases: NumberPlane
+
+A NumberPlane specialized for use with complex numbers.
+
+Examples
+
+Example: ComplexPlaneExample 
+
+../_images/ComplexPlaneExample-1.png
+from manim import *
+
+class ComplexPlaneExample(Scene):
+    def construct(self):
+        plane = ComplexPlane().add_coordinates()
+        self.add(plane)
+        d1 = Dot(plane.n2p(2 + 1j), color=YELLOW)
+        d2 = Dot(plane.n2p(-3 - 2j), color=YELLOW)
+        label1 = MathTex("2+i").next_to(d1, UR, 0.1)
+        label2 = MathTex("-3-2i").next_to(d2, UR, 0.1)
+        self.add(
+            d1,
+            label1,
+            d2,
+            label2,
+        )
+Make interactive
+References: Dot MathTex
+
+Methods
+
+add_coordinates
+
+Adds the labels produced from get_coordinate_labels() to the plane.
+
+get_coordinate_labels
+
+Generates the DecimalNumber mobjects for the coordinates of the plane.
+
+n2p
+
+Abbreviation for number_to_point().
+
+number_to_point
+
+Accepts a float/complex number and returns the equivalent point on the plane.
+
+p2n
+
+Abbreviation for point_to_number().
+
+point_to_number
+
+Accepts a point and returns a complex number equivalent to that point on the plane.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+Parameters:
+kwargs (Any)
+
+_get_default_coordinate_values()[source]
+Generate a list containing the numerical values of the plane’s labels.
+
+Returns:
+A list of floats representing the x-axis and complex numbers representing the y-axis.
+
+Return type:
+List[float | complex]
+
+_original__init__(**kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+kwargs (Any)
+
+Return type:
+None
+
+add_coordinates(*numbers, **kwargs)[source]
+Adds the labels produced from get_coordinate_labels() to the plane.
+
+Parameters:
+numbers (Iterable[float | complex]) – An iterable of floats/complex numbers. Floats are positioned along the x-axis, complex numbers along the y-axis.
+
+kwargs (Any) – Additional arguments to be passed to get_number_mobject(), i.e. DecimalNumber.
+
+Return type:
+Self
+
+get_coordinate_labels(*numbers, **kwargs)[source]
+Generates the DecimalNumber mobjects for the coordinates of the plane.
+
+Parameters:
+numbers (Iterable[float | complex]) – An iterable of floats/complex numbers. Floats are positioned along the x-axis, complex numbers along the y-axis.
+
+kwargs (Any) – Additional arguments to be passed to get_number_mobject(), i.e. DecimalNumber.
+
+Returns:
+A VGroup containing the positioned label mobjects.
+
+Return type:
+VGroup
+
+n2p(number)[source]
+Abbreviation for number_to_point().
+
+Parameters:
+number (float | complex)
+
+Return type:
+ndarray
+
+number_to_point(number)[source]
+Accepts a float/complex number and returns the equivalent point on the plane.
+
+Parameters:
+number (float | complex) – The number. Can be a float or a complex number.
+
+Returns:
+The point on the plane.
+
+Return type:
+np.ndarray
+
+p2n(point)[source]
+Abbreviation for point_to_number().
+
+Parameters:
+point (Point3DLike)
+
+Return type:
+complex
+
+point_to_number(point)[source]
+Accepts a point and returns a complex number equivalent to that point on the plane.
+
+Parameters:
+point (Point3DLike) – The point in manim’s coordinate-system
+
+Returns:
+A complex number consisting of real and imaginary components.
+
+Return type:
+complex
+
+
+
+
+
+
+
+
+
+CoordinateSystem
+Qualified name: manim.mobject.graphing.coordinate\_systems.CoordinateSystem
+
+class CoordinateSystem(x_range=None, y_range=None, x_length=None, y_length=None, dimension=2)[source]
+Bases: object
+
+Abstract base class for Axes and NumberPlane.
+
+Examples
+
+Example: CoordSysExample 
+
+../_images/CoordSysExample-1.png
+from manim import *
+
+class CoordSysExample(Scene):
+    def construct(self):
+        # the location of the ticks depends on the x_range and y_range.
+        grid = Axes(
+            x_range=[0, 1, 0.05],  # step size determines num_decimal_places.
+            y_range=[0, 1, 0.05],
+            x_length=9,
+            y_length=5.5,
+            axis_config={
+                "numbers_to_include": np.arange(0, 1 + 0.1, 0.1),
+                "font_size": 24,
+            },
+            tips=False,
+        )
+
+        # Labels for the x-axis and y-axis.
+        y_label = grid.get_y_axis_label("y", edge=LEFT, direction=LEFT, buff=0.4)
+        x_label = grid.get_x_axis_label("x")
+        grid_labels = VGroup(x_label, y_label)
+
+        graphs = VGroup()
+        for n in np.arange(1, 20 + 0.5, 0.5):
+            graphs += grid.plot(lambda x: x ** n, color=WHITE)
+            graphs += grid.plot(
+                lambda x: x ** (1 / n), color=WHITE, use_smoothing=False
+            )
+
+        # Extra lines and labels for point (1,1)
+        graphs += grid.get_horizontal_line(grid @ (1, 1, 0), color=BLUE)
+        graphs += grid.get_vertical_line(grid @ (1, 1, 0), color=BLUE)
+        graphs += Dot(point=grid @ (1, 1, 0), color=YELLOW)
+        graphs += Tex("(1,1)").scale(0.75).next_to(grid @ (1, 1, 0))
+        title = Title(
+            # spaces between braces to prevent SyntaxError
+            r"Graphs of $y=x^{ {1}\over{n} }$ and $y=x^n (n=1,2,3,...,20)$",
+            include_underline=False,
+            font_size=40,
+        )
+
+        self.add(title, graphs, grid, grid_labels)
+Make interactive
+Methods
+
+add_coordinates
+
+Adds labels to the axes.
+
+angle_of_tangent
+
+Returns the angle to the x-axis of the tangent to the plotted curve at a particular x-value.
+
+c2p
+
+Abbreviation for coords_to_point()
+
+coords_to_point
+
+get_T_label
+
+Creates a labelled triangle marker with a vertical line from the x-axis to a curve at a given x-value.
+
+get_area
+
+Returns a Polygon representing the area under the graph passed.
+
+get_axes
+
+get_axis
+
+get_axis_labels
+
+get_graph_label
+
+Creates a properly positioned label for the passed graph, with an optional dot.
+
+get_horizontal_line
+
+A horizontal line from the y-axis to a given point in the scene.
+
+get_line_from_axis_to_point
+
+Returns a straight line from a given axis to a point in the scene.
+
+get_lines_to_point
+
+Generate both horizontal and vertical lines from the axis to a point.
+
+get_origin
+
+Gets the origin of Axes.
+
+get_riemann_rectangles
+
+Generates a VGroup of the Riemann Rectangles for a given curve.
+
+get_secant_slope_group
+
+Creates two lines representing dx and df, the labels for dx and df, and
+
+get_vertical_line
+
+A vertical line from the x-axis to a given point in the scene.
+
+get_vertical_lines_to_graph
+
+Obtains multiple lines from the x-axis to the curve.
+
+get_x_axis
+
+get_x_axis_label
+
+Generate an x-axis label.
+
+get_x_unit_size
+
+get_y_axis
+
+get_y_axis_label
+
+Generate a y-axis label.
+
+get_y_unit_size
+
+get_z_axis
+
+i2gc
+
+Alias for input_to_graph_coords().
+
+i2gp
+
+Alias for input_to_graph_point().
+
+input_to_graph_coords
+
+Returns a tuple of the axis relative coordinates of the point on the graph based on the x-value given.
+
+input_to_graph_point
+
+Returns the coordinates of the point on a graph corresponding to an x value.
+
+p2c
+
+Abbreviation for point_to_coords()
+
+plot
+
+Generates a curve based on a function.
+
+plot_antiderivative_graph
+
+Plots an antiderivative graph.
+
+plot_derivative_graph
+
+Returns the curve of the derivative of the passed graph.
+
+plot_implicit_curve
+
+Creates the curves of an implicit function.
+
+plot_parametric_curve
+
+A parametric curve.
+
+plot_polar_graph
+
+A polar graph.
+
+plot_surface
+
+Generates a surface based on a function.
+
+point_to_coords
+
+point_to_polar
+
+Gets polar coordinates from a point.
+
+polar_to_point
+
+Gets a point from polar coordinates.
+
+pr2pt
+
+Abbreviation for polar_to_point()
+
+pt2pr
+
+Abbreviation for point_to_polar()
+
+slope_of_tangent
+
+Returns the slope of the tangent to the plotted curve at a particular x-value.
+
+Parameters:
+x_range (Sequence[float] | None)
+
+y_range (Sequence[float] | None)
+
+x_length (float | None)
+
+y_length (float | None)
+
+dimension (int)
+
+_get_axis_label(label, axis, edge, direction, buff=0.1)[source]
+Gets the label for an axis.
+
+Parameters:
+label (float | str | Mobject) – The label. Defaults to MathTex for str and float inputs.
+
+axis (Mobject) – The axis to which the label will be added.
+
+edge (Sequence[float]) – The edge of the axes to which the label will be added. RIGHT adds to the right side of the axis
+
+direction (Sequence[float]) – Allows for further positioning of the label.
+
+buff (float) – The distance of the label from the line.
+
+Returns:
+The positioned label along the given axis.
+
+Return type:
+Mobject
+
+add_coordinates(*axes_numbers, **kwargs)[source]
+Adds labels to the axes. Use Axes.coordinate_labels to access the coordinates after creation.
+
+Parameters:
+axes_numbers (Iterable[float] | None | dict[float, str | float | Mobject]) – The numbers to be added to the axes. Use None to represent an axis with default labels.
+
+kwargs (Any)
+
+Return type:
+Self
+
+Examples
+
+ax = ThreeDAxes()
+x_labels = range(-4, 5)
+z_labels = range(-4, 4, 2)
+ax.add_coordinates(
+    x_labels, None, z_labels
+)  # default y labels, custom x & z labels
+ax.add_coordinates(x_labels)  # only x labels
+You can also specifically control the position and value of the labels using a dict.
+
+ax = Axes(x_range=[0, 7])
+x_pos = [x for x in range(1, 8)]
+
+# strings are automatically converted into a Tex mobject.
+x_vals = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+]
+x_dict = dict(zip(x_pos, x_vals))
+ax.add_coordinates(x_dict)
+angle_of_tangent(x, graph, dx=1e-08)[source]
+Returns the angle to the x-axis of the tangent to the plotted curve at a particular x-value.
+
+Parameters:
+x (float) – The x-value at which the tangent must touch the curve.
+
+graph (ParametricFunction) – The ParametricFunction for which to calculate the tangent.
+
+dx (float) – The change in x used to determine the angle of the tangent to the curve.
+
+Returns:
+The angle of the tangent to the curve.
+
+Return type:
+float
+
+Examples
+
+ax = Axes()
+curve = ax.plot(lambda x: x**2)
+ax.angle_of_tangent(x=3, graph=curve)
+# 1.4056476493802699
+c2p(*coords)[source]
+Abbreviation for coords_to_point()
+
+Parameters:
+coords (float | Sequence[float] | Sequence[Sequence[float]] | ndarray)
+
+Return type:
+ndarray
+
+get_T_label(x_val, graph, label=None, label_color=None, triangle_size=0.25, triangle_color=ManimColor('#FFFFFF'), line_func=<class 'manim.mobject.geometry.line.Line'>, line_color=ManimColor('#FFFF00'))[source]
+Creates a labelled triangle marker with a vertical line from the x-axis to a curve at a given x-value.
+
+Parameters:
+x_val (float) – The position along the curve at which the label, line and triangle will be constructed.
+
+graph (ParametricFunction) – The ParametricFunction for which to construct the label.
+
+label (float | str | Mobject | None) – The label of the vertical line and triangle.
+
+label_color (ParsableManimColor | None) – The color of the label.
+
+triangle_size (float) – The size of the triangle.
+
+triangle_color (ParsableManimColor | None) – The color of the triangle.
+
+line_func (type[Line]) – The function used to construct the vertical line.
+
+line_color (ParsableManimColor) – The color of the vertical line.
+
+Returns:
+A VGroup of the label, triangle and vertical line mobjects.
+
+Return type:
+VGroup
+
+Examples
+
+Example: TLabelExample 
+
+../_images/TLabelExample-1.png
+from manim import *
+
+class TLabelExample(Scene):
+    def construct(self):
+        # defines the axes and linear function
+        axes = Axes(x_range=[-1, 10], y_range=[-1, 10], x_length=9, y_length=6)
+        func = axes.plot(lambda x: x, color=BLUE)
+        # creates the T_label
+        t_label = axes.get_T_label(x_val=4, graph=func, label=Tex("x-value"))
+        self.add(axes, func, t_label)
+Make interactive
+get_area(graph, x_range=None, color=(ManimColor('#58C4DD'), ManimColor('#83C167')), opacity=0.3, bounded_graph=None, **kwargs)[source]
+Returns a Polygon representing the area under the graph passed.
+
+Parameters:
+graph (ParametricFunction) – The graph/curve for which the area needs to be gotten.
+
+x_range (tuple[float, float] | None) – The range of the minimum and maximum x-values of the area. x_range = [x_min, x_max].
+
+color (ParsableManimColor | Iterable[ParsableManimColor]) – The color of the area. Creates a gradient if a list of colors is provided.
+
+opacity (float) – The opacity of the area.
+
+bounded_graph (ParametricFunction) – If a secondary graph is specified, encloses the area between the two curves.
+
+kwargs (Any) – Additional parameters passed to Polygon.
+
+Returns:
+The Polygon representing the area.
+
+Return type:
+Polygon
+
+Raises:
+ValueError – When x_ranges do not match (either area x_range, graph’s x_range or bounded_graph’s x_range).
+
+Examples
+
+Example: GetAreaExample 
+
+../_images/GetAreaExample-1.png
+from manim import *
+
+class GetAreaExample(Scene):
+    def construct(self):
+        ax = Axes().add_coordinates()
+        curve = ax.plot(lambda x: 2 * np.sin(x), color=DARK_BLUE)
+        area = ax.get_area(
+            curve,
+            x_range=(PI / 2, 3 * PI / 2),
+            color=(GREEN_B, GREEN_D),
+            opacity=1,
+        )
+
+        self.add(ax, curve, area)
+Make interactive
+get_graph_label(graph, label='f(x)', x_val=None, direction=array([1., 0., 0.]), buff=0.25, color=None, dot=False, dot_config=None)[source]
+Creates a properly positioned label for the passed graph, with an optional dot.
+
+Parameters:
+graph (ParametricFunction) – The curve.
+
+label (float | str | Mobject) – The label for the function’s curve. Defaults to MathTex for str and float inputs.
+
+x_val (float | None) – The x_value along the curve that positions the label.
+
+direction (Sequence[float]) – The cartesian position, relative to the curve that the label will be at –> LEFT, RIGHT.
+
+buff (float) – The distance between the curve and the label.
+
+color (ParsableManimColor | None) – The color of the label. Defaults to the color of the curve.
+
+dot (bool) – Whether to add a dot at the point on the graph.
+
+dot_config (dict[str, Any] | None) – Additional parameters to be passed to Dot.
+
+Returns:
+The positioned label and Dot, if applicable.
+
+Return type:
+Mobject
+
+Examples
+
+Example: GetGraphLabelExample 
+
+../_images/GetGraphLabelExample-1.png
+from manim import *
+
+class GetGraphLabelExample(Scene):
+    def construct(self):
+        ax = Axes()
+        sin = ax.plot(lambda x: np.sin(x), color=PURPLE_B)
+        label = ax.get_graph_label(
+            graph=sin,
+            label= MathTex(r"\frac{\pi}{2}"),
+            x_val=PI / 2,
+            dot=True,
+            direction=UR,
+        )
+
+        self.add(ax, sin, label)
+Make interactive
+get_horizontal_line(point, **kwargs)[source]
+A horizontal line from the y-axis to a given point in the scene.
+
+Parameters:
+point (Sequence[float]) – The point to which the horizontal line will be drawn.
+
+kwargs – Additional parameters to be passed to get_line_from_axis_to_point.
+
+Returns:
+A horizontal line from the y-axis to the point.
+
+Return type:
+Line
+
+Examples
+
+Example: GetHorizontalLineExample 
+
+../_images/GetHorizontalLineExample-1.png
+from manim import *
+
+class GetHorizontalLineExample(Scene):
+    def construct(self):
+        ax = Axes().add_coordinates()
+        point = ax @ (-4, 1.5)
+
+        dot = Dot(point)
+        line = ax.get_horizontal_line(point, line_func=Line)
+
+        self.add(ax, line, dot)
+Make interactive
+get_line_from_axis_to_point(index: int, point: Sequence[float], line_config: dict | None = None, color: ParsableManimColor | None = None, stroke_width: float = 2) → DashedLine[source]
+get_line_from_axis_to_point(index: int, point: Sequence[float], line_func: type[LineType], line_config: dict | None = None, color: ParsableManimColor | None = None, stroke_width: float = 2) → LineType
+Returns a straight line from a given axis to a point in the scene.
+
+Parameters:
+index – Specifies the axis from which to draw the line. 0 = x_axis, 1 = y_axis
+
+point – The point to which the line will be drawn.
+
+line_func – The function of the Line mobject used to construct the line.
+
+line_config – Optional arguments to passed to line_func.
+
+color – The color of the line.
+
+stroke_width – The stroke width of the line.
+
+Returns:
+The line from an axis to a point.
+
+Return type:
+Line
+
+See also
+
+get_vertical_line() get_horizontal_line()
+
+get_lines_to_point(point, **kwargs)[source]
+Generate both horizontal and vertical lines from the axis to a point.
+
+Parameters:
+point (Sequence[float]) – A point on the scene.
+
+kwargs – Additional parameters to be passed to get_line_from_axis_to_point()
+
+Returns:
+A VGroup of the horizontal and vertical lines.
+
+Return type:
+VGroup
+
+See also
+
+get_vertical_line() get_horizontal_line()
+
+Examples
+
+Example: GetLinesToPointExample 
+
+../_images/GetLinesToPointExample-1.png
+from manim import *
+
+class GetLinesToPointExample(Scene):
+    def construct(self):
+        ax = Axes()
+        circ = Circle(radius=0.5).move_to([-4, -1.5, 0])
+
+        lines_1 = ax.get_lines_to_point(circ.get_right(), color=GREEN_B)
+        lines_2 = ax.get_lines_to_point(circ.get_corner(DL), color=BLUE_B)
+        self.add(ax, lines_1, lines_2, circ)
+Make interactive
+get_origin()[source]
+Gets the origin of Axes.
+
+Returns:
+The center point.
+
+Return type:
+np.ndarray
+
+get_riemann_rectangles(graph, x_range=None, dx=0.1, input_sample_type='left', stroke_width=1, stroke_color=ManimColor('#000000'), fill_opacity=1, color=(ManimColor('#58C4DD'), ManimColor('#83C167')), show_signed_area=True, bounded_graph=None, blend=False, width_scale_factor=1.001)[source]
+Generates a VGroup of the Riemann Rectangles for a given curve.
+
+Parameters:
+graph (ParametricFunction) – The graph whose area will be approximated by Riemann rectangles.
+
+x_range (Sequence[float] | None) – The minimum and maximum x-values of the rectangles. x_range = [x_min, x_max].
+
+dx (float | None) – The change in x-value that separates each rectangle.
+
+input_sample_type (str) – Can be any of "left", "right" or "center". Refers to where the sample point for the height of each Riemann Rectangle will be inside the segments of the partition.
+
+stroke_width (float) – The stroke_width of the border of the rectangles.
+
+stroke_color (ParsableManimColor) – The color of the border of the rectangle.
+
+fill_opacity (float) – The opacity of the rectangles.
+
+color (Iterable[ParsableManimColor] | ParsableManimColor) – The colors of the rectangles. Creates a balanced gradient if multiple colors are passed.
+
+show_signed_area (bool) – Indicates negative area when the curve dips below the x-axis by inverting its color.
+
+blend (bool) – Sets the stroke_color to fill_color, blending the rectangles without clear separation.
+
+bounded_graph (ParametricFunction) – If a secondary graph is specified, encloses the area between the two curves.
+
+width_scale_factor (float) – The factor by which the width of the rectangles is scaled.
+
+Returns:
+A VGroup containing the Riemann Rectangles.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetRiemannRectanglesExample 
+
+../_images/GetRiemannRectanglesExample-1.png
+from manim import *
+
+class GetRiemannRectanglesExample(Scene):
+    def construct(self):
+        ax = Axes(y_range=[-2, 10])
+        quadratic = ax.plot(lambda x: 0.5 * x ** 2 - 0.5)
+
+        # the rectangles are constructed from their top right corner.
+        # passing an iterable to `color` produces a gradient
+        rects_right = ax.get_riemann_rectangles(
+            quadratic,
+            x_range=[-4, -3],
+            dx=0.25,
+            color=(TEAL, BLUE_B, DARK_BLUE),
+            input_sample_type="right",
+        )
+
+        # the colour of rectangles below the x-axis is inverted
+        # due to show_signed_area
+        rects_left = ax.get_riemann_rectangles(
+            quadratic, x_range=[-1.5, 1.5], dx=0.15, color=YELLOW
+        )
+
+        bounding_line = ax.plot(
+            lambda x: 1.5 * x, color=BLUE_B, x_range=[3.3, 6]
+        )
+        bounded_rects = ax.get_riemann_rectangles(
+            bounding_line,
+            bounded_graph=quadratic,
+            dx=0.15,
+            x_range=[4, 5],
+            show_signed_area=False,
+            color=(MAROON_A, RED_B, PURPLE_D),
+        )
+
+        self.add(
+            ax, bounding_line, quadratic, rects_right, rects_left, bounded_rects
+        )
+Make interactive
+get_secant_slope_group(x, graph, dx=None, dx_line_color=ManimColor('#FFFF00'), dy_line_color=None, dx_label=None, dy_label=None, include_secant_line=True, secant_line_color=ManimColor('#83C167'), secant_line_length=10)[source]
+Creates two lines representing dx and df, the labels for dx and df, and
+the secant to the curve at a particular x-value.
+
+Parameters:
+x (float) – The x-value at which the secant intersects the graph for the first time.
+
+graph (ParametricFunction) – The curve for which the secant will be found.
+
+dx (float | None) – The change in x after which the secant exits.
+
+dx_line_color (ParsableManimColor) – The color of the line that indicates the change in x.
+
+dy_line_color (ParsableManimColor | None) – The color of the line that indicates the change in y. Defaults to the color of graph.
+
+dx_label (float | str | None) – The label for the dx line. Defaults to MathTex for str and float inputs.
+
+dy_label (float | str | None) – The label for the dy line. Defaults to MathTex for str and float inputs.
+
+include_secant_line (bool) – Whether to include the secant line in the graph, or just the df/dx lines and labels.
+
+secant_line_color (ParsableManimColor) – The color of the secant line.
+
+secant_line_length (float) – The length of the secant line.
+
+Returns:
+A group containing the elements: dx_line, df_line, and if applicable also dx_label, df_label, secant_line.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetSecantSlopeGroupExample 
+
+../_images/GetSecantSlopeGroupExample-1.png
+from manim import *
+
+class GetSecantSlopeGroupExample(Scene):
+    def construct(self):
+        ax = Axes(y_range=[-1, 7])
+        graph = ax.plot(lambda x: 1 / 4 * x ** 2, color=BLUE)
+        slopes = ax.get_secant_slope_group(
+            x=2.0,
+            graph=graph,
+            dx=1.0,
+            dx_label=Tex("dx = 1.0"),
+            dy_label="dy",
+            dx_line_color=GREEN_B,
+            secant_line_length=4,
+            secant_line_color=RED_D,
+        )
+
+        self.add(ax, graph, slopes)
+Make interactive
+get_vertical_line(point, **kwargs)[source]
+A vertical line from the x-axis to a given point in the scene.
+
+Parameters:
+point (Sequence[float]) – The point to which the vertical line will be drawn.
+
+kwargs (Any) – Additional parameters to be passed to get_line_from_axis_to_point.
+
+Returns:
+A vertical line from the x-axis to the point.
+
+Return type:
+Line
+
+Examples
+
+Example: GetVerticalLineExample 
+
+../_images/GetVerticalLineExample-1.png
+from manim import *
+
+class GetVerticalLineExample(Scene):
+    def construct(self):
+        ax = Axes().add_coordinates()
+        point = ax.coords_to_point(-3.5, 2)
+
+        dot = Dot(point)
+        line = ax.get_vertical_line(point, line_config={"dashed_ratio": 0.85})
+
+        self.add(ax, line, dot)
+Make interactive
+get_vertical_lines_to_graph(graph, x_range=None, num_lines=20, **kwargs)[source]
+Obtains multiple lines from the x-axis to the curve.
+
+Parameters:
+graph (ParametricFunction) – The graph along which the lines are placed.
+
+x_range (Sequence[float] | None) – A list containing the lower and and upper bounds of the lines: x_range = [x_min, x_max].
+
+num_lines (int) – The number of evenly spaced lines.
+
+kwargs (Any) – Additional arguments to be passed to get_vertical_line().
+
+Returns:
+The VGroup of the evenly spaced lines.
+
+Return type:
+VGroup
+
+Examples
+
+Example: GetVerticalLinesToGraph 
+
+../_images/GetVerticalLinesToGraph-1.png
+from manim import *
+
+class GetVerticalLinesToGraph(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0, 8.0, 1],
+            y_range=[-1, 1, 0.2],
+            axis_config={"font_size": 24},
+        ).add_coordinates()
+
+        curve = ax.plot(lambda x: np.sin(x) / np.e ** 2 * x)
+
+        lines = ax.get_vertical_lines_to_graph(
+            curve, x_range=[0, 4], num_lines=30, color=BLUE
+        )
+
+        self.add(ax, curve, lines)
+Make interactive
+get_x_axis_label(label, edge=array([1., 1., 0.]), direction=array([1., 1., 0.]), buff=0.1, **kwargs)[source]
+Generate an x-axis label.
+
+Parameters:
+label (float | str | Mobject) – The label. Defaults to MathTex for str and float inputs.
+
+edge (Sequence[float]) – The edge of the x-axis to which the label will be added, by default UR.
+
+direction (Sequence[float]) – Allows for further positioning of the label from an edge, by default UR.
+
+buff (float) – The distance of the label from the line.
+
+Returns:
+The positioned label.
+
+Return type:
+Mobject
+
+Examples
+
+Example: GetXAxisLabelExample 
+
+../_images/GetXAxisLabelExample-1.png
+from manim import *
+
+class GetXAxisLabelExample(Scene):
+    def construct(self):
+        ax = Axes(x_range=(0, 8), y_range=(0, 5), x_length=8, y_length=5)
+        x_label = ax.get_x_axis_label(
+            Tex("$x$-values").scale(0.65), edge=DOWN, direction=DOWN, buff=0.5
+        )
+        self.add(ax, x_label)
+Make interactive
+get_y_axis_label(label, edge=array([1., 1., 0.]), direction=array([1., 0.5, 0.]), buff=0.1, **kwargs)[source]
+Generate a y-axis label.
+
+Parameters:
+label (float | str | Mobject) – The label. Defaults to MathTex for str and float inputs.
+
+edge (Sequence[float]) – The edge of the y-axis to which the label will be added, by default UR.
+
+direction (Sequence[float]) – Allows for further positioning of the label from an edge, by default UR
+
+buff (float) – The distance of the label from the line.
+
+Returns:
+The positioned label.
+
+Return type:
+Mobject
+
+Examples
+
+Example: GetYAxisLabelExample 
+
+../_images/GetYAxisLabelExample-1.png
+from manim import *
+
+class GetYAxisLabelExample(Scene):
+    def construct(self):
+        ax = Axes(x_range=(0, 8), y_range=(0, 5), x_length=8, y_length=5)
+        y_label = ax.get_y_axis_label(
+            Tex("$y$-values").scale(0.65).rotate(90 * DEGREES),
+            edge=LEFT,
+            direction=LEFT,
+            buff=0.3,
+        )
+        self.add(ax, y_label)
+Make interactive
+i2gc(x, graph)[source]
+Alias for input_to_graph_coords().
+
+Parameters:
+x (float)
+
+graph (ParametricFunction)
+
+Return type:
+tuple[float, float]
+
+i2gp(x, graph)[source]
+Alias for input_to_graph_point().
+
+Parameters:
+x (float)
+
+graph (ParametricFunction)
+
+Return type:
+ndarray
+
+input_to_graph_coords(x, graph)[source]
+Returns a tuple of the axis relative coordinates of the point on the graph based on the x-value given.
+
+Examples
+
+from manim import Axes
+ax = Axes()
+parabola = ax.plot(lambda x: x**2)
+ax.input_to_graph_coords(x=3, graph=parabola)
+(3, 9)
+Parameters:
+x (float)
+
+graph (ParametricFunction)
+
+Return type:
+tuple[float, float]
+
+input_to_graph_point(x, graph)[source]
+Returns the coordinates of the point on a graph corresponding to an x value.
+
+Parameters:
+x (float) – The x-value of a point on the graph.
+
+graph (ParametricFunction | VMobject) – The ParametricFunction on which the point lies.
+
+Returns:
+The coordinates of the point on the graph corresponding to the x value.
+
+Return type:
+np.ndarray
+
+Raises:
+ValueError – When the target x is not in the range of the line graph.
+
+Examples
+
+Example: InputToGraphPointExample 
+
+../_images/InputToGraphPointExample-1.png
+from manim import *
+
+class InputToGraphPointExample(Scene):
+    def construct(self):
+        ax = Axes()
+        curve = ax.plot(lambda x : np.cos(x))
+
+        # move a square to PI on the cosine curve.
+        position = ax.input_to_graph_point(x=PI, graph=curve)
+        sq = Square(side_length=1, color=YELLOW).move_to(position)
+
+        self.add(ax, curve, sq)
+Make interactive
+p2c(point)[source]
+Abbreviation for point_to_coords()
+
+Parameters:
+point (Point3DLike)
+
+plot(function, x_range=None, use_vectorized=False, colorscale=None, colorscale_axis=1, **kwargs)[source]
+Generates a curve based on a function.
+
+Parameters:
+function (Callable[[float], float]) – The function used to construct the ParametricFunction.
+
+x_range (Sequence[float] | None) – The range of the curve along the axes. x_range = [x_min, x_max, x_step].
+
+use_vectorized (bool) – Whether to pass in the generated t value array to the function. Only use this if your function supports it. Output should be a numpy array of shape [y_0, y_1, ...]
+
+colorscale (Union[Iterable[Color], Iterable[Color, float]] | None) – Colors of the function. Optional parameter used when coloring a function by values. Passing a list of colors and a colorscale_axis will color the function by y-value. Passing a list of tuples in the form (color, pivot) allows user-defined pivots where the color transitions.
+
+colorscale_axis (int) – Defines the axis on which the colorscale is applied (0 = x, 1 = y), default is y-axis (1).
+
+kwargs (Any) – Additional parameters to be passed to ParametricFunction.
+
+Returns:
+The plotted curve.
+
+Return type:
+ParametricFunction
+
+Warning
+
+This method may not produce accurate graphs since Manim currently relies on interpolation between evenly-spaced samples of the curve, instead of intelligent plotting. See the example below for some solutions to this problem.
+
+Examples
+
+Example: PlotExample 
+
+../_images/PlotExample-1.png
+from manim import *
+
+class PlotExample(Scene):
+    def construct(self):
+        # construct the axes
+        ax_1 = Axes(
+            x_range=[0.001, 6],
+            y_range=[-8, 2],
+            x_length=5,
+            y_length=3,
+            tips=False,
+        )
+        ax_2 = ax_1.copy()
+        ax_3 = ax_1.copy()
+
+        # position the axes
+        ax_1.to_corner(UL)
+        ax_2.to_corner(UR)
+        ax_3.to_edge(DOWN)
+        axes = VGroup(ax_1, ax_2, ax_3)
+
+        # create the logarithmic curves
+        def log_func(x):
+            return np.log(x)
+
+        # a curve without adjustments; poor interpolation.
+        curve_1 = ax_1.plot(log_func, color=PURE_RED)
+
+        # disabling interpolation makes the graph look choppy as not enough
+        # inputs are available
+        curve_2 = ax_2.plot(log_func, use_smoothing=False, color=ORANGE)
+
+        # taking more inputs of the curve by specifying a step for the
+        # x_range yields expected results, but increases rendering time.
+        curve_3 = ax_3.plot(
+            log_func, x_range=(0.001, 6, 0.001), color=PURE_GREEN
+        )
+
+        curves = VGroup(curve_1, curve_2, curve_3)
+
+        self.add(axes, curves)
+Make interactive
+plot_antiderivative_graph(graph, y_intercept=0, samples=50, use_vectorized=False, **kwargs)[source]
+Plots an antiderivative graph.
+
+Parameters:
+graph (ParametricFunction) – The graph for which the antiderivative will be found.
+
+y_intercept (float) – The y-value at which the graph intercepts the y-axis.
+
+samples (int) – The number of points to take the area under the graph.
+
+use_vectorized (bool) – Whether to use the vectorized version of the antiderivative. This means to pass in the generated t value array to the function. Only use this if your function supports it. Output should be a numpy array of shape [y_0, y_1, ...]
+
+kwargs (Any) – Any valid keyword argument of ParametricFunction.
+
+Returns:
+The curve of the antiderivative.
+
+Return type:
+ParametricFunction
+
+Note
+
+This graph is plotted from the values of area under the reference graph. The result might not be ideal if the reference graph contains uncalculatable areas from x=0.
+
+Examples
+
+Example: AntiderivativeExample 
+
+../_images/AntiderivativeExample-1.png
+from manim import *
+
+class AntiderivativeExample(Scene):
+    def construct(self):
+        ax = Axes()
+        graph1 = ax.plot(
+            lambda x: (x ** 2 - 2) / 3,
+            color=RED,
+        )
+        graph2 = ax.plot_antiderivative_graph(graph1, color=BLUE)
+        self.add(ax, graph1, graph2)
+Make interactive
+plot_derivative_graph(graph, color=ManimColor('#83C167'), **kwargs)[source]
+Returns the curve of the derivative of the passed graph.
+
+Parameters:
+graph (ParametricFunction) – The graph for which the derivative will be found.
+
+color (ParsableManimColor) – The color of the derivative curve.
+
+kwargs – Any valid keyword argument of ParametricFunction.
+
+Returns:
+The curve of the derivative.
+
+Return type:
+ParametricFunction
+
+Examples
+
+Example: DerivativeGraphExample 
+
+../_images/DerivativeGraphExample-1.png
+from manim import *
+
+class DerivativeGraphExample(Scene):
+    def construct(self):
+        ax = NumberPlane(y_range=[-1, 7], background_line_style={"stroke_opacity": 0.4})
+
+        curve_1 = ax.plot(lambda x: x ** 2, color=PURPLE_B)
+        curve_2 = ax.plot_derivative_graph(curve_1)
+        curves = VGroup(curve_1, curve_2)
+
+        label_1 = ax.get_graph_label(curve_1, "x^2", x_val=-2, direction=DL)
+        label_2 = ax.get_graph_label(curve_2, "2x", x_val=3, direction=RIGHT)
+        labels = VGroup(label_1, label_2)
+
+        self.add(ax, curves, labels)
+Make interactive
+plot_implicit_curve(func, min_depth=5, max_quads=1500, **kwargs)[source]
+Creates the curves of an implicit function.
+
+Parameters:
+func (Callable[[float, float], float]) – The function to graph, in the form of f(x, y) = 0.
+
+min_depth (int) – The minimum depth of the function to calculate.
+
+max_quads (int) – The maximum number of quads to use.
+
+kwargs (Any) – Additional parameters to pass into ImplicitFunction.
+
+Return type:
+ImplicitFunction
+
+Examples
+
+Example: ImplicitExample 
+
+../_images/ImplicitExample-1.png
+from manim import *
+
+class ImplicitExample(Scene):
+    def construct(self):
+        ax = Axes()
+        a = ax.plot_implicit_curve(
+            lambda x, y: y * (x - y) ** 2 - 4 * x - 8, color=BLUE
+        )
+        self.add(ax, a)
+Make interactive
+plot_parametric_curve(function, use_vectorized=False, **kwargs)[source]
+A parametric curve.
+
+Parameters:
+function (Callable[[float], ndarray]) – A parametric function mapping a number to a point in the coordinate system.
+
+use_vectorized (bool) – Whether to pass in the generated t value array to the function. Only use this if your function supports it.
+
+kwargs (Any) – Any further keyword arguments are passed to ParametricFunction.
+
+Return type:
+ParametricFunction
+
+Example
+
+Example: ParametricCurveExample 
+
+../_images/ParametricCurveExample-1.png
+from manim import *
+
+class ParametricCurveExample(Scene):
+    def construct(self):
+        ax = Axes()
+        cardioid = ax.plot_parametric_curve(
+            lambda t: np.array(
+                [
+                    np.exp(1) * np.cos(t) * (1 - np.cos(t)),
+                    np.exp(1) * np.sin(t) * (1 - np.cos(t)),
+                    0,
+                ]
+            ),
+            t_range=[0, 2 * PI],
+            color="#0FF1CE",
+        )
+        self.add(ax, cardioid)
+Make interactive
+plot_polar_graph(r_func, theta_range=None, **kwargs)[source]
+A polar graph.
+
+Parameters:
+r_func (Callable[[float], float]) – The function r of theta.
+
+theta_range (Sequence[float] | None) – The range of theta as theta_range = [theta_min, theta_max, theta_step].
+
+kwargs (Any) – Additional parameters passed to ParametricFunction.
+
+Return type:
+ParametricFunction
+
+Examples
+
+Example: PolarGraphExample 
+
+../_images/PolarGraphExample-1.png
+from manim import *
+
+class PolarGraphExample(Scene):
+    def construct(self):
+        plane = PolarPlane()
+        r = lambda theta: 2 * np.sin(theta * 5)
+        graph = plane.plot_polar_graph(r, [0, 2 * PI], color=ORANGE)
+        self.add(plane, graph)
+Make interactive
+References: PolarPlane
+
+plot_surface(function, u_range=None, v_range=None, colorscale=None, colorscale_axis=2, **kwargs)[source]
+Generates a surface based on a function.
+
+Parameters:
+function (Callable[[float], float]) – The function used to construct the Surface.
+
+u_range (Sequence[float] | None) – The range of the u variable: (u_min, u_max).
+
+v_range (Sequence[float] | None) – The range of the v variable: (v_min, v_max).
+
+colorscale (Sequence[ParsableManimColor] | Sequence[tuple[ParsableManimColor, float]] | None) – Colors of the surface. Passing a list of colors will color the surface by z-value. Passing a list of tuples in the form (color, pivot) allows user-defined pivots where the color transitions.
+
+colorscale_axis (int) – Defines the axis on which the colorscale is applied (0 = x, 1 = y, 2 = z), default is z-axis (2).
+
+kwargs (Any) – Additional parameters to be passed to Surface.
+
+Returns:
+The plotted surface.
+
+Return type:
+Surface
+
+Examples
+
+Example: PlotSurfaceExample 
+
+../_images/PlotSurfaceExample-1.png
+from manim import *
+
+class PlotSurfaceExample(ThreeDScene):
+    def construct(self):
+        resolution_fa = 16
+        self.set_camera_orientation(phi=75 * DEGREES, theta=-60 * DEGREES)
+        axes = ThreeDAxes(x_range=(-3, 3, 1), y_range=(-3, 3, 1), z_range=(-5, 5, 1))
+        def param_trig(u, v):
+            x = u
+            y = v
+            z = 2 * np.sin(x) + 2 * np.cos(y)
+            return z
+        trig_plane = axes.plot_surface(
+            param_trig,
+            resolution=(resolution_fa, resolution_fa),
+            u_range = (-3, 3),
+            v_range = (-3, 3),
+            colorscale = [BLUE, GREEN, YELLOW, ORANGE, RED],
+            )
+        self.add(axes, trig_plane)
+Make interactive
+point_to_polar(point)[source]
+Gets polar coordinates from a point.
+
+Parameters:
+point (Point2DLike) – The point.
+
+Returns:
+The coordinate radius (
+) and the coordinate azimuth (
+).
+
+Return type:
+Tuple[float, float]
+
+polar_to_point(radius, azimuth)[source]
+Gets a point from polar coordinates.
+
+Parameters:
+radius (float) – The coordinate radius (
+).
+
+azimuth (float) – The coordinate azimuth (
+).
+
+Returns:
+The point.
+
+Return type:
+numpy.ndarray
+
+Examples
+
+Example: PolarToPointExample 
+
+../_images/PolarToPointExample-1.png
+from manim import *
+
+class PolarToPointExample(Scene):
+    def construct(self):
+        polarplane_pi = PolarPlane(azimuth_units="PI radians", size=6)
+        polartopoint_vector = Vector(polarplane_pi.polar_to_point(3, PI/4))
+        self.add(polarplane_pi)
+        self.add(polartopoint_vector)
+Make interactive
+References: PolarPlane Vector
+
+pr2pt(radius, azimuth)[source]
+Abbreviation for polar_to_point()
+
+Parameters:
+radius (float)
+
+azimuth (float)
+
+Return type:
+ndarray
+
+pt2pr(point)[source]
+Abbreviation for point_to_polar()
+
+Parameters:
+point (ndarray)
+
+Return type:
+tuple[float, float]
+
+slope_of_tangent(x, graph, **kwargs)[source]
+Returns the slope of the tangent to the plotted curve at a particular x-value.
+
+Parameters:
+x (float) – The x-value at which the tangent must touch the curve.
+
+graph (ParametricFunction) – The ParametricFunction for which to calculate the tangent.
+
+kwargs (Any)
+
+Returns:
+The slope of the tangent with the x axis.
+
+Return type:
+float
+
+Examples
+
+ax = Axes()
+curve = ax.plot(lambda x: x**2)
+ax.slope_of_tangent(x=-2, graph=curve)
+# -3.5000000259052038
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NumberPlane
+Qualified name: manim.mobject.graphing.coordinate\_systems.NumberPlane
+
+class NumberPlane(x_range=(-7.111111111111111, 7.111111111111111, 1), y_range=(-4.0, 4.0, 1), x_length=None, y_length=None, background_line_style=None, faded_line_style=None, faded_line_ratio=1, make_smooth_after_applying_functions=True, **kwargs)[source]
+Bases: Axes
+
+Creates a cartesian plane with background lines.
+
+Parameters:
+x_range (Sequence[float] | None) – The [x_min, x_max, x_step] values of the plane in the horizontal direction.
+
+y_range (Sequence[float] | None) – The [y_min, y_max, y_step] values of the plane in the vertical direction.
+
+x_length (float | None) – The width of the plane.
+
+y_length (float | None) – The height of the plane.
+
+background_line_style (dict[str, Any] | None) – Arguments that influence the construction of the background lines of the plane.
+
+faded_line_style (dict[str, Any] | None) – Similar to background_line_style, affects the construction of the scene’s background lines.
+
+faded_line_ratio (int) – Determines the number of boxes within the background lines: 2 = 4 boxes, 3 = 9 boxes.
+
+make_smooth_after_applying_functions (bool) – Currently non-functional.
+
+kwargs (dict[str, Any]) – Additional arguments to be passed to Axes.
+
+Note
+
+If x_length or y_length are not defined, they are automatically calculated such that one unit on each axis is one Manim unit long.
+
+Examples
+
+Example: NumberPlaneExample 
+
+../_images/NumberPlaneExample-1.png
+from manim import *
+
+class NumberPlaneExample(Scene):
+    def construct(self):
+        number_plane = NumberPlane(
+            background_line_style={
+                "stroke_color": TEAL,
+                "stroke_width": 4,
+                "stroke_opacity": 0.6
+            }
+        )
+        self.add(number_plane)
+Make interactive
+Example: NumberPlaneScaled 
+
+../_images/NumberPlaneScaled-1.png
+from manim import *
+
+class NumberPlaneScaled(Scene):
+    def construct(self):
+        number_plane = NumberPlane(
+            x_range=(-4, 11, 1),
+            y_range=(-3, 3, 1),
+            x_length=5,
+            y_length=2,
+        ).move_to(LEFT*3)
+
+        number_plane_scaled_y = NumberPlane(
+            x_range=(-4, 11, 1),
+            x_length=5,
+            y_length=4,
+        ).move_to(RIGHT*3)
+
+        self.add(number_plane)
+        self.add(number_plane_scaled_y)
+Make interactive
+Methods
+
+get_vector
+
+prepare_for_nonlinear_transform
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_get_lines()[source]
+Generate all the lines, faded and not faded.
+Two sets of lines are generated: one parallel to the X-axis, and parallel to the Y-axis.
+
+Returns:
+The first (i.e the non faded lines) and second (i.e the faded lines) sets of lines, respectively.
+
+Return type:
+Tuple[VGroup, VGroup]
+
+_get_lines_parallel_to_axis(axis_parallel_to, axis_perpendicular_to, freq, ratio_faded_lines)[source]
+Generate a set of lines parallel to an axis.
+
+Parameters:
+axis_parallel_to (NumberLine) – The axis with which the lines will be parallel.
+
+axis_perpendicular_to (NumberLine) – The axis with which the lines will be perpendicular.
+
+ratio_faded_lines (int) – The ratio between the space between faded lines and the space between non-faded lines.
+
+freq (float) – Frequency of non-faded lines (number of non-faded lines per graph unit).
+
+Returns:
+The first (i.e the non-faded lines parallel to axis_parallel_to) and second
+(i.e the faded lines parallel to axis_parallel_to) sets of lines, respectively.
+
+Return type:
+Tuple[VGroup, VGroup]
+
+_init_background_lines()[source]
+Will init all the lines of NumberPlanes (faded or not)
+
+Return type:
+None
+
+_original__init__(x_range=(-7.111111111111111, 7.111111111111111, 1), y_range=(-4.0, 4.0, 1), x_length=None, y_length=None, background_line_style=None, faded_line_style=None, faded_line_ratio=1, make_smooth_after_applying_functions=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+x_range (Sequence[float] | None)
+
+y_range (Sequence[float] | None)
+
+x_length (float | None)
+
+y_length (float | None)
+
+background_line_style (dict[str, Any] | None)
+
+faded_line_style (dict[str, Any] | None)
+
+faded_line_ratio (int)
+
+make_smooth_after_applying_functions (bool)
+
+kwargs (dict[str, Any])
+
+
+
+
+
+
+
+
+PolarPlane
+Qualified name: manim.mobject.graphing.coordinate\_systems.PolarPlane
+
+class PolarPlane(radius_max=4.0, size=None, radius_step=1, azimuth_step=None, azimuth_units='PI radians', azimuth_compact_fraction=True, azimuth_offset=0, azimuth_direction='CCW', azimuth_label_buff=0.1, azimuth_label_font_size=24, radius_config=None, background_line_style=None, faded_line_style=None, faded_line_ratio=1, make_smooth_after_applying_functions=True, **kwargs)[source]
+Bases: Axes
+
+Creates a polar plane with background lines.
+
+Parameters:
+azimuth_step (float | None) –
+
+The number of divisions in the azimuth (also known as the angular coordinate or polar angle). If None is specified then it will use the default specified by azimuth_units:
+
+"PI radians" or "TAU radians": 20
+
+"degrees": 36
+
+"gradians": 40
+
+None: 1
+
+A non-integer value will result in a partial division at the end of the circle.
+
+size (float | None) – The diameter of the plane.
+
+radius_step (float) – The distance between faded radius lines.
+
+radius_max (float) – The maximum value of the radius.
+
+azimuth_units (str | None) –
+
+Specifies a default labelling system for the azimuth. Choices are:
+
+"PI radians": Fractional labels in the interval 
+ with 
+ as a constant.
+
+"TAU radians": Fractional labels in the interval 
+ (where 
+) with 
+ as a constant.
+
+"degrees": Decimal labels in the interval 
+ with a degree (
+) symbol.
+
+"gradians": Decimal labels in the interval 
+ with a superscript “g” (
+).
+
+None: Decimal labels in the interval 
+.
+
+azimuth_compact_fraction (bool) – If the azimuth_units choice has fractional labels, choose whether to combine the constant in a compact form 
+ 
+ as opposed to 
+ 
+, where 
+ is the constant.
+
+azimuth_offset (float) – The angle offset of the azimuth, expressed in radians.
+
+azimuth_direction (str) –
+
+The direction of the azimuth.
+
+"CW": Clockwise.
+
+"CCW": Anti-clockwise.
+
+azimuth_label_buff (float) – The buffer for the azimuth labels.
+
+azimuth_label_font_size (float) – The font size of the azimuth labels.
+
+radius_config (dict[str, Any] | None) – The axis config for the radius.
+
+background_line_style (dict[str, Any] | None)
+
+faded_line_style (dict[str, Any] | None)
+
+faded_line_ratio (int)
+
+make_smooth_after_applying_functions (bool)
+
+kwargs (Any)
+
+Examples
+
+Example: PolarPlaneExample 
+
+../_images/PolarPlaneExample-1.png
+from manim import *
+
+class PolarPlaneExample(Scene):
+    def construct(self):
+        polarplane_pi = PolarPlane(
+            azimuth_units="PI radians",
+            size=6,
+            azimuth_label_font_size=33.6,
+            radius_config={"font_size": 33.6},
+        ).add_coordinates()
+        self.add(polarplane_pi)
+Make interactive
+References: PolarPlane
+
+Methods
+
+add_coordinates
+
+Adds the coordinates.
+
+get_axes
+
+Gets the axes.
+
+get_coordinate_labels
+
+Gets labels for the coordinates
+
+get_radian_label
+
+get_vector
+
+prepare_for_nonlinear_transform
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_get_lines()[source]
+Generate all the lines and circles, faded and not faded.
+
+Returns:
+The first (i.e the non faded lines and circles) and second (i.e the faded lines and circles) sets of lines and circles, respectively.
+
+Return type:
+Tuple[VGroup, VGroup]
+
+_init_background_lines()[source]
+Will init all the lines of NumberPlanes (faded or not)
+
+Return type:
+None
+
+_original__init__(radius_max=4.0, size=None, radius_step=1, azimuth_step=None, azimuth_units='PI radians', azimuth_compact_fraction=True, azimuth_offset=0, azimuth_direction='CCW', azimuth_label_buff=0.1, azimuth_label_font_size=24, radius_config=None, background_line_style=None, faded_line_style=None, faded_line_ratio=1, make_smooth_after_applying_functions=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+radius_max (float)
+
+size (float | None)
+
+radius_step (float)
+
+azimuth_step (float | None)
+
+azimuth_units (str | None)
+
+azimuth_compact_fraction (bool)
+
+azimuth_offset (float)
+
+azimuth_direction (str)
+
+azimuth_label_buff (float)
+
+azimuth_label_font_size (float)
+
+radius_config (dict[str, Any] | None)
+
+background_line_style (dict[str, Any] | None)
+
+faded_line_style (dict[str, Any] | None)
+
+faded_line_ratio (int)
+
+make_smooth_after_applying_functions (bool)
+
+kwargs (Any)
+
+Return type:
+None
+
+add_coordinates(r_values=None, a_values=None)[source]
+Adds the coordinates.
+
+Parameters:
+r_values (Iterable[float] | None) – Iterable of values along the radius, by default None.
+
+a_values (Iterable[float] | None) – Iterable of values along the azimuth, by default None.
+
+Return type:
+Self
+
+get_axes()[source]
+Gets the axes.
+
+Returns:
+A pair of axes.
+
+Return type:
+VGroup
+
+get_coordinate_labels(r_values=None, a_values=None, **kwargs)[source]
+Gets labels for the coordinates
+
+Parameters:
+r_values (Iterable[float] | None) – Iterable of values along the radius, by default None.
+
+a_values (Iterable[float] | None) – Iterable of values along the azimuth, by default None.
+
+kwargs (Any)
+
+Returns:
+Labels for the radius and azimuth values.
+
+Return type:
+VDict
+
+
+
+
+
+
+
+
+
+
+
+ThreeDAxes
+Qualified name: manim.mobject.graphing.coordinate\_systems.ThreeDAxes
+
+class ThreeDAxes(x_range=(-6, 6, 1), y_range=(-5, 5, 1), z_range=(-4, 4, 1), x_length=10.5, y_length=10.5, z_length=6.5, z_axis_config=None, z_normal=array([0., -1., 0.]), num_axis_pieces=20, light_source=array([-7., -9., 10.]), depth=None, gloss=0.5, **kwargs)[source]
+Bases: Axes
+
+A 3-dimensional set of axes.
+
+Parameters:
+x_range (Sequence[float] | None) – The [x_min, x_max, x_step] values of the x-axis.
+
+y_range (Sequence[float] | None) – The [y_min, y_max, y_step] values of the y-axis.
+
+z_range (Sequence[float] | None) – The [z_min, z_max, z_step] values of the z-axis.
+
+x_length (float | None) – The length of the x-axis.
+
+y_length (float | None) – The length of the y-axis.
+
+z_length (float | None) – The length of the z-axis.
+
+z_axis_config (dict[str, Any] | None) – Arguments to be passed to NumberLine that influence the z-axis.
+
+z_normal (Vector3D) – The direction of the normal.
+
+num_axis_pieces (int) – The number of pieces used to construct the axes.
+
+light_source (Sequence[float]) – The direction of the light source.
+
+depth – Currently non-functional.
+
+gloss – Currently non-functional.
+
+kwargs (dict[str, Any]) – Additional arguments to be passed to Axes.
+
+Methods
+
+get_axis_labels
+
+Defines labels for the x_axis and y_axis of the graph.
+
+get_y_axis_label
+
+Generate a y-axis label.
+
+get_z_axis_label
+
+Generate a z-axis label.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(x_range=(-6, 6, 1), y_range=(-5, 5, 1), z_range=(-4, 4, 1), x_length=10.5, y_length=10.5, z_length=6.5, z_axis_config=None, z_normal=array([0., -1., 0.]), num_axis_pieces=20, light_source=array([-7., -9., 10.]), depth=None, gloss=0.5, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+x_range (Sequence[float] | None)
+
+y_range (Sequence[float] | None)
+
+z_range (Sequence[float] | None)
+
+x_length (float | None)
+
+y_length (float | None)
+
+z_length (float | None)
+
+z_axis_config (dict[str, Any] | None)
+
+z_normal (Vector3D)
+
+num_axis_pieces (int)
+
+light_source (Sequence[float])
+
+kwargs (dict[str, Any])
+
+Return type:
+None
+
+get_axis_labels(x_label='x', y_label='y', z_label='z')[source]
+Defines labels for the x_axis and y_axis of the graph.
+
+For increased control over the position of the labels, use get_x_axis_label(), get_y_axis_label(), and get_z_axis_label().
+
+Parameters:
+x_label (float | str | Mobject) – The label for the x_axis. Defaults to MathTex for str and float inputs.
+
+y_label (float | str | Mobject) – The label for the y_axis. Defaults to MathTex for str and float inputs.
+
+z_label (float | str | Mobject) – The label for the z_axis. Defaults to MathTex for str and float inputs.
+
+Returns:
+A VGroup of the labels for the x_axis, y_axis, and z_axis.
+
+Return type:
+VGroup
+
+See also
+
+get_x_axis_label() get_y_axis_label() get_z_axis_label()
+
+Examples
+
+Example: GetAxisLabelsExample 
+
+../_images/GetAxisLabelsExample-2.png
+from manim import *
+
+class GetAxisLabelsExample(ThreeDScene):
+    def construct(self):
+        self.set_camera_orientation(phi=2*PI/5, theta=PI/5)
+        axes = ThreeDAxes()
+        labels = axes.get_axis_labels(
+            Text("x-axis").scale(0.7), Text("y-axis").scale(0.45), Text("z-axis").scale(0.45)
+        )
+        self.add(axes, labels)
+Make interactive
+get_y_axis_label(label, edge=array([1., 1., 0.]), direction=array([1., 1., 0.]), buff=0.1, rotation=1.5707963267948966, rotation_axis=array([0., 0., 1.]), **kwargs)[source]
+Generate a y-axis label.
+
+Parameters:
+label (float | str | Mobject) – The label. Defaults to MathTex for str and float inputs.
+
+edge (Sequence[float]) – The edge of the y-axis to which the label will be added, by default UR.
+
+direction (Sequence[float]) – Allows for further positioning of the label from an edge, by default UR.
+
+buff (float) – The distance of the label from the line, by default SMALL_BUFF.
+
+rotation (float) – The angle at which to rotate the label, by default PI/2.
+
+rotation_axis (Vector3D) – The axis about which to rotate the label, by default OUT.
+
+Returns:
+The positioned label.
+
+Return type:
+Mobject
+
+Examples
+
+Example: GetYAxisLabelExample 
+
+../_images/GetYAxisLabelExample-2.png
+from manim import *
+
+class GetYAxisLabelExample(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes()
+        lab = ax.get_y_axis_label(Tex("$y$-label"))
+        self.set_camera_orientation(phi=2*PI/5, theta=PI/5)
+        self.add(ax, lab)
+Make interactive
+get_z_axis_label(label, edge=array([0., 0., 1.]), direction=array([1., 0., 0.]), buff=0.1, rotation=1.5707963267948966, rotation_axis=array([1., 0., 0.]), **kwargs)[source]
+Generate a z-axis label.
+
+Parameters:
+label (float | str | Mobject) – The label. Defaults to MathTex for str and float inputs.
+
+edge (Vector3D) – The edge of the z-axis to which the label will be added, by default OUT.
+
+direction (Vector3D) – Allows for further positioning of the label from an edge, by default RIGHT.
+
+buff (float) – The distance of the label from the line, by default SMALL_BUFF.
+
+rotation (float) – The angle at which to rotate the label, by default PI/2.
+
+rotation_axis (Vector3D) – The axis about which to rotate the label, by default RIGHT.
+
+kwargs (Any)
+
+Returns:
+The positioned label.
+
+Return type:
+Mobject
+
+Examples
+
+Example: GetZAxisLabelExample 
+
+../_images/GetZAxisLabelExample-1.png
+from manim import *
+
+class GetZAxisLabelExample(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes()
+        lab = ax.get_z_axis_label(Tex("$z$-label"))
+        self.set_camera_orientation(phi=2*PI/5, theta=PI/5)
+        self.add(ax, lab)
+
+
+
+
+
+
+
+
+

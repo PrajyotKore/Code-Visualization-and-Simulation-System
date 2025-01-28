@@ -1,0 +1,981 @@
+svg
+Mobjects related to SVG images.
+
+Modules
+brace
+
+Mobject representing curly braces.
+
+svg_mobject
+
+Mobjects generated from an SVG file.
+
+
+
+brace
+Mobject representing curly braces.
+
+Classes
+
+ArcBrace
+
+Creates a Brace that wraps around an Arc.
+
+Brace
+
+Takes a mobject and draws a brace adjacent to it.
+
+BraceBetweenPoints
+
+Similar to Brace, but instead of taking a mobject it uses 2 points to place the brace.
+
+BraceLabel
+
+Create a brace with a label attached.
+
+BraceText
+
+
+
+
+
+
+ArcBrace
+Qualified name: manim.mobject.svg.brace.ArcBrace
+
+class ArcBrace(arc=None, direction=array([1., 0., 0.]), **kwargs)[source]
+Bases: Brace
+
+Creates a Brace that wraps around an Arc.
+
+The direction parameter allows the brace to be applied from outside or inside the arc.
+
+Warning
+
+The ArcBrace is smaller for arcs with smaller radii.
+
+Note
+
+The ArcBrace is initially a vertical Brace defined by the length of the Arc, but is scaled down to match the start and end angles. An exponential function is then applied after it is shifted based on the radius of the arc.
+
+The scaling effect is not applied for arcs with radii smaller than 1 to prevent over-scaling.
+
+Parameters:
+arc (Arc | None) – The Arc that wraps around the Brace mobject.
+
+direction (Sequence[float]) – The direction from which the brace faces the arc. LEFT for inside the arc, and RIGHT for the outside.
+
+Example
+
+Example: ArcBraceExample 
+
+../_images/ArcBraceExample-1.png
+from manim import *
+
+class ArcBraceExample(Scene):
+    def construct(self):
+        arc_1 = Arc(radius=1.5,start_angle=0,angle=2*PI/3).set_color(RED)
+        brace_1 = ArcBrace(arc_1,LEFT)
+        group_1 = VGroup(arc_1,brace_1)
+
+        arc_2 = Arc(radius=3,start_angle=0,angle=5*PI/6).set_color(YELLOW)
+        brace_2 = ArcBrace(arc_2)
+        group_2 = VGroup(arc_2,brace_2)
+
+        arc_3 = Arc(radius=0.5,start_angle=-0,angle=PI).set_color(BLUE)
+        brace_3 = ArcBrace(arc_3)
+        group_3 = VGroup(arc_3,brace_3)
+
+        arc_4 = Arc(radius=0.2,start_angle=0,angle=3*PI/2).set_color(GREEN)
+        brace_4 = ArcBrace(arc_4)
+        group_4 = VGroup(arc_4,brace_4)
+
+        arc_group = VGroup(group_1, group_2, group_3, group_4).arrange_in_grid(buff=1.5)
+        self.add(arc_group.center())
+Make interactive
+References: Arc
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(arc=None, direction=array([1., 0., 0.]), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+arc (Arc | None)
+
+direction (Sequence[float])
+
+
+
+
+
+
+
+
+
+Brace
+Qualified name: manim.mobject.svg.brace.Brace
+
+class Brace(mobject, direction=array([0., -1., 0.]), buff=0.2, sharpness=2, stroke_width=0, fill_opacity=1.0, background_stroke_width=0, background_stroke_color=ManimColor('#000000'), **kwargs)[source]
+Bases: VMobjectFromSVGPath
+
+Takes a mobject and draws a brace adjacent to it.
+
+Passing a direction vector determines the direction from which the brace is drawn. By default it is drawn from below.
+
+Parameters:
+mobject (Mobject) – The mobject adjacent to which the brace is placed.
+
+direction (Vector3D | None) – The direction from which the brace faces the mobject.
+
+buff (float)
+
+sharpness (float)
+
+stroke_width (float)
+
+fill_opacity (float)
+
+background_stroke_width (float)
+
+background_stroke_color (ParsableManimColor)
+
+See also
+
+BraceBetweenPoints
+
+Examples
+
+Example: BraceExample 
+
+../_images/BraceExample-1.png
+from manim import *
+
+class BraceExample(Scene):
+    def construct(self):
+        s = Square()
+        self.add(s)
+        for i in np.linspace(0.1,1.0,4):
+            br = Brace(s, sharpness=i)
+            t = Text(f"sharpness= {i}").next_to(br, RIGHT)
+            self.add(t)
+            self.add(br)
+        VGroup(*self.mobjects).arrange(DOWN, buff=0.2)
+Make interactive
+Methods
+
+get_direction
+
+Returns the direction from the center to the brace tip.
+
+get_tex
+
+Places the tex at the brace tip.
+
+get_text
+
+Places the text at the brace tip.
+
+get_tip
+
+Returns the point at the brace tip.
+
+put_at_tip
+
+Puts the given mobject at the brace tip.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(mobject, direction=array([0., -1., 0.]), buff=0.2, sharpness=2, stroke_width=0, fill_opacity=1.0, background_stroke_width=0, background_stroke_color=ManimColor('#000000'), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+mobject (Mobject)
+
+direction (Vector3D | None)
+
+buff (float)
+
+sharpness (float)
+
+stroke_width (float)
+
+fill_opacity (float)
+
+background_stroke_width (float)
+
+background_stroke_color (ParsableManimColor)
+
+get_direction()[source]
+Returns the direction from the center to the brace tip.
+
+get_tex(*tex, **kwargs)[source]
+Places the tex at the brace tip.
+
+Parameters:
+tex – The tex to be placed at the brace tip.
+
+kwargs – Any further keyword arguments are passed to put_at_tip() which is used to position the tex at the brace tip.
+
+Return type:
+MathTex
+
+get_text(*text, **kwargs)[source]
+Places the text at the brace tip.
+
+Parameters:
+text – The text to be placed at the brace tip.
+
+kwargs – Any additional keyword arguments are passed to put_at_tip() which is used to position the text at the brace tip.
+
+Return type:
+Tex
+
+get_tip()[source]
+Returns the point at the brace tip.
+
+put_at_tip(mob, use_next_to=True, **kwargs)[source]
+Puts the given mobject at the brace tip.
+
+Parameters:
+mob (Mobject) – The mobject to be placed at the tip.
+
+use_next_to (bool) – If true, then next_to() is used to place the mobject at the tip.
+
+kwargs – Any additional keyword arguments are passed to next_to() which is used to put the mobject next to the brace tip.
+
+
+
+
+
+
+
+
+BraceBetweenPoints
+Qualified name: manim.mobject.svg.brace.BraceBetweenPoints
+
+class BraceBetweenPoints(point_1, point_2, direction=array([0., 0., 0.]), **kwargs)[source]
+Bases: Brace
+
+Similar to Brace, but instead of taking a mobject it uses 2 points to place the brace.
+
+A fitting direction for the brace is computed, but it still can be manually overridden. If the points go from left to right, the brace is drawn from below. Swapping the points places the brace on the opposite side.
+
+Parameters:
+point_1 (Point3DLike | None) – The first point.
+
+point_2 (Point3DLike | None) – The second point.
+
+direction (Vector3D | None) – The direction from which the brace faces towards the points.
+
+Examples
+
+Example: BraceBPExample 
+
+from manim import *
+
+class BraceBPExample(Scene):
+    def construct(self):
+        p1 = [0,0,0]
+        p2 = [1,2,0]
+        brace = BraceBetweenPoints(p1,p2)
+        self.play(Create(NumberPlane()))
+        self.play(Create(brace))
+        self.wait(2)
+Make interactive
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(point_1, point_2, direction=array([0., 0., 0.]), **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+point_1 (Point3DLike | None)
+
+point_2 (Point3DLike | None)
+
+direction (Vector3D | None)
+
+
+
+
+
+
+
+
+
+
+
+BraceLabel
+Qualified name: manim.mobject.svg.brace.BraceLabel
+
+class BraceLabel(obj, text, brace_direction=array([ 0., -1., 0.]), label_constructor=<class 'manim.mobject.text.tex_mobject.MathTex'>, font_size=48, buff=0.2, brace_config=None, **kwargs)[source]
+Bases: VMobject
+
+Create a brace with a label attached.
+
+Parameters:
+obj (Mobject) – The mobject adjacent to which the brace is placed.
+
+text (str) – The label text.
+
+brace_direction (np.ndarray) – The direction of the brace. By default DOWN.
+
+label_constructor (type) – A class or function used to construct a mobject representing the label. By default MathTex.
+
+font_size (float) – The font size of the label, passed to the label_constructor.
+
+buff (float) – The buffer between the mobject and the brace.
+
+brace_config (dict | None) – Arguments to be passed to Brace.
+
+kwargs – Additional arguments to be passed to VMobject.
+
+Methods
+
+change_brace_label
+
+change_label
+
+creation_anim
+
+shift_brace
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(obj, text, brace_direction=array([ 0., -1., 0.]), label_constructor=<class 'manim.mobject.text.tex_mobject.MathTex'>, font_size=48, buff=0.2, brace_config=None, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+obj (Mobject)
+
+text (str)
+
+brace_direction (ndarray)
+
+label_constructor (type)
+
+font_size (float)
+
+buff (float)
+
+brace_config (dict | None)
+
+
+
+
+
+
+
+
+
+
+BraceText
+Qualified name: manim.mobject.svg.brace.BraceText
+
+class BraceText(obj, text, label_constructor=<class 'manim.mobject.text.tex_mobject.Tex'>, **kwargs)[source]
+Bases: BraceLabel
+
+Methods
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(obj, text, label_constructor=<class 'manim.mobject.text.tex_mobject.Tex'>, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+
+
+
+
+
+
+
+svg_mobject
+Mobjects generated from an SVG file.
+
+Classes
+
+SVGMobject
+
+A vectorized mobject created from importing an SVG file.
+
+VMobjectFromSVGPath
+
+A vectorized mobject representing an SVG path.
+
+
+
+
+
+
+
+
+SVGMobject
+Qualified name: manim.mobject.svg.svg\_mobject.SVGMobject
+
+class SVGMobject(file_name=None, should_center=True, height=2, width=None, color=None, opacity=None, fill_color=None, fill_opacity=None, stroke_color=None, stroke_opacity=None, stroke_width=None, svg_default=None, path_string_config=None, use_svg_cache=True, **kwargs)[source]
+Bases: VMobject
+
+A vectorized mobject created from importing an SVG file.
+
+Parameters:
+file_name (str | os.PathLike | None) – The path to the SVG file.
+
+should_center (bool) – Whether or not the mobject should be centered after being imported.
+
+height (float | None) – The target height of the mobject, set to 2 Manim units by default. If the height and width are both set to None, the mobject is imported without being scaled.
+
+width (float | None) – The target width of the mobject, set to None by default. If the height and the width are both set to None, the mobject is imported without being scaled.
+
+color (str | None) – The color (both fill and stroke color) of the mobject. If None (the default), the colors set in the SVG file are used.
+
+opacity (float | None) – The opacity (both fill and stroke opacity) of the mobject. If None (the default), the opacity set in the SVG file is used.
+
+fill_color (str | None) – The fill color of the mobject. If None (the default), the fill colors set in the SVG file are used.
+
+fill_opacity (float | None) – The fill opacity of the mobject. If None (the default), the fill opacities set in the SVG file are used.
+
+stroke_color (str | None) – The stroke color of the mobject. If None (the default), the stroke colors set in the SVG file are used.
+
+stroke_opacity (float | None) – The stroke opacity of the mobject. If None (the default), the stroke opacities set in the SVG file are used.
+
+stroke_width (float | None) – The stroke width of the mobject. If None (the default), the stroke width values set in the SVG file are used.
+
+svg_default (dict | None) – A dictionary in which fallback values for unspecified properties of elements in the SVG file are defined. If None (the default), color, opacity, fill_color fill_opacity, stroke_color, and stroke_opacity are set to None, and stroke_width is set to 0.
+
+path_string_config (dict | None) – A dictionary with keyword arguments passed to VMobjectFromSVGPath used for importing path elements. If None (the default), no additional arguments are passed.
+
+use_svg_cache (bool) – If True (default), the svg inputs (e.g. file_name, settings) will be used as a key and a copy of the created mobject will be saved using that key to be quickly retrieved if the same inputs need be processed later. For large SVGs which are used only once, this can be omitted to improve performance.
+
+kwargs – Further arguments passed to the parent class.
+
+Methods
+
+apply_style_to_mobject
+
+Apply SVG style information to the converted mobject.
+
+ellipse_to_mobject
+
+Convert an ellipse or circle element to a vectorized mobject.
+
+generate_config_style_dict
+
+Generate a dictionary holding the default style information.
+
+generate_mobject
+
+Parse the SVG and translate its elements to submobjects.
+
+get_file_path
+
+Search for an existing file based on the specified file name.
+
+get_mobjects_from
+
+Convert the elements of the SVG to a list of mobjects.
+
+handle_transform
+
+Apply SVG transformations to the converted mobject.
+
+init_svg_mobject
+
+Checks whether the SVG has already been imported and generates it if not.
+
+line_to_mobject
+
+Convert a line element to a vectorized mobject.
+
+modify_xml_tree
+
+Modifies the SVG element tree to include default style information.
+
+move_into_position
+
+Scale and move the generated mobject into position.
+
+path_to_mobject
+
+Convert a path element to a vectorized mobject.
+
+polygon_to_mobject
+
+Convert a polygon element to a vectorized mobject.
+
+polyline_to_mobject
+
+Convert a polyline element to a vectorized mobject.
+
+rect_to_mobject
+
+Convert a rectangle element to a vectorized mobject.
+
+text_to_mobject
+
+Convert a text element to a vectorized mobject.
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+hash_seed
+
+A unique hash representing the result of the generated mobject points.
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(file_name=None, should_center=True, height=2, width=None, color=None, opacity=None, fill_color=None, fill_opacity=None, stroke_color=None, stroke_opacity=None, stroke_width=None, svg_default=None, path_string_config=None, use_svg_cache=True, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+file_name (str | PathLike | None)
+
+should_center (bool)
+
+height (float | None)
+
+width (float | None)
+
+color (str | None)
+
+opacity (float | None)
+
+fill_color (str | None)
+
+fill_opacity (float | None)
+
+stroke_color (str | None)
+
+stroke_opacity (float | None)
+
+stroke_width (float | None)
+
+svg_default (dict | None)
+
+path_string_config (dict | None)
+
+use_svg_cache (bool)
+
+static apply_style_to_mobject(mob, shape)[source]
+Apply SVG style information to the converted mobject.
+
+Parameters:
+mob (VMobject) – The converted mobject.
+
+shape (GraphicObject) – The parsed SVG element.
+
+Return type:
+VMobject
+
+static ellipse_to_mobject(ellipse)[source]
+Convert an ellipse or circle element to a vectorized mobject.
+
+Parameters:
+ellipse (Ellipse | Circle) – The parsed SVG ellipse or circle.
+
+Return type:
+Circle
+
+generate_config_style_dict()[source]
+Generate a dictionary holding the default style information.
+
+Return type:
+dict[str, str]
+
+generate_mobject()[source]
+Parse the SVG and translate its elements to submobjects.
+
+Return type:
+None
+
+get_file_path()[source]
+Search for an existing file based on the specified file name.
+
+Return type:
+Path
+
+get_mobjects_from(svg)[source]
+Convert the elements of the SVG to a list of mobjects.
+
+Parameters:
+svg (SVG) – The parsed SVG file.
+
+Return type:
+list[VMobject]
+
+static handle_transform(mob, matrix)[source]
+Apply SVG transformations to the converted mobject.
+
+Parameters:
+mob (VMobject) – The converted mobject.
+
+matrix (Matrix) – The transformation matrix determined from the SVG transformation.
+
+Return type:
+VMobject
+
+property hash_seed: tuple
+A unique hash representing the result of the generated mobject points.
+
+Used as keys in the SVG_HASH_TO_MOB_MAP caching dictionary.
+
+init_svg_mobject(use_svg_cache)[source]
+Checks whether the SVG has already been imported and generates it if not.
+
+See also
+
+SVGMobject.generate_mobject()
+
+Parameters:
+use_svg_cache (bool)
+
+Return type:
+None
+
+static line_to_mobject(line)[source]
+Convert a line element to a vectorized mobject.
+
+Parameters:
+line (Line) – The parsed SVG line.
+
+Return type:
+Line
+
+modify_xml_tree(element_tree)[source]
+Modifies the SVG element tree to include default style information.
+
+Parameters:
+element_tree (ElementTree) – The parsed element tree from the SVG file.
+
+Return type:
+ElementTree
+
+move_into_position()[source]
+Scale and move the generated mobject into position.
+
+Return type:
+None
+
+path_to_mobject(path)[source]
+Convert a path element to a vectorized mobject.
+
+Parameters:
+path (Path) – The parsed SVG path.
+
+Return type:
+VMobjectFromSVGPath
+
+static polygon_to_mobject(polygon)[source]
+Convert a polygon element to a vectorized mobject.
+
+Parameters:
+polygon (Polygon) – The parsed SVG polygon.
+
+Return type:
+Polygon
+
+polyline_to_mobject(polyline)[source]
+Convert a polyline element to a vectorized mobject.
+
+Parameters:
+polyline (Polyline) – The parsed SVG polyline.
+
+Return type:
+VMobject
+
+static rect_to_mobject(rect)[source]
+Convert a rectangle element to a vectorized mobject.
+
+Parameters:
+rect (Rect) – The parsed SVG rectangle.
+
+Return type:
+Rectangle
+
+static text_to_mobject(text)[source]
+Convert a text element to a vectorized mobject.
+
+Warning
+
+Not yet implemented.
+
+Parameters:
+text (Text) – The parsed SVG text.
+
+
+
+
+
+
+
+VMobjectFromSVGPath
+Qualified name: manim.mobject.svg.svg\_mobject.VMobjectFromSVGPath
+
+class VMobjectFromSVGPath(path_obj, long_lines=False, should_subdivide_sharp_curves=False, should_remove_null_curves=False, **kwargs)[source]
+Bases: VMobject
+
+A vectorized mobject representing an SVG path.
+
+Note
+
+The long_lines, should_subdivide_sharp_curves, and should_remove_null_curves keyword arguments are only respected with the OpenGL renderer.
+
+Parameters:
+path_obj (se.Path) – A parsed SVG path object.
+
+long_lines (bool) – Whether or not straight lines in the vectorized mobject are drawn in one or two segments.
+
+should_subdivide_sharp_curves (bool) – Whether or not to subdivide subcurves further in case two segments meet at an angle that is sharper than a given threshold.
+
+should_remove_null_curves (bool) – Whether or not to remove subcurves of length 0.
+
+kwargs – Further keyword arguments are passed to the parent class.
+
+Methods
+
+generate_points
+
+Initializes points and therefore the shape.
+
+handle_commands
+
+init_points
+
+Attributes
+
+animate
+
+Used to animate the application of any method of self.
+
+animation_overrides
+
+color
+
+depth
+
+The depth of the mobject.
+
+fill_color
+
+If there are multiple colors (for gradient) this returns the first one
+
+height
+
+The height of the mobject.
+
+n_points_per_curve
+
+sheen_factor
+
+stroke_color
+
+width
+
+The width of the mobject.
+
+_original__init__(path_obj, long_lines=False, should_subdivide_sharp_curves=False, should_remove_null_curves=False, **kwargs)
+Initialize self. See help(type(self)) for accurate signature.
+
+Parameters:
+path_obj (Path)
+
+long_lines (bool)
+
+should_subdivide_sharp_curves (bool)
+
+should_remove_null_curves (bool)
+
+generate_points()
+Initializes points and therefore the shape.
+
+Gets called upon creation. This is an empty method that can be implemented by subclasses.
+
+Return type:
+None
+
+
+
+
+
+
+

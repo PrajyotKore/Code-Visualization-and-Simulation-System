@@ -1,0 +1,82 @@
+animation
+Animate mobjects.
+
+Classes
+
+Add
+
+Add Mobjects to a scene, without animating them in any other way.
+
+Animation
+
+An animation.
+
+Wait
+
+A "no operation" animation.
+
+Functions
+
+override_animation(animation_class)[source]
+Decorator used to mark methods as overrides for specific Animation types.
+
+Should only be used to decorate methods of classes derived from Mobject. Animation overrides get inherited to subclasses of the Mobject who defined them. They don’t override subclasses of the Animation they override.
+
+See also
+
+add_animation_override()
+
+Parameters:
+animation_class (type[Animation]) – The animation to be overridden.
+
+Returns:
+The actual decorator. This marks the method as overriding an animation.
+
+Return type:
+Callable[[Callable], Callable]
+
+Examples
+
+Example: OverrideAnimationExample 
+
+from manim import *
+
+class MySquare(Square):
+    @override_animation(FadeIn)
+    def _fade_in_override(self, **kwargs):
+        return Create(self, **kwargs)
+
+class OverrideAnimationExample(Scene):
+    def construct(self):
+        self.play(FadeIn(MySquare()))
+Make interactive
+prepare_animation(anim)[source]
+Returns either an unchanged animation, or the animation built from a passed animation factory.
+
+Examples
+
+from manim import Square, FadeIn
+s = Square()
+prepare_animation(FadeIn(s))
+FadeIn(Square)
+prepare_animation(s.animate.scale(2).rotate(42))
+_MethodAnimation(Square)
+prepare_animation(42)
+Traceback (most recent call last):
+...
+TypeError: Object 42 cannot be converted to an animation
+Parameters:
+anim (Animation | _AnimationBuilder)
+
+Return type:
+Animation
+
+
+
+
+
+
+
+
+
+
